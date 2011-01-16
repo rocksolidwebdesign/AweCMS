@@ -62,7 +62,7 @@ chmod 777 var
 
 # create database with doctrine CLI
 echo "[ ${bold}${green}DOCTRINE2${reset} ] Creating Tables"
-php application/doctrine/bin/doctrine.php orm:schema-tool:create
+php bin/doctrine.php orm:schema-tool:create
 
 echo "[ ${bold}${green}DOCTRINE2${reset} ] Importing Test Data..."
 mysqlBin -u awecms -pawecms awecms < application/doctrine/testdata.sql
