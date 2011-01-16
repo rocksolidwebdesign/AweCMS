@@ -25,7 +25,7 @@ $gANNOTATION_KEYS['a_m2m']         = 'Doctrine\ORM\Mapping\ManyToMany';
 $gANNOTATION_KEYS['a_m21']         = 'Doctrine\ORM\Mapping\ManyToOne';
 $gANNOTATION_KEYS['a_join_column'] = 'Doctrine\ORM\Mapping\JoinColumn';
 $gANNOTATION_KEYS['a_join_table']  = 'Doctrine\ORM\Mapping\JoinTable';
-$gANNOTATION_KEYS['a_awe']         = 'Awe\Annotations\ZendFormInput';
+$gANNOTATION_KEYS['a_awe']         = 'Awe\Annotations\AutoFormElement';
 
 // initial settings
 $zfConfArr['phpSettings']['time_zone'] = 'America/New_York';
