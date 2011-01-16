@@ -1,0 +1,225 @@
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Theme_Admin_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+
+/* General Styles {{{ */
+h1, h2, h3, h4 {
+    border-top: 1px solid #baf;
+    border-left: 1px solid #baf;
+    border-bottom: 1px solid #33a;
+    border-right: 1px solid #33a;
+    color: #000;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 4px;
+    background: url("../images/header_repeat.jpg") repeat-x scroll 0 0 #3A9BC6;
+}
+a img {
+    border: 0;
+}
+a {
+    color: #66a;
+}
+a:visited {
+    color: #66a;
+}
+/* }}} */
+/* Icon Styles {{{ */
+.backLink {
+    padding-left: 24px;
+    background: url(/images/tango/16x16/actions/go-previous.png) 0 50%;
+    background-repeat: no-repeat;
+    margin-right: 24px;
+}
+.homeLink {
+    padding-left: 24px;
+    background: url(/images/tango/16x16/devices/computer.png) 0 50%;
+    background-repeat: no-repeat;
+    margin-right: 24px;
+}
+
+.newEntity {
+    padding-left: 24px;
+    background: url(/images/tango/16x16/actions/document-new.png) 0 50%;
+    background-repeat: no-repeat;
+    margin-right: 24px;
+}
+/* }}} */
+/* Table Styles {{{ */
+.awe-grid {
+    border-left: 1px solid #000;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.awe-grid td, .awe-grid th {
+    padding: 5px;
+}
+
+.awe-grid th {
+    text-align: center;
+    background: url(../images/grey_bg.gif) #008;
+    color: white;
+    font-weight: bold
+}
+
+.awe-grid td {
+    border: 1px solid #aaa;
+}
+
+.awe-grid td.idNumber, .awe-grid td.center {
+    text-align: center;
+}
+
+.awe-grid td.decimalNumber {
+    text-align: right;
+    font-family: "DejaVu Sans Mono", "Lucida Sans Mono", "Monaco", "Courier New", monospace;
+}
+
+.awe-grid td.crudActions {
+    text-align: center;
+}
+
+.awe-grid tr.alt {
+    background: #eee;
+}
+/* }}} */
+/* Form Styles {{{ */
+.awe-grid-actions {
+    height: 20px;
+    text-align: center;
+}
+
+.awe-grid-action-link {
+    line-height: 18px;
+    height: 20px;
+    padding: 0 5px 0 25px;
+    margin-right: 5px;
+    color: black;
+    border: 1px solid #aaa;
+    border-style: outside;
+    font-weight: bold;
+    text-decoration: none;
+    float: left;
+    font-size: 10px;
+}
+.awe-grid-action-link:visited {
+    color: black;
+}
+
+.awe-grid-actions {
+    width: 200px;
+    text-align: center;
+    background: url(../images/header_repeat.jpg);
+    border: 0;
+}
+
+.awe-grid-new-link {
+    background: url(../images/tango_icons/16x16/actions/document-new.png) no-repeat #eee 5px 2px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.awe-grid-edit-link {
+    margin-left: 27px;
+    background: url(../images/tango_icons/16x16/apps/accessories-text-editor.png) no-repeat #eee 5px 2px;
+}
+
+.awe-grid-delete-link {
+    background: url(../images/tango_icons/16x16/emblems/emblem-unreadable.png) no-repeat #eee 5px 2px;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+
+}
+dl, dt, dd {
+    margin: 0;
+    padding: 0;
+}
+fieldset {
+    background: white;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+fieldset legend {
+    border: 1px solid #ddd;
+    font-weight: bold;
+    padding: 4px 8px;
+    background: url(../images/grey_bg.gif) repeat-x #705CE0;
+    color: white;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dd > fieldset > dl > dt {
+    display: none;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dd > fieldset > dl > dd > fieldset {
+    border: 1px solid #444;
+    padding: 10px 0px 0 0px;
+}
+#fieldset-awe_form > dl > dd > fieldset
+{
+    background: url(../images/tall_stripes.png) repeat-x #705CE0;
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dt, #fieldset-awe_form > dl > dd > fieldset > dl > dd {
+    background: white;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dd > fieldset > dl > dd > fieldset > dl > dd {
+    padding: 0px 10px 10px 10px;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dd > fieldset > dl > dd > fieldset > dl > dt {
+    font-weight: bold;
+    padding: 0px 10px 0px 10px;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dt {
+    font-weight: bold;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 10px 10px 0px 10px;
+}
+#fieldset-awe_form > dl > dd > fieldset > dl > dd {
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 0 10px 10px 10px;
+    margin-bottom: 10px;
+}
+.dijitEditorIFrameContainer {
+    background: white;
+}
+.tundra .dijitTextArea {
+    min-width: 400px;
+    max-width: 800px;
+}
+#awe_form-lower_submit, #awe_form-upper_submit {
+    padding-left: 30px;
+    background: url(../images/tango_icons/16x16/status/software-update-available.png) no-repeat #eee 5px 1px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+#upper_submit-label {
+    line-height: 0;
+    height: 0;
+}
+/* }}} */

@@ -1,0 +1,186 @@
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Theme_Frontend_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+
+body {
+    min-height: 400px;
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 12px;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background: #e0e0e0;
+    color: white;
+}
+
+a { color: #1826b0; font-weight: bold; }
+a:hover { color: #081272; }
+hr { height: 1px; color: #ccc; margin: 10px 0;}
+
+h1,h2,h3,h4,h5 {
+        margin: 0;
+        padding: 0;
+}
+
+table.layout td, table.layout th{
+    vertical-align: top;
+}
+
+table.layout h1 {
+    padding: 5px;
+    border: 1px solid #a67900;
+    background: #ffd973;
+    color: #a67900;
+}
+
+/* Layout Entities */
+#page {
+    width: 1200px;
+    margin: 25px auto;
+    background: #fff;
+    color: black;
+    border: 1px solid black;
+}
+
+#header {
+    background: #717bd8;
+    color: #1826b0;
+    line-height: 100px;
+    height: 100px;
+    padding-left: 10px;
+    font-family: "Arial Black", sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+#footer {
+    border-top: 1px solid #2e0571;
+    line-height: 23px;
+}
+
+#breadcrumbs {
+    list-style-type: none;
+    padding: 0; margin: 0;
+    margin-bottom: 15px;
+    border: 1px solid #1826b0;
+    background: #64aad0;
+    padding: 5px;
+}
+
+#breadcrumbs  li {
+    display: inline;
+}
+
+#content {
+    margin: 0;
+    padding: 15px;
+    background: white;
+    color: black;
+}
+
+/* Top Menu */
+#menu, #menu div {
+    line-height: 20px;
+    height: 25px;
+}
+
+#menu, #footer {
+    font-family: "Verdana", "Geneva", sans-serif;
+    font-size: 11px;
+    padding: 0 5px;
+    background: #7c45d6;
+    color: white;
+}
+
+#menu {
+    border-top: 1px solid #2e0571;
+    border-bottom: 1px solid #2e0571;
+    padding-top: 4px;
+}
+
+#menu a {
+    color: #2e0571;
+    font-weight: bold;
+}
+
+#menu ul, #menu ul li {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+#menu ul li {
+    display: inline;
+}
+
+/* Three Column Layout */
+#leftColumn {
+    padding: 0;
+    margin: 0;
+    width: 150px;
+    background: #2e3784;
+    border: 1px solid #000;
+}
+
+/* Left Menu */
+#leftColumn ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+#leftColumn ul li {
+    border-bottom: 1px solid #946bd6;
+    background: #2e0571;
+    padding: 5px;
+}
+
+#leftColumn ul li a {
+    color: #946bd6;
+}
+
+#centerColumn {
+    padding: 0 10px;
+}
+
+#rightColumn {
+    width: 250px;
+    padding: 0 10px;
+}
+
+/* News Sidebar */
+.blog-entry {
+    background: #eee;
+    border: 1px solid #888;
+    margin-top: 10px;
+}
+
+.blog-entry h2 {
+    background: #64AAD0;
+    padding: 5px;
+}
+
+.blog-entry-content {
+    padding: 2px;
+}
+
+.blog-entry-date {
+    padding: 4px;
+    font-size: 08.em;
+    font-style: italic;
+    color: white;
+    background: #2E3784; 
+}

@@ -1,0 +1,94 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Theme_Admin_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+?>
+
+<?php
+    $title = $this->layout()->title;
+    $this->headTitle(($title ? "$title - " : 'Admin - ') .  "AWE");
+    $this->headLink()->prependStylesheet('/media/themes/admin/default/css/layout.css');
+    $this->headLink()->prependStylesheet('/media/themes/admin/default/css/styles.css');
+    $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+    echo $this->doctype('XHTML1_TRANSITIONAL');
+?>
+
+<html dir="ltr">
+    <head>
+        <?php
+            echo $this->headTitle(),"\n";
+            echo $this->headMeta(),"\n";
+            echo $this->headLink(),"\n";
+            echo $this->headStyle(),"\n";
+            if ($this->dojo()->isEnabled()) {
+                $this->dojo()
+                     ->setLocalPath('/media/themes/admin/default/js/dojo/dojo/dojo.js')
+                     ->addStyleSheetModule('dijit.themes.tundra')
+                     ->setDjConfigOption('parseOnLoad', true)
+                     ;
+                echo $this->dojo(),"\n";
+            }
+            echo $this->headScript(),"\n";
+            //echo $this->jQuery();
+        ?>
+    </head>
+    <body class="tundra">
+        <div id="wrapper">
+            <div id="header">
+                <h1>Awe Admin</h1>
+                <div id="status_bar">
+                    <a href="/admin">Admin</a> | 
+                    <a href="/">View Site</a> |
+                    <a href="/admin/auth/logout">Log Out</a>
+                    <span style="float: right; padding-right: 15px;">
+                        Advanced Website Environment and Content Management System
+                    </span>
+                </div>
+            </div>
+            <div id="headerShadow"> </div>
+            <div id="page">
+                <!--
+                <div class="status_msg">
+                    Everything is awesomes
+                </div>
+                <div class="error_msg">
+                    Oh noes! ERROR: [8400]
+                </div>
+                -->
+                <table id="admin_columns">
+                    <tr>
+                        <td id="left_col">
+                            <div id="menu_container">
+                                <?= $this->partial("partials/menu.phtml", array('current_page', '')); ?>
+                            </div>
+                        </td>
+                        <td id="right_col">
+                            <?php echo $this->layout()->content; ?>
+                            <?php echo $this->inlineScript(); ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="footer">
+            <p>
+               Advanced Website Environment &middot; &copy; <?= date('Y'); ?> All rights reserved
+            </p>
+        </div>
+    </body>
+</html>
+
+

@@ -1,0 +1,47 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Admin
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+?>
+
+<h1>Scaffolding Generator</h1>
+<p>
+Hello, and welcome to the AweCMS Scaffolding Generator
+</p>
+<p>
+Choose an entity and click "Go!" to get started.
+</p>
+<form action="/admin/awe_scaffolding/generate" method="post">
+    <p>
+    Here are all the entities we found in your standard doctrine Entities folder
+    </p>
+    <p>
+        <?php foreach ($this->entities as $e): ?>
+            <input type="radio" name="selected_entity" value="Entities\<?php echo $e; ?>" /> <?php echo $e; ?> <br/>
+        <?php endforeach; ?>
+    </p>
+    <p>
+    Or manually specify your entity name and location
+    </p>
+    <p>
+        <label>Other Entity</label> <input type="text" name="other_entity_name" /><br/>
+        <label>Entity Path</label> <input type="text" name="other_entity_path" />
+        <span style="font-size: 0.8em">Relative to your APPLICATION_PATH</span><br/> 
+    </p>
+    <p>
+        <input type="submit" value="Go!" />
+    </p>
+</form>

@@ -1,0 +1,54 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+?>
+
+<? if ($this->err_type == '404'): ?>
+    <h1>Oops! We're Sorry</h1>
+    <p>
+        We can't find the page you were looking for. Maybe check your typing and try again?
+    </p>
+    <h2>Search</h2>
+    <p>
+        Search for something else:
+        <input type="text" name="search"/>
+    </p>
+    <h2>Contact</h2>
+    <p>
+        Or contact us if you would like help finding what you need.<br/>
+        <input type="submit" name="submit" value="Contact Us!"/>
+    </p>
+<? else: ?>
+    <h1>An error occurred</h1>
+    <h2><?php echo $this->message ?></h2>
+
+    <?php if (isset($this->exception)): ?>
+
+    <h3>Exception information:</h3>
+    <p>
+      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+    </p>
+
+    <h3>Stack trace:</h3>
+    <pre><?php echo $this->exception->getTraceAsString() ?>
+    </pre>
+
+    <h3>Request Parameters:</h3>
+    <pre><?php echo var_export($this->request->getParams(), true) ?>
+    </pre>
+    <?php endif ?>
+<? endif; ?>
