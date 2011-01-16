@@ -57,7 +57,7 @@ mysqlBin -u root -p$mysql_password -e "GRANT ALL ON awecms.* TO 'awecms'@'localh
 cp application/configs/config.php.sample application/configs/config.php
 mkdir -p application/doctrine/Proxies
 chmod 777 application/doctrine/Proxies
-chmod 755 application/doctrine/bin/doctrine
+chmod 755 bin/doctrine
 chmod 777 var
 
 # create database with doctrine CLI
