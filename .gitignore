@@ -1,4 +1,4 @@
 nbproject
 application/configs/config.php
-application/doctrine/Proxies
-var
+application/doctrine/Proxies/*.php
+var/*.log
