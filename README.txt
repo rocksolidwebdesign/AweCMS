@@ -237,6 +237,7 @@ Architecture Features
 CMS database route + caching
 Configuration settings (database? file? json? serialized php?)
 Layout selection config setting
+Implement submodules/externals for layouts and plugins
 
 Architecture Bugs
 ----------------------------------------------------------------
