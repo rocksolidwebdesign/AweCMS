@@ -238,6 +238,11 @@ CMS database route + caching
 Configuration settings (database? file? json? serialized php?)
 Layout selection config setting
 
+Architecture Bugs
+----------------------------------------------------------------
+Redirect bug, drops params
+On delete cascade check, lacking this prevents deletion
+
 Architecture Modifications
 ----------------------------------------------------------------
 Use annotations instead of column names for autocrud save
