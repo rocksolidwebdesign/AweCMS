@@ -30,22 +30,26 @@ the themes folder.
 
 REQUIREMENTS - 01.01
 ================================================================
+Generally I run a local dev environment similar to:
 
-Currently, though it should work on any OS, AweCMS is only
-supported on the following configuration
-
-Linux (Ubuntu 10.10 or CentOS 5.3 should be fine)
-Apache HTTPD 2.2
+Apache HTTPD 2.2.x
 PHP 5.3.3
-MySQL 5.0
+Mysql 5.x
 
-The PHP version *must* be 5.3.3 because 5.3.2 has problems
+The  PHP  version  *must*  be  5.3.3  because  doctrine  has
+problems  with 5.3.2.  Otherwise you  can probably  use just
+about anything you want for a server and a database.
 
 You also really need command line access to your web server.
 I'm sure  you could  pull it  off to  work with  and install
 AweCMS without  shell access but  you'll need CLI  access to
 install the  database using the doctrine  command line tool,
 which requires access to the PHP command line tool.
+
+AweCMS is meant to  be targeted initially towards developers
+but organizing the directory treet  in a manner suitable for
+normal shared hosts  is a goal of the project  to allow wide
+distribution. Anyway, to start, you'll need or want SSH.
 
 INSTALLATION - 02.01
 ================================================================
@@ -61,12 +65,18 @@ would look something like:
 chmod 755 install.sh
 ./install.sh
 
-And that's it.  If this doesn't work for some  reason, or if
-you're  on windows  for example,  then you  just need  to be
-aware of one or two things. AweCMS needs a database and some
-initial tables, mostly for two reasons... A) so that you can
-log in to the admin area  and B) so the frontend CMS doesn't
-go bonkers because it can't find a default home page.
+And that's it. 
+
+There is  also a windows version  called `install.bat`. This
+version  is however,  significantly  less  dynamic than  its
+Linux style cousin and you'll probably need to edit this one
+by hand to add your MySQL root password.
+
+If neither of  these work then you just need  to be aware of
+one or two things. AweCMS  needs a database and some initial
+tables and rows, mostly for two reasons...
+    A) so that  you can log in  to the admin area and  
+    B) so the frontend CMS has a default home page
 
 Other than  having the  database, AweCMS  wants to  have two
 folders writable by the web server:
@@ -84,9 +94,13 @@ if the  install script doesn't  work for you then  your best
 bet is to simply read it and try to run each of the commands
 yourself.
 
+USAGE - 03.01
+================================================================
 once your system is installed you should be able to go to
 
 http://yoursite.com/
+
+(or whatever domain you chose)
 
 and 
 
@@ -94,15 +108,13 @@ http://yoursite.com/admin
 
 and hopefully it "just works"
 
-USAGE - 03.01
-================================================================
 There is a default admin user with the following credentials
 
 username: root
 password: admin
 
-you can use this to log in to the AweCMS admin and start poking
-around.
+you can  use this to  log in to  the AweCMS admin  and start
+poking around.
 
 The core of the system hinges on writing Doctrine 2 models
 with annotations. YAML and XML are not supported right now,
@@ -120,26 +132,27 @@ application/doctrine/Entities/AbstractEntity.php
 the main reason  for this extension is  to provide automagic
 getter and setter methods to make initial development life a
 little easier.  In the  future, for performance  reasons you
-may wish to write manual or static getter and setter methods
-on each of your models. Feel free to do so.
+may wish  to manually  write some  static getter  and setter
+methods on each of your models. Feel free to do so.
 
 The automatic form building has to do with two main things
 
 1) the annotations that you add to the models and
-2) placing a very small controller file in the admin area
+2) placing a very small controller file in the admin module
 
 look at the current system to see how this is done.
 
-long story short, all you need to do is write a model with 
-those magical @Awe annotations on each column that you want to 
-become an automagic form field. then just write a small controller
-class that extends the AutoAdmin class and then give it a few
-initial values to tell it the bare bones basic stuff it needs
-to know to give you standard CRUD functions meaning:
+long story short,  all you need to do is  write a model with
+those magical @Awe annotations on  each column that you want
+to become an  automagic form field. then just  write a small
+controller class  that extends the AutoAdmin  class and then
+give it a few initial values to tell it the bare bones basic
+stuff it needs  to know to give you  standard CRUD functions
+meaning:
 
 1) the name and namespace of the entity
 2) human readable name and plural version (for the UI)
-3) the controller name (for the redirects, e.g. after saving)
+3) the controller name (for the redirects e.g. after saving)
 
 Alternatively, as  usual, if you don't  want the automagical
 stuff and just wanna make use of the good old Zend Framework
@@ -208,8 +221,47 @@ application/resources
 
 TODO - 05.01
 ================================================================
-File uploads
-Pagination for entity lists
-Inline paginated foreign entity lists
-CMS router and route caching
+
+IMPORTANT 
+
+Features
+----------------------------------------------------------------
+File upload field type
+Asset manager for uploads
+FCKEditor/TinyMCE fields
+List pagination
+List datagrid
+
+Architecture Features
+----------------------------------------------------------------
+CMS database route + caching
+Configuration settings (database? file? json? serialized php?)
+Layout selection config setting
+
+Architecture Modifications
+----------------------------------------------------------------
+Use annotations instead of column names for autocrud save
+Migrate to partials instead of placeholders
+
+NICE
+
+Features
+----------------------------------------------------------------
+Create only fields (non editable after creation)
+List labels (specify alternate labels for the datagrid columns)
+Sub-entity datagrid
+Sub-entity pagination
 Inline edit vs non-inline edit
+
+Architecture Modifications
+----------------------------------------------------------------
+Third-pary/vendory module directory tree structure
+Per module entities (use multiple Entities folders)
+Per module routes in (in module bootstrap)
+Widgets per layout, not just per CMS page
+
+Architecture Features
+----------------------------------------------------------------
+full page caching by URL
+(WidgetLayout? = save: choice of Layout + Choice of widgets.
+    to allow same layout but diff widgets per modules)
