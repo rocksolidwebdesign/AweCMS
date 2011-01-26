@@ -479,7 +479,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
 
         $target_id       = str_replace('\\', '_', $target_entity);
 
-        if ($edit_inline) {
+        if ($edit_inline && $this->repopulation_data) {
             $foreign_entities = $this->repopulation_data->$list_name;
             $foreign_columns  = $this->getEntityColumnDefs($target_entity);
 
