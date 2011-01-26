@@ -72,13 +72,13 @@ class Group extends \Entities\AbstractEntity
     /** @PreUpdate */
     public function updated()
     {
-        $this->updated_at = new DateTime("now");
+        $this->updated_at = new \DateTime("now");
     }
 
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
 
-        $this->created_at = $this->updated_at = new DateTime("now");
+        $this->created_at = $this->updated_at = new \DateTime("now");
     }
 }

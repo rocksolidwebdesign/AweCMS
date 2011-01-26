@@ -64,6 +64,19 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
         $this->_helper->getHelper('ViewRenderer')->renderScript('crud/index.phtml');
     }
 
+    public function deleteAction()
+    {
+        $id     = $this->getRequest()->getParam('id');
+        $entity = $id ? $this->doctrine_em->find($this->entity, $id) : false;
+        if ($entity)
+        {
+            $this->doctrine_em->remove($entity);
+            $this->doctrine_em->flush();
+        }
+
+        return $this->_helper->redirector->setGoToSimple();
+    }
+
     public function editAction()
     {
         $id     = $this->getRequest()->getParam('id');
@@ -248,6 +261,8 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
                 }
             }
             // }}}
+
+            return $this->_helper->redirector->setGoToSimple();
         }
         // }}}
 
