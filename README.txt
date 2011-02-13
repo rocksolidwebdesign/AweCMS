@@ -8,7 +8,6 @@ TABLE OF CONTENTS
 02.01 - Installation
 03.01 - Usage
 04.01 - Architecture
-05.01 - TODO
 
 OVERVIEW - 00.01
 ================================================================
@@ -218,56 +217,3 @@ bin
 
 application/resources
     this has the init code for layouts, routers and doctrine
-
-TODO - 05.01
-================================================================
-
-IMPORTANT 
-
-Features
-----------------------------------------------------------------
-File upload field type
-Asset manager for uploads
-FCKEditor/TinyMCE fields
-List pagination
-List datagrid
-
-Architecture Features
-----------------------------------------------------------------
-CMS database route + caching
-Configuration settings (database? file? json? serialized php?)
-Layout selection config setting
-Implement submodules/externals for layouts and plugins
-
-Architecture Bugs
-----------------------------------------------------------------
-Redirect bug, drops params
-On delete cascade check, lacking this prevents deletion
-
-Architecture Modifications
-----------------------------------------------------------------
-Use annotations instead of column names for autocrud save
-Migrate to partials instead of placeholders
-
-NICE
-
-Features
-----------------------------------------------------------------
-Create only fields (non editable after creation)
-List labels (specify alternate labels for the datagrid columns)
-Sub-entity datagrid
-Sub-entity pagination
-Inline edit vs non-inline edit
-
-Architecture Modifications
-----------------------------------------------------------------
-Third-pary/vendory module directory tree structure
-Per module entities (use multiple Entities folders)
-Per module routes in (in module bootstrap)
-Widgets per layout, not just per CMS page
-
-Architecture Features
-----------------------------------------------------------------
-full page caching by URL
-(WidgetLayout? = save: choice of Layout + Choice of widgets.
-    to allow same layout but diff widgets per modules)
