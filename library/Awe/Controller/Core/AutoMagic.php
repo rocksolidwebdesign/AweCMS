@@ -247,9 +247,16 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
                         // }}}
                         } else {
                         // One To One {{{
-                            if ($key != 'id')
-                            {
-                                $sub_entity->$key = $value;
+                            if ($key != 'id') {
+                                $def = $this->doctrine_ar->getPropertyAnnotations(
+                                    $rclass->getProperty($key)
+                                );
+
+                                if ($def[$a_col]->type == 'datetime') {
+                                    $sub_entity->$key = new DateTime($value);
+                                } else {
+                                    $sub_entity->$key = $value;
+                                }
                             }
                         // }}}
                         }
