@@ -36,7 +36,6 @@ $required_libs = array(
     'Awe'      => '',
     'Doctrine' => '',
     'Symfony'  => 'Doctrine',
-    'Entities' => $entities_path,
     'Proxies'  => $proxies_path,
 );
 
@@ -50,13 +49,18 @@ foreach ($required_libs as $name => $path) {
     $classLoader->register();
 }
 
+foreach ($entities_path as $name => $path) {
+    $classLoader = new \Doctrine\Common\ClassLoader($name, $path); 
+    $classLoader->register();
+}
+
 // Setup the Entity Manager
 // ****************************************************************
 $config = new \Doctrine\ORM\Configuration();
 $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
 $config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
 $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
-$config->setMetadataDriverImpl($config->newDefaultAnnotationDriver(array($entities_path)));
+$config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($entities_path));
 $config->setProxyDir($proxies_path.'/Proxies');
 $config->setProxyNamespace('Proxies');
 $em = \Doctrine\ORM\EntityManager::create($conn_settings, $config);

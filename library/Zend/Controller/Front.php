@@ -296,6 +296,7 @@ class Zend_Controller_Front
                 continue;
             }
 
+
             $module    = $file->getFilename();
 
             // Don't use SCCS directories as modules

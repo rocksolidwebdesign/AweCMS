@@ -24,7 +24,9 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
     {
         parent::init();
 
-        $theme_name = 'default';
+        $config_options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
+        $theme_name = $config_options['awe']['theme'][$this->controller_type];
+
         $module_name = $this->getRequest()->getModuleName();
 
         $this->view->addScriptPath(
@@ -32,7 +34,7 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
 
         $this->pview = new Zend_View();
         $this->pview->setScriptPath(
-            APPLICATION_PATH . '/modules/access/views/scripts');
+            APPLICATION_PATH . '/modules/core/access/views/scripts');
         $this->pview->addScriptPath(
             APPLICATION_PATH . "/themes/$this->controller_type/$theme_name/views/scripts");
     }

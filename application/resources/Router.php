@@ -27,49 +27,15 @@ class Awe_Resource_Router extends Zend_Application_Resource_ResourceAbstract
 
     public function getRouter()
     {
-        // CMS Routing
-        // ****************************************************************
-        // Get pages
-        $em    = $this->getBootstrap()->getResource('doctrine');
-        $dql   = "select p from \Entities\Cms\Page p where p.url != ''";
-        $pages = $em->createQuery($dql)->getResult();
-
         $router = Zend_Controller_Front::getInstance()->getRouter();
 
-        // Add page routes
-        foreach ($pages as $page) {
-            $router->addRoute($page->getUrl(),
-                new Zend_Controller_Router_Route($page->getUrl(),
-                    array(
-                        'module'        => 'cms',
-                        'controller'    => 'page',
-                        'action'        => 'view',
-                        'id'            => $page->id,
-                    )
-                )
-            );
-        }
-
         // Add default home route for page root
-        $router->addRoute("/",
-            new Zend_Controller_Router_Route("/",
+        $router->addRoute("/hello_world",
+            new Zend_Controller_Router_Route("/hello_world",
                 array(
-                    'module'        => 'cms',
-                    'controller'    => 'page',
-                    'action'        => 'view',
-                    'id'            => 1,
-                )
-            )
-        );
-
-        // Blog Routing
-        // ****************************************************************
-        $router->addRoute("blog/archive",
-            new Zend_Controller_Router_Route_Regex('blog/archive/(\d+)/(\d+)/(\d+)/(\d+)',
-                array(
-                    'module' => 'blog',
-                    'controller' => 'entry',
-                    'action'     => 'view'
+                    'module'        => 'default',
+                    'controller'    => 'index',
+                    'action'        => 'hello',
                 )
             )
         );

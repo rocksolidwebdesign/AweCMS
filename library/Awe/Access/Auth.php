@@ -44,7 +44,7 @@ class Awe_Access_Auth
             $authed_user = $auth_adapter->getResultRowObject();
 
             $em = \Zend_Registry::get('doctrine_entity_manager');
-            $user = $em->find('\Entities\Access\User', $authed_user->id);
+            $user = $em->find('\Entities\Core\Access\User', $authed_user->id);
 
             $sess->username     =  $user->username;
             $sess->user_type    =  $user->user_type;

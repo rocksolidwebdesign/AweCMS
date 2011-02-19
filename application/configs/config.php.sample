@@ -16,6 +16,21 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  */
 
+/* things that the user probably wants to configure */
+$db_host = 'localhost';
+$db_name = 'awecms';
+$db_user = 'awecms';
+$db_pass = 'awecms';
+$zfConfArr['phpSettings']['time_zone'] = 'America/New_York';
+
+$zfConfArr['awe']['theme']['admin']    = 'default';
+$zfConfArr['awe']['theme']['frontend'] = 'default';
+
+$zfConfArr['awe']['default_layout_template']['admin']  = 'layout_2col_wide';
+$zfConfArr['awe']['default_layout_template']['cms']    = 'layout_3col';
+$zfConfArr['awe']['default_layout_template']['blog']   = 'layout_2col_left';
+
+/* things that should stay the same */
 global $gANNOTATION_KEYS;
 
 $gANNOTATION_KEYS['a_id']          = 'Doctrine\ORM\Mapping\Id';
@@ -28,58 +43,57 @@ $gANNOTATION_KEYS['a_join_table']  = 'Doctrine\ORM\Mapping\JoinTable';
 $gANNOTATION_KEYS['a_awe']         = 'Awe\Annotations\AutoFormElement';
 
 // initial settings
-$zfConfArr['phpSettings']['time_zone'] = 'America/New_York';
 $zfConfArr['includePaths']['library'] = APPLICATION_PATH . "/library";
-
-$zfConfArr['bootstrap']['path'] = APPLICATION_PATH . "/modules/default/Bootstrap.php";
-$zfConfArr['bootstrap']['class'] = "Bootstrap";
-
-$zfConfArr['appnamespace'] = "Awe";
+$zfConfArr['bootstrap']['path'] = APPLICATION_PATH . "/modules/core/default/Bootstrap.php";
 
 // for the library/Awe files
-$zfConfArr['autoloaderNamespaces'][] = "Admin";
 $zfConfArr['autoloaderNamespaces'][] = "Awe";
 
 // configure default resources;
-$zfConfArr['resources']['modules'][] = "";
-$zfConfArr['resources']['frontController']['moduleDirectory'] = APPLICATION_PATH . "/modules";
-$zfConfArr['resources']['frontController']['defaultModule'] = "default";
-$zfConfArr['resources']['frontController']['defaultControllerName'] = "index";
-$zfConfArr['resources']['frontController']['defaultAction'] = "index";
+$zfConfArr['resources']['layout'][] = '';
 
-$zfConfArr['resources']['layout']['layout'] = "layout";
-$zfConfArr['resources']['layout']['layoutPath'] = APPLICATION_PATH . "/layouts";
-
-// load custom resources
-$zfConfArr['resources']['view'][] = "";
-$zfConfArr['resources']['doctrine'][] = "";
-$zfConfArr['resources']['router'][] = "";
+// load resource plugins
+$zfConfArr['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . "/modules/core";
+$zfConfArr['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . "/modules/other";
+$zfConfArr['resources']['frontController']['defaultModule']          =  "default";
+$zfConfArr['resources']['frontController']['defaultControllerName']  =  "index";
+$zfConfArr['resources']['frontController']['defaultAction']          =  "index";
+$zfConfArr['resources']['modules'][]    =  "";
+$zfConfArr['resources']['view'][]       =  "";
+$zfConfArr['resources']['doctrine'][]   =  "";
+$zfConfArr['resources']['router'][]     =  "";
 
 $zfConfArr['pluginPaths']['Awe_Resource'] = APPLICATION_PATH . "/resources";
 
 // database connection
-$zfConfArr['resources']['db']['adapter'] = "pdo_mysql";
-$zfConfArr['resources']['db']['params']['dbname'] = "awecms";
-$zfConfArr['resources']['db']['params']['username'] = "awecms";
-$zfConfArr['resources']['db']['params']['password'] = "awecms";
-$zfConfArr['resources']['db']['params']['host'] = "localhost";
-$zfConfArr['resources']['db']['params']['isDefaultTableAdapter'] = true;
+$zfConfArr['resources']['db']['adapter']                          =  "pdo_mysql";
+$zfConfArr['resources']['db']['params']['dbname']                 =  $db_name;
+$zfConfArr['resources']['db']['params']['username']               =  $db_user;
+$zfConfArr['resources']['db']['params']['password']               =  $db_pass;
+$zfConfArr['resources']['db']['params']['host']                   =  $db_host;
+$zfConfArr['resources']['db']['params']['isDefaultTableAdapter']  =  true;
 
 // MAMP Socket
 if (file_exists('/Applications/MAMP/tmp/mysql/mysql.sock')) {
     $zfConfArr['doctrine']['connection']['unix_socket'] = '/Applications/MAMP/tmp/mysql/mysql.sock';
+    $zfConfArr['db']['params']['unix_socket'] = '/Applications/MAMP/tmp/mysql/mysql.sock';
 }
 else {
-    $zfConfArr['doctrine']['connection']['host']  = 'localhost';
+    $zfConfArr['doctrine']['connection']['host']  = $db_host;
 }
 
 $zfConfArr['doctrine']['connection']['driver']    = 'pdo_mysql';
-$zfConfArr['doctrine']['connection']['dbname']    = 'awecms';
 $zfConfArr['doctrine']['connection']['port']      = '3306';
-$zfConfArr['doctrine']['connection']['user']      = 'awecms';
-$zfConfArr['doctrine']['connection']['password']  = 'awecms';
+$zfConfArr['doctrine']['connection']['dbname']    = $db_name;
+$zfConfArr['doctrine']['connection']['user']      = $db_user;
+$zfConfArr['doctrine']['connection']['password']  = $db_pass;
 
-$zfConfArr['doctrine']['settings']['entities_path'] = APPLICATION_PATH . "/doctrine";
+$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Premium']  =  APPLICATION_PATH . "/modules/core/premium/doctrine";
+$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Access']   =  APPLICATION_PATH . "/modules/core/access/doctrine";
+$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Blog']     =  APPLICATION_PATH . "/modules/core/blog/doctrine";
+$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Cms']      =  APPLICATION_PATH . "/modules/core/cms/doctrine";
+$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core']          =  APPLICATION_PATH . "/doctrine";
+$zfConfArr['doctrine']['settings']['entities_path']['Entities\Other']         =  APPLICATION_PATH . "/doctrine";
 $zfConfArr['doctrine']['settings']['proxies_path']  = APPLICATION_PATH . "/doctrine";
 $zfConfArr['doctrine']['settings']['log_path']      = APPLICATION_PATH . "/../var";
 

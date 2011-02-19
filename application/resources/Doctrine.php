@@ -40,6 +40,7 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
             // Get Zend Application Config
             $app_config    = $this->getBootstrap()->getOptions();
             $entities_path = $app_config['doctrine']['settings']['entities_path'];
+            $entities_path = is_array($entities_path) ? $entities_path : array($entities_path);
             $proxies_path  = $app_config['doctrine']['settings']['proxies_path'];
             $log_path      = $app_config['doctrine']['settings']['log_path'];
 
@@ -49,7 +50,6 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
                 'Awe'      => '',
                 'Doctrine' => '',
                 'Symfony'  => 'Doctrine',
-                'Entities' => $entities_path,
                 'Proxies'  => $proxies_path,
             );
 
@@ -63,6 +63,11 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
                 $classLoader->register();
             }
 
+            foreach ($entities_path as $name => $path) {
+                $classLoader = new \Doctrine\Common\ClassLoader($name, $path);
+                $classLoader->register();
+            }
+
             // Setup Entity Manager
             // ****************************************************************
             $orm_config = new \Doctrine\ORM\Configuration();
@@ -72,7 +77,7 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
             $reader->setAutoloadAnnotations(true);
             $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
             $reader->setAnnotationNamespaceAlias('Awe\Annotations\\', 'awe');
-            $ann_driv = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, array($entities_path));
+            $ann_driv = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, $entities_path);
             $orm_config->setMetadataDriverImpl($ann_driv);
 
             // logging

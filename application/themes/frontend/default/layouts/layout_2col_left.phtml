@@ -1,0 +1,74 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Theme_Frontend_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+?>
+<?php
+    $title = $this->layout()->title;
+    $this->headTitle('AweCMS' . ($title ? " &raquo; $title" : ''));
+    $this->headLink()->prependStylesheet('/media/themes/frontend/default/css/styles.css');
+    $this->headLink()->prependStylesheet('/media/themes/frontend/default/css/layout.css');
+
+    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie8.css', 'screen', 'lt IE 8');
+    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie7.css', 'screen', 'lte IE 7');
+    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie6.css', 'screen', 'lt IE 7');
+
+    $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+
+    echo $this->doctype('XHTML1_TRANSITIONAL');
+?>
+<html>
+    <head>
+        <?php
+            echo $this->headTitle(),"\n";
+            echo $this->headMeta(),"\n";
+            echo $this->headLink(),"\n";
+            echo $this->headStyle(),"\n";
+            if ($this->dojo()->isEnabled()) {
+                $this->dojo()
+                     ->setLocalPath('/media/themes/frontend/default/js/dojo/dojo/dojo.js')
+                     ->addStyleSheetModule('dijit.themes.tundra')
+                     ->setDjConfigOption('parseOnLoad', true)
+                     ;
+                echo $this->dojo(),"\n";
+            }
+            echo $this->headScript(),"\n";
+            //echo $this->jQuery();
+        ?>
+        <link rel="shortcut icon" href="/favicon.ico" />
+    </head>
+    <body>
+        <div id="page">
+            <?= $this->render('_header.phtml') ?>
+            <?= $this->placeholder('top_menu'); ?>
+            <div id="content">
+                <?= $this->placeholder('breadcrumbs'); ?>
+                <table class="layout" id="twoColumn">
+                    <tr>
+                        <td id="leftColumn">
+                            <?= $this->placeholder('left_menu'); ?>
+                        </td>
+                        <td id="centerColumn">
+                            <?= $this->layout()->content; ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <?php echo $this->render('_footer.phtml') ?>
+        </div>
+    </body>
+</html>
+

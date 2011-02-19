@@ -91,7 +91,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `cms_widget` WRITE;
 /*!40000 ALTER TABLE `cms_widget` DISABLE KEYS */;
-INSERT INTO `cms_widget` (`id`, `title`, `entity_name`, `template_file`, `dql_query`, `max_results`, `order_by`) VALUES (1,'Latest Headlines','Entities\\Blog\\Entry','widget/latest_news.phtml','SELECT e FROM Entities\\Blog\\Entry e','3','pub_date DESC');
+INSERT INTO `cms_widget` (`id`, `title`, `entity_name`, `template_file`, `dql_query`, `max_results`, `order_by`) VALUES (1,'Latest Headlines','Entities\\Core\\Blog\\Entry','widget/latest_news.phtml','SELECT e FROM Entities\\Core\\Blog\\Entry e','3','pub_date DESC');
 /*!40000 ALTER TABLE `cms_widget` ENABLE KEYS */;
 UNLOCK TABLES;
 
