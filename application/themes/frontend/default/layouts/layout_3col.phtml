@@ -53,19 +53,23 @@
     <body>
         <div id="page">
             <?= $this->render('_header.phtml') ?>
-            <?= $this->placeholder('top_menu'); ?>
+            <?= $this->render('_top_menu.phtml'); ?>
             <div id="content">
-                <?= $this->placeholder('breadcrumbs'); ?>
-                <table class="layout" id="twoColumn">
+                <table class="layout" id="threeColumn">
+                    <tr>
+                        <td colspan="3">
+                            <?= $this->placeholder('breadcrumbs'); ?>
+                        </td>
+                    </tr>
                     <tr>
                         <td id="leftColumn">
-                            <?= $this->placeholder('left_menu'); ?>
+                            <?= $this->placeholder('left_column'); ?>
                         </td>
                         <td id="centerColumn">
                             <?= $this->layout()->content; ?>
                         </td>
                         <td id="rightColumn">
-                            <?= $this->placeholder('news_widget'); ?>
+                            <?= $this->placeholder('right_column'); ?>
                         </td>
                     </tr>
                 </table>

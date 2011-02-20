@@ -48,6 +48,17 @@ class Entry extends \Entities\Core\AbstractEntity
     protected $title;
 
     /**
+     * @ManyToOne(targetEntity="\Entities\Core\Design\Layout")
+     * @JoinColumn(name="layout_id", referencedColumnName="id")
+     * @awe:AutoFormElement(
+     *     name="layout", 
+     *     label="Layout", 
+     *     display_column="title"
+     * )
+     */
+    protected $layout;
+
+    /**
      * @Column(name="pub_date", type="datetime")
      * @awe:AutoFormElement(
      *     label="Published On",
@@ -76,6 +87,72 @@ class Entry extends \Entities\Core\AbstractEntity
      * )
      */
     protected $comments;
+
+    /*
+     * getUrl()
+     *
+     * return: string - The url of this page including its parents
+     */
+    public function getUrl()
+    {
+        $root_url      = "/blog";
+        $archive_url   = $this->getArchiveUrl();
+        $permalink_url = $this->getPermalinkUrl();
+        $url = "$root_url/$archive_url/$permalink_url";
+
+        return $url;
+    }
+
+    public function getArchiveUrl()
+    {
+        return $this->pub_date->format('m/d/Y');
+    }
+
+    public function getPermalinkUrl()
+    {
+        return ($this->permalink ? $this->permalink : $this->id);
+    }
+
+    /*
+     * getBreadcrumbs()
+     *
+     * param: $result array - Recursive url input chain
+     * return: array - Parents and grandparents leading to the root
+     */
+    public function getBreadcrumbs($url = 'UNINITIALIZED', $result = array())
+    {
+        $url = $url == 'UNINITIALIZED' ? $this->getUrl() : $url;
+        $url = $url ? $url : '/';
+
+        preg_match('#^(.*)/([^/]{1,})$#',$url,$matches);
+
+        $crumbs  = isset($matches[1]) ? $matches[1] : '';
+        $current = isset($matches[2]) ? $matches[2] : '';
+
+        $title = ($this->getPermalinkUrl() == $current ? $this->title : 
+            ($current == 'blog' ? 'Blog' : 
+                ($current == '' ? 'Home' : $current)
+            )
+        );
+
+        // generate the breadcrumb for this page
+        $crumb = array(
+            'url' => $url,
+            'title' => $title,
+        );
+
+        // prepend it to the list of crumbs
+        array_unshift($result, $crumb);
+
+        // if this page has a parent
+        if ($url != '/') {
+            $url = $crumbs;
+            // add the parent's breadcrumb to the result
+            return $this->getBreadcrumbs($url, $result);
+        }
+
+        return $result;
+    }
 
     /** @Column(type="datetime") */
     private $created_at;

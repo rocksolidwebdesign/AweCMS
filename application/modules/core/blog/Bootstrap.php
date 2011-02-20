@@ -29,4 +29,39 @@ class Blog_Bootstrap extends Zend_Application_Module_Bootstrap
 
         return $loader;
     }
+
+    public function _initRoutes()
+    {
+        $em      = $this->getApplication()->getPluginResource('doctrine')->getDoctrine();
+        $dql     = "select e from \Entities\Core\Blog\Entry e";
+        $entries = $em->createQuery($dql)->getResult();
+
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+
+        // Add page routes
+        foreach ($entries as $entry) {
+            $router->addRoute($entry->getUrl(),
+                new Zend_Controller_Router_Route($entry->getUrl(),
+                    array(
+                        'module'        => 'cms',
+                        'controller'    => 'page',
+                        'action'        => 'view',
+                        'id'            => $entry->id,
+                    )
+                )
+            );
+        }
+
+        // Add default home route for page root
+        $router->addRoute("/blog",
+            new Zend_Controller_Router_Route("/blog",
+                array(
+                    'module'        => 'blog',
+                    'controller'    => 'entry',
+                    'action'        => 'view',
+                    'id'            => 1,
+                )
+            )
+        );
+    }
 }

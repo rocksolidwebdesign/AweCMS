@@ -130,6 +130,7 @@ table.layout h1 {
 #leftColumn {
     padding: 0;
     margin: 0;
+    margin-right: 10px;
     width: 150px;
     background: #2e3784;
     border: 1px solid #000;
@@ -153,24 +154,36 @@ table.layout h1 {
 }
 
 #centerColumn {
+    margin: 0;
+    padding: 0;
+}
+
+#threeColumn #centerColumn{
     padding: 0 10px;
 }
 
 #rightColumn {
     width: 250px;
-    padding: 0 10px;
+    padding: 0;
 }
 
 /* News Sidebar */
 .blog-entry {
-    background: #eee;
     border: 1px solid #888;
-    margin-top: 10px;
+    margin: 0;
+}
+
+.blog-entry .blog-entry-content {
+    background: #eee;
 }
 
 .blog-entry h2 {
-    background: #64AAD0;
+    background: #2E3784; 
     padding: 5px;
+}
+
+.blog-entry-comments h3 {
+    margin-top: 20px;
 }
 
 .blog-entry-content {
@@ -182,5 +195,5 @@ table.layout h1 {
     font-size: 08.em;
     font-style: italic;
     color: white;
-    background: #2E3784; 
+    background: #64AAD0;
 }

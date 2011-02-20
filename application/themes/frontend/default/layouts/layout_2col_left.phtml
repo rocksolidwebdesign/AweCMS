@@ -53,10 +53,14 @@
     <body>
         <div id="page">
             <?= $this->render('_header.phtml') ?>
-            <?= $this->placeholder('top_menu'); ?>
+            <?= $this->render('_top_menu.phtml'); ?>
             <div id="content">
-                <?= $this->placeholder('breadcrumbs'); ?>
                 <table class="layout" id="twoColumn">
+                    <tr>
+                        <td colspan="2">
+                            <?= $this->placeholder('breadcrumbs'); ?>
+                        </td>
+                    </tr>
                     <tr>
                         <td id="leftColumn">
                             <?= $this->placeholder('left_menu'); ?>

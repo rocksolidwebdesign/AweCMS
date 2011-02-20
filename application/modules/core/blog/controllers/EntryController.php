@@ -16,7 +16,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  */
 
-class Blog_EntryController extends Awe_Controller_Frontend
+class Blog_EntryController extends Awe_Controller_Frontend_Widget_Layout
 {
     protected $_entry = null;
 
@@ -24,6 +24,16 @@ class Blog_EntryController extends Awe_Controller_Frontend
     {
         $entry = $this->getEntry();
         $this->view->entry = $entry;
+        if ($entry->layout) {
+            if ($entry->layout->layout_template) {
+                $this->_helper->layout->setLayout($entry->layout->layout_template);
+            }
+            $this->renderLayoutWidgets($entry->layout->layout_containers);
+        }
+    }
+
+    public function getCurrentEntity() {
+        return $this->getEntry();
     }
 
     protected function getEntry()

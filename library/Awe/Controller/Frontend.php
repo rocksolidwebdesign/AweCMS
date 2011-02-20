@@ -18,11 +18,6 @@
 
 class Awe_Controller_Frontend extends Awe_Controller_Core_Themed
 {
-    public function preDispatch()
-    {
-        $this->view->render('site/_top_menu.phtml');
-    }
-
     public function init()
     {
         $this->controller_type = 'frontend';

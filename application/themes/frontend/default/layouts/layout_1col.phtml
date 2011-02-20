@@ -1,4 +1,4 @@
-<?php
+,javascript<?php
 /**
  * AweCMS
  *
@@ -53,11 +53,10 @@
     <body>
         <div id="page">
             <?= $this->render('_header.phtml') ?>
-            <?= $this->placeholder('top_menu'); ?>
+            <?= $this->render('_top_menu.phtml'); ?>
             <div id="content">
                 <?= $this->placeholder('breadcrumbs'); ?>
                 <?= $this->layout()->content; ?>
-                </table>
             </div>
             <?php echo $this->render('_footer.phtml') ?>
         </div>

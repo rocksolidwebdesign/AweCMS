@@ -41,12 +41,19 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
 
     public function renderDynamicPlaceholder($name, $script, $vars)
     {
+        $content = $this->renderDynamicTemplate($script, $vars);
+        $this->view->placeholder($name)->append($content);
+    }
+
+    public function renderDynamicTemplate($script, $vars)
+    {
         $this->pview->clearVars();
 
         foreach ($vars as $key => $value) {
             $this->pview->$key = $value;
         }
 
-        $this->view->placeholder($name)->append($this->pview->render($script));
+        $output = $this->pview->render($script);
+        return $output;
     }
 }

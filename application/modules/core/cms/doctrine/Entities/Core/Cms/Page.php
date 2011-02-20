@@ -49,14 +49,25 @@ class Page extends \Entities\Core\AbstractEntity
     protected $auth_required;
 
     /**
-     * @Column(name="layout", type="string", length=255)
+     * @ManyToOne(targetEntity="\Entities\Core\Design\Layout")
+     * @JoinColumn(name="layout_id", referencedColumnName="id")
      * @awe:AutoFormElement(
-     *     label="Layout",
+     *     name="layout", 
+     *     label="Layout", 
+     *     display_column="title"
+     * )
+     */
+    protected $layout;
+
+    /**
+     * @Column(name="layout_template", type="string", length=255)
+     * @awe:AutoFormElement(
+     *     label="Layout Template",
      *     type="Zend_Dojo_Form_Element_TextBox",
      *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
      * )
      */
-    protected $layout;
+    protected $layout_template;
 
     /**
      * @Column(name="url", type="string", length=255)
@@ -97,11 +108,6 @@ class Page extends \Entities\Core\AbstractEntity
      * @OneToMany(targetEntity="\Entities\Core\Cms\Page", mappedBy="parent")
      */
     protected $children;
-
-    /**
-     * @OneToMany(targetEntity="\Entities\Core\Cms\PageWidget", mappedBy="page")
-     */
-    protected $widgets;
 
     /*
      * getUrl()
@@ -165,7 +171,6 @@ class Page extends \Entities\Core\AbstractEntity
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->widgets = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->created_at = $this->updated_at = new \DateTime("now");
     }
