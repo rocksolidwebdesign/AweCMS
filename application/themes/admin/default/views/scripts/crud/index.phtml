@@ -24,9 +24,10 @@
 <table class="awe-grid">
     <tr>
         <? foreach ($this->columns as $def): ?>
+            <? $def = $def['annotations']; ?>
             <? if (isset($def[$a_col]) && isset($def[$a_awe])): ?>
                 <? if (is_null($def[$a_awe]->no_list)): ?>
-                    <th><?= $def[$a_awe]->label ?></th>
+                    <th><?= $def[$a_awe]->list_label ? $def[$a_awe]->list_label : $def[$a_awe]->label ?></th>
                 <? endif; ?>
             <? endif; ?>
         <? endforeach; ?>
@@ -35,6 +36,7 @@
     <? $x = 0; foreach($this->entities as $entity): ?>
     <tr class="<?= ($x++ % 2 ? 'alt' : ''); ?>">
         <? foreach ($this->columns as $def): ?>
+            <? $def = $def['annotations']; ?>
             <? if (isset($def[$a_col]) && isset($def[$a_awe])): ?>
                 <? if (is_null($def[$a_awe]->no_list)): ?>
                     <? $column = $def[$a_col]->name ?>

@@ -29,4 +29,5 @@ final class AutoFormElement extends Annotation
     public $clear_method;
     public $params;
     public $no_list;
+    public $list_label;
 }

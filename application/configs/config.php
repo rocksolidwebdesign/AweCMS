@@ -30,6 +30,8 @@ $zfConfArr['awe']['default_layout_template']['admin']  = 'layout_2col_wide';
 $zfConfArr['awe']['default_layout_template']['cms']    = 'layout_3col';
 $zfConfArr['awe']['default_layout_template']['blog']   = 'layout_2col_left';
 
+$zfConfArr['doctrine']['settings']['cache_type']    = '\Doctrine\Common\Cache\ArrayCache';
+
 /* things that should stay the same */
 global $gANNOTATION_KEYS;
 

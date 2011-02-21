@@ -38,6 +38,7 @@ class Awe_Resource_View extends Zend_Application_Resource_ResourceAbstract
 
             $view = new Zend_View($options);
             $view->addHelperPath('Zend/Dojo/View/Helper/', 'Zend_Dojo_View_Helper');
+            $view->addHelperPath('Awe/Dojo/View/Helper/', 'Awe_Dojo_View_Helper');
 
 //            $view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
 //            $view->jQuery()->enable();

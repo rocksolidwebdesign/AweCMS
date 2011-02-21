@@ -96,6 +96,7 @@ $zfConfArr['doctrine']['settings']['entities_path']['Entities\Core']          = 
 $zfConfArr['doctrine']['settings']['entities_path']['Entities\Other']         =  APPLICATION_PATH . "/doctrine";
 $zfConfArr['doctrine']['settings']['proxies_path']  = APPLICATION_PATH . "/doctrine";
 $zfConfArr['doctrine']['settings']['log_path']      = APPLICATION_PATH . "/../var";
+$zfConfArr['doctrine']['settings']['cache_type']    = '\Doctrine\Common\Cache\ArrayCache';
 
 switch (APPLICATION_ENV)
 {

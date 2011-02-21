@@ -39,6 +39,7 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
 
             // Get Zend Application Config
             $app_config    = $this->getBootstrap()->getOptions();
+            $cache_type    = $app_config['doctrine']['settings']['cache_type'];
             $entities_path = $app_config['doctrine']['settings']['entities_path'];
             $entities_path = is_array($entities_path) ? $entities_path : array($entities_path);
             $proxies_path  = $app_config['doctrine']['settings']['proxies_path'];
@@ -83,9 +84,15 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
             // logging
             $orm_config->setSQLLogger(new Doctrine\DBAL\Logging\FileSQLLogger($log_path));
 
+
             // caching
-            $orm_config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
-            $orm_config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
+            if (is_array($cache_type)) {
+                $orm_config->setQueryCacheImpl(new $cache_type['query']);
+                $orm_config->setMetadataCacheImpl(new $cache_type['metadata']);
+            } else {
+                $orm_config->setQueryCacheImpl(new $cache_type);
+                $orm_config->setMetadataCacheImpl(new $cache_type);
+            }
 
             // proxies
             $orm_config->setAutoGenerateProxyClasses(true);

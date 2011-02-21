@@ -41,9 +41,11 @@ table.layout td, table.layout th{
 
 table.layout h1 {
     padding: 5px;
-    border: 1px solid #a67900;
-    background: #ffd973;
-    color: #a67900;
+    border: 0;
+    background: #2E3784;
+    color: white;
+    /*background: #ffd973;*/
+    /*color: #a67900;*/
 }
 
 /* Layout Entities */
@@ -52,7 +54,7 @@ table.layout h1 {
     margin: 25px auto;
     background: #fff;
     color: black;
-    border: 1px solid black;
+    border: 0;
 }
 
 #header {
@@ -67,21 +69,25 @@ table.layout h1 {
 }
 
 #footer {
-    border-top: 1px solid #2e0571;
+    border: 0;
     line-height: 23px;
 }
 
 #breadcrumbs {
     list-style-type: none;
-    padding: 0; margin: 0;
+    padding: 5px; margin: 2px;
     margin-bottom: 15px;
-    border: 1px solid #1826b0;
-    background: #64aad0;
+    border: 0;
     padding: 5px;
+    color: white;
+    background: #64AAD0;
 }
 
 #breadcrumbs  li {
     display: inline;
+}
+#breadcrumbs  li a {
+    /*color: #0af;*/
 }
 
 #content {
@@ -105,9 +111,11 @@ table.layout h1 {
     color: white;
 }
 
+#footer {
+    background: #2e0571;
+}
+
 #menu {
-    border-top: 1px solid #2e0571;
-    border-bottom: 1px solid #2e0571;
     padding-top: 4px;
 }
 
@@ -132,8 +140,7 @@ table.layout h1 {
     margin: 0;
     margin-right: 10px;
     width: 150px;
-    background: #2e3784;
-    border: 1px solid #000;
+    background: #717BD8;
 }
 
 /* Left Menu */
@@ -144,13 +151,12 @@ table.layout h1 {
 }
 
 #leftColumn ul li {
-    border-bottom: 1px solid #946bd6;
-    background: #2e0571;
+    background: #2e3784;
     padding: 5px;
 }
 
 #leftColumn ul li a {
-    color: #946bd6;
+    color: #ddd;
 }
 
 #centerColumn {
@@ -168,8 +174,13 @@ table.layout h1 {
 }
 
 /* News Sidebar */
+#news_sidebar h1 {
+    margin-bottom: 10px;
+}
+#news_sidebar .blog-entry {
+    margin-bottom: 10px;
+}
 .blog-entry {
-    border: 1px solid #888;
     margin: 0;
 }
 
@@ -178,8 +189,8 @@ table.layout h1 {
 }
 
 .blog-entry h2 {
-    background: #2E3784; 
     padding: 5px;
+    background: #64AAD0;
 }
 
 .blog-entry-comments h3 {
@@ -195,5 +206,6 @@ table.layout h1 {
     font-size: 08.em;
     font-style: italic;
     color: white;
-    background: #64AAD0;
+    background: #717BD8;
+    /*background: #eef;*/
 }

@@ -29,21 +29,13 @@ class Entry extends \Entities\Core\AbstractEntity
 
     /**
      * @Column(name="permalink", type="string", length=255)
-     * @awe:AutoFormElement(
-     *     label="Permalink",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
-     * )
+     * @awe:AutoFormElement()
      */
     protected $permalink;
 
     /**
      * @Column(name="title", type="string", length=255)
-     * @awe:AutoFormElement(
-     *     label="Title",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
-     * )
+     * @awe:AutoFormElement()
      */
     protected $title;
 
@@ -60,10 +52,7 @@ class Entry extends \Entities\Core\AbstractEntity
 
     /**
      * @Column(name="pub_date", type="datetime")
-     * @awe:AutoFormElement(
-     *     label="Published On",
-     *     type="Zend_Dojo_Form_Element_DateTextBox"
-     * )
+     * @awe:AutoFormElement()
      */
     protected $pub_date;
 
@@ -71,7 +60,8 @@ class Entry extends \Entities\Core\AbstractEntity
      * @Column(name="content", type="text")
      * @awe:AutoFormElement(
      *     label="Entry Body",
-     *     type="Zend_Dojo_Form_Element_Editor",
+     *     type="Awe_Dojo_Form_Element_Editor",
+     *     params={"plugins"={"viewSource","undo", "redo", "cut", "copy", "paste", "bold", "italic", "underline", "strikethrough", "insertOrderedList", "insertUnorderedList", "indent", "outdent", "justifyLeft", "justifyRight", "justifyCenter", "justifyFull", "createLink", "insertImage", "fontName",  "formatBlock", "fontSize", "foreColor", "hiliteColor", "fullScreen", "enterKeyHandling", "print", "tabIndent", "toggleDir", "newPage"}},
      *     no_list="True"
      * )
      */
