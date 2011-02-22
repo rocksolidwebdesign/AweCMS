@@ -23,7 +23,6 @@ Here's some text before the container
 </div>
 <? $this->dojo()->onLoadCaptureStart() ?>
 function() {
-    alert('doo wop');
     var gridLayout = [
         { name: 'Id'           ,  field: 'id', width: 'auto'},
         { name: 'Approved'     ,  field: 'approved', width: 'auto'},
@@ -37,7 +36,7 @@ function() {
     var myGrid = new dojox.grid.EnhancedGrid({
         store: aweStore,
         structure: gridLayout,
-        rowSelector: '20px',
+        rowSelector: '0px',
         plugins: {
             indirectSelection: true
         }
