@@ -30,6 +30,8 @@ $zfConfArr['awe']['default_layout_template']['admin']  = 'layout_2col_wide';
 $zfConfArr['awe']['default_layout_template']['cms']    = 'layout_3col';
 $zfConfArr['awe']['default_layout_template']['blog']   = 'layout_2col_left';
 
+$zfConfArr['doctrine']['settings']['cache_type']    = '\Doctrine\Common\Cache\ArrayCache';
+
 /* things that should stay the same */
 global $gANNOTATION_KEYS;
 
@@ -96,7 +98,6 @@ $zfConfArr['doctrine']['settings']['entities_path']['Entities\Core']          = 
 $zfConfArr['doctrine']['settings']['entities_path']['Entities\Other']         =  APPLICATION_PATH . "/doctrine";
 $zfConfArr['doctrine']['settings']['proxies_path']  = APPLICATION_PATH . "/doctrine";
 $zfConfArr['doctrine']['settings']['log_path']      = APPLICATION_PATH . "/../var";
-$zfConfArr['doctrine']['settings']['cache_type']    = '\Doctrine\Common\Cache\ArrayCache';
 
 switch (APPLICATION_ENV)
 {
