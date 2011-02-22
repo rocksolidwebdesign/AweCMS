@@ -18,10 +18,15 @@
 ?>
 
 <?php
+    $dijit_theme = 'soria';
+
     $title = $this->layout()->title;
     $this->headTitle(($title ? "$title - " : 'Admin - ') .  "AWE");
-    $this->headLink()->prependStylesheet('/media/themes/admin/default/css/layout.css');
-    $this->headLink()->prependStylesheet('/media/themes/admin/default/css/styles.css');
+
+    $skin_folder = '/skin/admin/default';
+    $this->headLink()->prependStylesheet("$skin_folder/css/layout.css");
+    $this->headLink()->prependStylesheet("$skin_folder/css/styles.css");
+
     $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
     echo $this->doctype('XHTML1_TRANSITIONAL');
 ?>
@@ -32,35 +37,35 @@
             echo $this->headTitle(),"\n";
             echo $this->headMeta(),"\n";
             echo $this->headLink(),"\n";
-            echo $this->headStyle(),"\n";
             if ($this->dojo()->isEnabled()) {
                 $this->dojo()
-                     ->setLocalPath('/media/themes/admin/default/js/dojo/dojo/dojo.js')
-                     ->addStyleSheetModule('dijit.themes.tundra')
+                     ->setLocalPath("$skin_folder/js/dojo/dojo/dojo.js")
+                     ->addStyleSheetModule('dijit.themes.'.$dijit_theme)
                      ->setDjConfigOption('parseOnLoad', true)
                      ;
                 echo $this->dojo(),"\n";
             }
             echo $this->headScript(),"\n";
+            echo $this->headStyle(),"\n";
             //echo $this->jQuery();
         ?>
         <link rel="shortcut icon" href="/admin_favicon.ico" />
     </head>
-    <body class="tundra">
+    <body class="<?= $dijit_theme; ?>">
         <?= $this->partial("_header.phtml"); ?>
-                <table id="admin_columns">
-                    <tr>
-                        <td id="left_col">
-                            <div id="menu_container">
-                                <?= $this->partial("_menu.phtml"); ?>
-                            </div>
-                        </td>
-                        <td id="right_col">
-                            <?php echo $this->layout()->content; ?>
-                            <?php echo $this->inlineScript(); ?>
-                        </td>
-                    </tr>
-                </table>
+        <table id="admin_columns">
+            <tr>
+                <td id="left_col">
+                    <div id="menu_container">
+                        <?= $this->partial("_menu.phtml"); ?>
+                    </div>
+                </td>
+                <td id="right_col">
+                    <?php echo $this->layout()->content; ?>
+                    <?php echo $this->inlineScript(); ?>
+                </td>
+            </tr>
+        </table>
         <?= $this->partial("_footer.phtml"); ?>
     </body>
 </html>

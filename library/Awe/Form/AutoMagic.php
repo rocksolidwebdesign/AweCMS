@@ -26,6 +26,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
     protected $entity_columns;
     protected $auto_subforms;
     protected $is_scaffolding;
+    protected $is_restful = false;
     protected $scaffolding = array();
     protected $scaffolding_form;
     protected $scaffolding_form_docblock;
@@ -47,6 +48,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
         parent::__construct($name);
 
         // setup params
+        $this->is_restful           =  $name == 'rest_entity' ? true : false;
         $this->recurse_subentities  =  $recurse;
         $this->repopulation_data    =  $data;
         $this->parent_entity        =  $parent;
@@ -87,7 +89,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
             else if (isset($anno[$a_m21])) {
                 $element_type = $this->recurse_subentities ? 'foreign_dropdown' : 'hidden_foreign_key';
             }
-            else if (isset($anno[$a_12m]) && $this->recurse_subentities && $anno[$a_awe]->edit_inline && $this->repopulation_data) {
+            else if (isset($anno[$a_12m]) && $this->recurse_subentities && $anno[$a_awe]->edit_inline && $this->repopulation_data && !$this->is_restful) {
                 $element_type = 'foreign_edit_inline';
             }
             else if (isset($anno[$a_m2m])) {
@@ -103,7 +105,9 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
                 case 'hidden_primary_key': // {{{
                     $element = new Zend_Form_Element_Hidden('id');
                     $element->setDecorators(array('ViewHelper'));
-                    $element->setValue($this->repopulation_data->id);
+                    if ($this->repopulation_data) {
+                        $element->setValue($this->repopulation_data->id);
+                    }
                     break;
                     // }}}
 
@@ -118,7 +122,12 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
 
                 case 'entity': // {{{
                     // setup properties {{{
-                    $label         = $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', ($anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
+
+                    // use a label param if set, 
+                    // otherwise use the @Column annotation's name property
+                        // replace underscores with spaces and capitalize each word
+                    // otherwise default to the property name of the object
+                    $label         = $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
                     $type          = $anno[$a_awe]->type        ?  $anno[$a_awe]->type        :  $this->getDefaultElementType($anno[$a_col]->type);
                     $col_type      = $anno[$a_col]->type;
                     $params        = isset($anno[$a_awe]->params) ? $anno[$a_awe]->params : array();
@@ -152,7 +161,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
 
                 case 'foreign_dropdown': // {{{
                     // setup properties {{{
-                    $label           =  $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', ($anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
+                    $label           =  $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
                     $target_entity   =  $anno[$a_m21]->targetEntity;
                     $display_column  =  $anno[$a_awe]->display_column;
                     $join_column     =  $anno[$a_join_column]->name;
@@ -186,7 +195,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
 
                 case 'foreign_multi_checkbox': // {{{
                     // setup properties {{{
-                    $label           = $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', ($anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
+                    $label           = $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
                     $target_entity   = $anno[$a_m2m]->targetEntity;
                     $display_column  = $anno[$a_awe]->display_column;
                     $inverse_column  = $anno[$a_join_table]->inverseJoinColumns[0]->name;
@@ -227,7 +236,7 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
 
                 case 'foreign_edit_inline': // {{{
                     // setup properties {{{
-                    $label           = $anno[$a_awe]->label  ?  $anno[$a_awe]->label :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', ($anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
+                    $label           = $anno[$a_awe]->label  ?  $anno[$a_awe]->label :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
                     $target_entity   = $anno[$a_12m]->targetEntity;
                     $edit_inline     = $anno[$a_awe]->edit_inline;
                     $target_id       = str_replace('\\', '_', $target_entity);

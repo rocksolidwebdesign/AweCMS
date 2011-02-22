@@ -30,13 +30,13 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
         $module_name = $this->getRequest()->getModuleName();
 
         $this->view->addScriptPath(
-            APPLICATION_PATH . "/themes/$this->controller_type/$theme_name/views/scripts");
+            APPLICATION_PATH . "/templates/$this->controller_type/$theme_name/views/scripts");
 
         $this->pview = new Zend_View();
         $this->pview->setScriptPath(
             APPLICATION_PATH . '/modules/core/access/views/scripts');
         $this->pview->addScriptPath(
-            APPLICATION_PATH . "/themes/$this->controller_type/$theme_name/views/scripts");
+            APPLICATION_PATH . "/templates/$this->controller_type/$theme_name/views/scripts");
     }
 
     public function renderDynamicPlaceholder($name, $script, $vars)

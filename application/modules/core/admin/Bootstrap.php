@@ -28,4 +28,74 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         );
         return $autoloader;
     }
+
+    protected function _initRoutes()
+    {
+        $tables = array(
+            'core_design_layout',
+            'core_design_layoutcontainer',
+            'core_design_widget',
+            'core_design_widgetsetmember',
+            'core_design_widgetset',
+            'core_cms_page',
+            'core_blog_entry',
+            'core_blog_comment',
+            'core_access_user',
+            'core_access_group',
+            'core_premium_plan',
+            'core_premium_subscription',
+        );
+
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        $method = $_SERVER['REQUEST_METHOD'];
+        foreach ($tables as $name) {
+            switch ($method) {
+                case 'DELETE':
+                    $action = 'delete';
+                    break;
+                case 'PUT':
+                    $action = 'save';
+                    break;
+                case 'GET':
+                default:
+                    $action = 'view';
+                    break;
+            }
+
+            // Add default home route for page root
+            list($section, $namespace, $entity) = explode('_', $name);
+            $route = "/rest/$section/$namespace/$entity/:id";
+            $router->addRoute($name.'_'.$action,
+                new Zend_Controller_Router_Route($route,
+                    array(
+                        'module'        => 'admin',
+                        'controller'    => $name,
+                        'action'        => $action,
+                        'format'        => 'json'
+                    )
+                )
+            );
+
+            switch ($method) {
+                case 'PUT':
+                    $action = 'save';
+                    break;
+                case 'GET':
+                default:
+                    $action = 'index';
+                    break;
+            }
+            $route = "/rest/$section/$namespace/$entity";
+            $router->addRoute($name.'_'.$action,
+                new Zend_Controller_Router_Route($route,
+                    array(
+                        'module'        => 'admin',
+                        'controller'    => $name,
+                        'action'        => $action,
+                        'format'        => 'json'
+                    )
+                )
+            );
+        }
+    }
 }

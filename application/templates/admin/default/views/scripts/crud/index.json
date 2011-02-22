@@ -1,0 +1,40 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Admin_Autocrud
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+
+    global $gANNOTATION_KEYS; 
+    extract($gANNOTATION_KEYS);
+    $entities = array();
+    foreach($this->entities as $entity) {
+        $data = array();
+        foreach ($this->columns as $column_name => $def) {
+            $anno = $def['annotations'];
+            if (isset($anno[$a_col]) && isset($anno[$a_awe]) && is_null($anno[$a_awe]->no_list)) {
+                $type = $anno[$a_col]->type;
+                if ($type == 'datetime' || $type == 'date') {
+                    $data[$column_name] = $entity->$column_name->format('m/d/Y');
+                } else {
+                    $data[$column_name] = $entity->$column_name;
+                }
+            }
+        }
+        $data['id'] = $entity->id;
+        $entities[] = $data;
+    }
+
+    echo json_encode($entities);
+?>

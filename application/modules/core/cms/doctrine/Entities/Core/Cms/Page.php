@@ -24,7 +24,7 @@ class Page extends \Entities\Core\AbstractEntity
     /**
      * @Id @Column(name="id", type="integer")
      * @GeneratedValue(strategy="AUTO")
-     * @awe:AutoFormElement(label="Id")
+     * @awe:AutoFormElement()
      */
     protected $id;
 
@@ -33,7 +33,6 @@ class Page extends \Entities\Core\AbstractEntity
      * @JoinColumn(name="parent_id", referencedColumnName="id")
      * @awe:AutoFormElement(
      *     label="Parent Page", 
-     *     name="parent", 
      *     display_column="title"
      * )
      */
@@ -51,46 +50,20 @@ class Page extends \Entities\Core\AbstractEntity
     /**
      * @ManyToOne(targetEntity="\Entities\Core\Design\Layout")
      * @JoinColumn(name="layout_id", referencedColumnName="id")
-     * @awe:AutoFormElement(
-     *     name="layout", 
-     *     label="Layout", 
-     *     display_column="title"
+     * @awe:AutoFormElement(display_column="title")
      * )
      */
     protected $layout;
 
     /**
-     * @Column(name="layout_template", type="string", length=255)
-     * @awe:AutoFormElement(
-     *     label="Layout Template",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
-     * )
-     */
-    protected $layout_template;
-
-    /**
      * @Column(name="url", type="string", length=255)
-     * @awe:AutoFormElement(
-     *     label="URL",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
-     * )
+     * @awe:AutoFormElement()
      */
     protected $url;
 
     /**
      * @Column(name="title", type="string", length=255)
-     * @awe:AutoFormElement(
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     label="Title",
-     *     validators={
-     *         "Zend_Validate_StringLength"={
-     *             "min"=0,
-     *             "max"=255
-     *         }
-     *     }
-     * )
+     * @awe:AutoFormElement()
      */
     protected $title;
 
@@ -98,7 +71,8 @@ class Page extends \Entities\Core\AbstractEntity
      * @Column(name="content", type="text")
      * @awe:AutoFormElement(
      *     label="Page Content",
-     *     type="Zend_Dojo_Form_Element_Editor",
+     *     type="Awe_Dojo_Form_Element_Editor",
+     *     params={"plugins"={"viewSource","undo", "redo", "cut", "copy", "paste", "bold", "italic", "underline", "strikethrough", "insertOrderedList", "insertUnorderedList", "indent", "outdent", "justifyLeft", "justifyRight", "justifyCenter", "justifyFull", "createLink", "insertImage", "fontName",  "formatBlock", "fontSize", "foreColor", "hiliteColor", "fullScreen", "enterKeyHandling", "print", "tabIndent", "toggleDir", "newPage"}},
      *     no_list="True"
      * )
      */

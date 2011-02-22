@@ -30,13 +30,13 @@ class Awe_Controller_Plugin_Theme extends Zend_Controller_Plugin_Abstract
         {
             $theme_name = $config_options['awe']['theme']['admin'];
             $path = APPLICATION_PATH
-                . '/themes/admin/' . $theme_name . '/layouts/';
+                . '/templates/admin/' . $theme_name . '/layouts/';
         }
         else
         {
             $theme_name = $config_options['awe']['theme']['frontend'];
             $path = APPLICATION_PATH
-                . '/themes/frontend/' . $theme_name . '/layouts/';
+                . '/templates/frontend/' . $theme_name . '/layouts/';
         }
 
         if (file_exists($path))

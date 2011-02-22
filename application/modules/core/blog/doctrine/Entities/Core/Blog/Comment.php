@@ -23,7 +23,7 @@ class Comment extends \Entities\Core\AbstractEntity
     /**
      * @Id @Column(name="id", type="integer")
      * @GeneratedValue(strategy="AUTO")
-     * @awe:AutoFormElement(label="Id")
+     * @awe:AutoFormElement()
      */
     protected $id;
 
@@ -31,8 +31,7 @@ class Comment extends \Entities\Core\AbstractEntity
      * @ManyToOne(targetEntity="\Entities\Core\Blog\Entry")
      * @JoinColumn(name="entry_id", referencedColumnName="id")
      * @awe:AutoFormElement(
-     *     label="Blog Entry",
-     *     name="entry",
+     *     label="Parent Entry",
      *     display_column="title"
      * )
      */
@@ -49,11 +48,7 @@ class Comment extends \Entities\Core\AbstractEntity
 
     /**
      * @Column(name="title", type="string", length=255)
-     * @awe:AutoFormElement(
-     *     label="Title",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
-     * )
+     * @awe:AutoFormElement()
      */
     protected $title;
 
@@ -61,18 +56,16 @@ class Comment extends \Entities\Core\AbstractEntity
      * @Column(name="content", type="text")
      * @awe:AutoFormElement(
      *     label="Entry Body",
-     *     type="Zend_Dojo_Form_Element_Editor",
-     *     no_list="True"
+     *     no_list="True",
+     *     type="Awe_Dojo_Form_Element_Editor",
+     *     params={"plugins"={"prettyprint","breadcrumb","viewSource","undo", "redo", "cut", "copy", "paste", "bold", "italic", "underline", "strikethrough", "insertOrderedList", "insertUnorderedList", "indent", "outdent", "justifyLeft", "justifyRight", "justifyCenter", "justifyFull", "createLink", "insertImage", "fontName",  "formatBlock", "fontSize", "foreColor", "hiliteColor", "fullScreen", "enterKeyHandling", "print", "tabIndent", "toggleDir", "newPage", "insertTable", "modifyTable", "InsertTableRowBefore", "InsertTableRowAfter", "insertTableColumnBefore", "insertTableColumnAfter", "deleteTableRow", "deleteTableColumn", "colorTableCell", "tableContextMenu"}}
      * )
      */
     protected $content;
 
     /**
      * @Column(name="pub_date", type="datetime")
-     * @awe:AutoFormElement(
-     *     label="Published On",
-     *     type="Zend_Dojo_Form_Element_DateTextBox"
-     * )
+     * @awe:AutoFormElement(label="Published On")
      */
     protected $pub_date;
 

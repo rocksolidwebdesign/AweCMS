@@ -17,14 +17,18 @@
  */
 ?>
 <?php
+    $dijit_theme = 'soria';
+
     $title = $this->layout()->title;
     $this->headTitle('AweCMS' . ($title ? " &raquo; $title" : ''));
-    $this->headLink()->prependStylesheet('/media/themes/frontend/default/css/styles.css');
-    $this->headLink()->prependStylesheet('/media/themes/frontend/default/css/layout.css');
 
-    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie8.css', 'screen', 'lt IE 8');
-    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie7.css', 'screen', 'lte IE 7');
-    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie6.css', 'screen', 'lt IE 7');
+    $skin_folder = '/skin/frontend/default';
+    $this->headLink()->prependStylesheet("$skin_folder/css/styles.css");
+    $this->headLink()->prependStylesheet("$skin_folder/css/layout.css");
+
+    $this->headLink()->appendStylesheet("$skin_folder/css/ie8.css", 'screen', 'lt IE 8');
+    $this->headLink()->appendStylesheet("$skin_folder/css/ie7.css", 'screen', 'lte IE 7');
+    $this->headLink()->appendStylesheet("$skin_folder/css/ie6.css", 'screen', 'lt IE 7');
 
     $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 
@@ -39,8 +43,8 @@
             echo $this->headStyle(),"\n";
             if ($this->dojo()->isEnabled()) {
                 $this->dojo()
-                     ->setLocalPath('/media/themes/frontend/default/js/dojo/dojo/dojo.js')
-                     ->addStyleSheetModule('dijit.themes.tundra')
+                     ->setLocalPath($skin_folder.'/js/dojo/dojo/dojo.js')
+                     ->addStyleSheetModule('dijit.themes'.$dijit_theme)
                      ->setDjConfigOption('parseOnLoad', true)
                      ;
                 echo $this->dojo(),"\n";
@@ -50,26 +54,13 @@
         ?>
         <link rel="shortcut icon" href="/favicon.ico" />
     </head>
-    <body>
+    <body class="<?= $dijit_theme; ?>">
         <div id="page">
             <?= $this->render('_header.phtml') ?>
             <?= $this->render('_top_menu.phtml'); ?>
             <div id="content">
-                <table class="layout" id="twoColumn">
-                    <tr>
-                        <td colspan="2">
-                            <?= $this->placeholder('breadcrumbs'); ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="centerColumn">
-                            <?= $this->layout()->content; ?>
-                        </td>
-                        <td id="rightColumn">
-                            <?= $this->placeholder('sidebar'); ?>
-                        </td>
-                    </tr>
-                </table>
+                <?= $this->placeholder('breadcrumbs'); ?>
+                <?= $this->layout()->content; ?>
             </div>
             <?php echo $this->render('_footer.phtml') ?>
         </div>

@@ -169,7 +169,7 @@ fieldset legend {
     display: none;
 }
 #fieldset-awe_form > dl > dd > fieldset > dl > dd > fieldset > dl > dd > fieldset {
-    border: 1px solid #444;
+    /*border: 1px solid #444;*/
     padding: 10px 0px 0 0px;
 }
 #fieldset-awe_form > dl > dd > fieldset
@@ -207,6 +207,9 @@ fieldset legend {
 }
 .dijitEditorIFrameContainer {
     background: white;
+}
+.dijitEditor {
+    border: 1px solid #ccc;
 }
 .tundra .dijitTextArea {
     min-width: 400px;

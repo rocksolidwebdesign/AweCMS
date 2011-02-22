@@ -17,14 +17,18 @@
  */
 ?>
 <?php
+    $dijit_theme = 'soria';
+
     $title = $this->layout()->title;
     $this->headTitle('AweCMS' . ($title ? " &raquo; $title" : ''));
-    $this->headLink()->prependStylesheet('/media/themes/frontend/default/css/styles.css');
-    $this->headLink()->prependStylesheet('/media/themes/frontend/default/css/layout.css');
 
-    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie8.css', 'screen', 'lt IE 8');
-    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie7.css', 'screen', 'lte IE 7');
-    $this->headLink()->appendStylesheet('/media/themes/frontend/default/css/ie6.css', 'screen', 'lt IE 7');
+    $skin_folder = '/skin/frontend/default';
+    $this->headLink()->prependStylesheet("$skin_folder/css/styles.css");
+    $this->headLink()->prependStylesheet("$skin_folder/css/layout.css");
+
+    $this->headLink()->appendStylesheet("$skin_folder/css/ie8.css", 'screen', 'lt IE 8');
+    $this->headLink()->appendStylesheet("$skin_folder/css/ie7.css", 'screen', 'lte IE 7');
+    $this->headLink()->appendStylesheet("$skin_folder/css/ie6.css", 'screen', 'lt IE 7');
 
     $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 
