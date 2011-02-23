@@ -1,0 +1,62 @@
+<?php
+    //jsonReader : { 
+    //    root: "rows", 
+    //    page: "page", 
+    //    total: "total", 
+    //    records: "records", 
+    //    repeatitems: true, 
+    //    cell: "cell", 
+    //    id: "id",
+    //    userdata: "userdata",
+    //    subgrid: { 
+    //        root:"rows", 
+    //        repeatitems: true, 
+    //        cell:"cell" 
+    //    } 
+    //},
+    //colModel :[ 
+    //    {name:'', index:'invid', width:55}, 
+    //    {name:'invdate', index:'invdate', width:90}, 
+    //    {name:'amount', index:'amount', width:80, align:'right'}, 
+    //    {name:'tax', index:'tax', width:80, align:'right'}, 
+    //    {name:'total', index:'total', width:80, align:'right'}, 
+    //    {name:'note', index:'note', width:150, sortable:false} 
+    //],
+
+    $this->jQuery()->enable();
+    //$this->jQuery()->uiEnable();
+    $this->jQuery()->addStylesheet('/js/jquery/css/ui.jqgrid.css');
+    $this->jQuery()->addJavascriptFile('/js/jquery/i18n/grid.locale-en.js');
+    $this->jQuery()->addJavascriptFile('/js/jquery/jquery.jqGrid.min.js');
+    $this->jQuery()->onLoadCaptureStart();
+?>
+alert('jqGrid w00t!!!');
+$("#theGrid").jqGrid({
+    caption: 'Blog Comments',
+    url:'/jqgrid/core/blog/comment/list',
+    colNames:['Is Approved', 'Title', 'Date Published'],
+    colModel :[ 
+        {name:'approved', index:'approved', width:150}, 
+        {name:'title', index:'title', width:150}, 
+        {name:'pub_date', index:'pub_date', width:150, align:'right'}
+    ],
+    datatype: 'json',
+    mtype: 'GET',
+    pager: '#thePager',
+    rowNum: 10,
+    rowList: [10,20,30]
+}); 
+<? $this->jQuery()->onLoadCaptureEnd(); ?>
+<h1>Hello jQuery Playground</h2>
+<p>
+Here's some text before the container
+</p>
+<p>
+<a id="myLink" href="http://www.apple.com/">Click Here</a>
+</p>
+<div>
+<table id="theGrid"></table>
+<div id="thePager"></div>
+<p>
+Here's some text after it
+</p>

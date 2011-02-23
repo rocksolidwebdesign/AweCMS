@@ -59,8 +59,12 @@
             <?= $this->render('_header.phtml') ?>
             <?= $this->render('_top_menu.phtml'); ?>
             <div id="content">
-                <?= $this->placeholder('breadcrumbs'); ?>
                 <table class="layout" id="threeColumn">
+                    <tr>
+                        <td colspan="3">
+                            <?= $this->placeholder('breadcrumbs'); ?>
+                        </td>
+                    </tr>
                     <tr>
                         <td id="leftColumn">
                             <?= $this->placeholder('left_column'); ?>

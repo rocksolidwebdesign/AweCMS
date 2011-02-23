@@ -37,21 +37,36 @@
             echo $this->headTitle(),"\n";
             echo $this->headMeta(),"\n";
             echo $this->headLink(),"\n";
+
+            # Dojo Toolkit
+            $dojo_body_class = '';
             if ($this->dojo()->isEnabled()) {
+                $dojo_body_class = " class=\"$dijit_theme\"";
                 $this->dojo()
-                     ->setLocalPath("$skin_folder/js/dojo/dojo/dojo.js")
+                     ->setLocalPath("/js/dojo/dojo/dojo.js")
                      ->addStyleSheetModule('dijit.themes.'.$dijit_theme)
-                     ->setDjConfigOption('parseOnLoad', true)
-                     ;
+                     ->setDjConfigOption('parseOnLoad', true);
+
                 echo $this->dojo(),"\n";
             }
+
+            # jQuery
+            if ($this->jQuery()->isEnabled()) {
+                //$this->jQuery()->setLocalPath('/js/jquery/jquery-1.5.1rc1.js');
+                //$this->jQuery()->setLocalPath('/js/jquery/jquery-1.4.4.min.js');
+                $this->jQuery()->setLocalPath('/js/jquery/jquery-1.4.2.min.js');
+                $this->jQuery()->setUiLocalPath('/js/jquery/jquery-ui-1.8.9.custom.min.js');
+                $this->jQuery()->addStylesheet('/js/jquery/css/redmond/jquery-ui-1.8.9.custom.css');
+
+                echo $this->jQuery();
+            }
+
             echo $this->headScript(),"\n";
             echo $this->headStyle(),"\n";
-            //echo $this->jQuery();
         ?>
         <link rel="shortcut icon" href="/admin_favicon.ico" />
     </head>
-    <body class="<?= $dijit_theme; ?>">
+    <body<?= $dojo_body_class ?>>
         <?= $this->partial("_header.phtml"); ?>
         <table id="admin_columns">
             <tr>

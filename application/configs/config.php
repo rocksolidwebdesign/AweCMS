@@ -52,7 +52,7 @@ $zfConfArr['bootstrap']['path'] = APPLICATION_PATH . "/modules/core/default/Boot
 $zfConfArr['autoloaderNamespaces'][] = "Awe";
 
 // configure default resources;
-$zfConfArr['resources']['layout'][] = '';
+$zfConfArr['resources']['layout'][] = 'layout_1col';
 
 // load resource plugins
 $zfConfArr['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . "/modules/core";

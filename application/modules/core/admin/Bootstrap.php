@@ -49,6 +49,20 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $router = Zend_Controller_Front::getInstance()->getRouter();
         $method = $_SERVER['REQUEST_METHOD'];
         foreach ($tables as $name) {
+            list($section, $namespace, $entity) = explode('_', $name);
+
+            $route = "/jqgrid/$section/$namespace/$entity/list";
+            $router->addRoute('jqgrid_'.$name.'_list',
+                new Zend_Controller_Router_Route($route,
+                    array(
+                        'module'        => 'admin',
+                        'controller'    => $name,
+                        'action'        => 'index',
+                        'format'        => 'jqgjson'
+                    )
+                )
+            );
+
             switch ($method) {
                 case 'DELETE':
                     $action = 'delete';
@@ -63,9 +77,8 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             }
 
             // Add default home route for page root
-            list($section, $namespace, $entity) = explode('_', $name);
             $route = "/rest/$section/$namespace/$entity/:id";
-            $router->addRoute($name.'_'.$action,
+            $router->addRoute('rest_'.$name.'_'.$action,
                 new Zend_Controller_Router_Route($route,
                     array(
                         'module'        => 'admin',
@@ -86,7 +99,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
                     break;
             }
             $route = "/rest/$section/$namespace/$entity";
-            $router->addRoute($name.'_'.$action,
+            $router->addRoute('rest_'.$name.'_'.$action,
                 new Zend_Controller_Router_Route($route,
                     array(
                         'module'        => 'admin',

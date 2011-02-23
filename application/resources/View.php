@@ -39,12 +39,7 @@ class Awe_Resource_View extends Zend_Application_Resource_ResourceAbstract
             $view = new Zend_View($options);
             $view->addHelperPath('Zend/Dojo/View/Helper/', 'Zend_Dojo_View_Helper');
             $view->addHelperPath('Awe/Dojo/View/Helper/', 'Awe_Dojo_View_Helper');
-
-//            $view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
-//            $view->jQuery()->enable();
-//            $view->jQuery()->setLocalPath('/media/js/jquery/jquery-1.4.2.min.js');
-//            $view->jQuery()->setUiLocalPath('/media/js/jquery/jquery-ui-1.8.5.custom.min.js');
-//            $view->jQuery()->addStylesheet('/media/js/jquery/css/humanity/jquery-ui-1.8.5.custom.css');
+            $view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
 
             $viewRenderer =
             Zend_Controller_Action_HelperBroker::getStaticHelper(

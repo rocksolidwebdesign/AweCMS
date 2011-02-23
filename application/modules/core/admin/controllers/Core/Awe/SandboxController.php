@@ -21,6 +21,13 @@ class Admin_Core_Awe_SandboxController extends Awe_Controller_Admin
     public function indexAction()
     {
     }
+
+    public function dojoAction()
+    {
+    }
+
+    public function jqueryAction()
+    {
+    }
 }
 ?>
-

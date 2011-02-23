@@ -1,0 +1,58 @@
+<?php
+    $this->dojo()->enable();
+
+    //$this->dojo()->addStylesheet('/skin/admin/default/js/dojo/dojox/grid/resources/Grid.css');
+    //$this->dojo()->addStylesheet('/skin/admin/default/js/dojo/dojox/grid/resources/claroGrid.css');
+    //$this->dojo()->requireModule('dojox.grid.DataGrid');
+
+    //$this->dojo()->addStylesheet('/skin/admin/default/js/dojo/dojox/grid/enhanced/resources/EnhancedGrid.css');
+    $this->headLink()->prependStylesheet('/skin/admin/default/js/dojo/dojox/grid/enhanced/resources/claroEnhancedGrid.css');
+    $this->dojo()->requireModule('dojox.data.JsonRestStore');
+    $this->dojo()->requireModule("dojox.grid.EnhancedGrid");
+    $this->dojo()->requireModule("dojox.grid.enhanced.plugins.IndirectSelection");
+    //$this->dojo()->requireModule("dojox.grid.enhanced.plugins.DnD");
+    //$this->dojo()->requireModule("dojox.grid.enhanced.plugins.Menu");
+    //$this->dojo()->requireModule("dojox.grid.enhanced.plugins.NestedSorting");
+
+?>
+<h1>Hello sandbox controller</h2>
+<p>
+Here's some text before the container
+</p>
+<div class="claro">
+<div id="myGridContainer" style="width: 750px; height: 350px; border: 1px solid black;"></div>
+</div>
+<? $this->dojo()->onLoadCaptureStart() ?>
+function() {
+    var gridLayout = [
+        { name: 'Id'           ,  field: 'id', width: 'auto'},
+        { name: 'Approved'     ,  field: 'approved', width: 'auto'},
+        { name: 'Title'        ,  field: 'title', width: 'auto'},
+        { name: 'Published'    ,  field: 'pub_date', width: 'auto'}
+    ];
+
+    //dnd: true,
+    //indirectSelection:{name:"Selection",width:"70px",styles:"text-align:center;"}
+    var aweStore = new dojox.data.JsonRestStore({target:"/rest/core/blog/comment/", idAttribute:"id"});
+    var myGrid = new dojox.grid.EnhancedGrid({
+        store: aweStore,
+        structure: gridLayout,
+        rowSelector: '0px',
+        plugins: {
+            indirectSelection: true
+        }
+    }, dojo.byId("myGridContainer"));
+
+    //var myGrid = new dojox.grid.DataGrid({
+    //    store: aweStore,
+    //    structure: gridLayout
+    //}, document.createElement('div'));
+
+    //dojo.byId("myGridContainer").appendChild(myGrid.domNode);
+
+    myGrid.startup();
+}
+<? $this->dojo()->onLoadCaptureEnd() ?>
+<p>
+Here's some text after it
+</p>
