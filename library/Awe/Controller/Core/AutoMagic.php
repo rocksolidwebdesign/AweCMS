@@ -131,8 +131,6 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
 
     public function saveAction() // {{{
     {
-        echo "<pre> SAVE "; var_dump($this->getRequest()->getParams()); echo "</pre>"; exit;
-
         if (!$this->has_format) {
             return $this->_helper->redirector->setGoToSimple();
         }
@@ -141,8 +139,6 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
         $request = $this->getRequest();
 
         $post['awe_form']['entity'] = $request->getPost();
-
-        echo "<pre>"; var_dump($post); echo "</pre>"; exit;
 
         if ($request->isPost() && $form->isValid($post)) {
             $post = $form->getValues();
@@ -160,8 +156,6 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
 
     public function deleteAction() // {{{
     {
-        echo "<pre> DELETE "; var_dump($this->getRequest()->getParams()); echo "</pre>"; exit;
-
         $entity = $this->getOperationalEntity();
 
         if ($entity) {
