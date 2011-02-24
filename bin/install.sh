@@ -24,6 +24,7 @@ conf_dir=$app_dir/configs
 config_file=$conf_dir/config.php
 db_conf_dir=$conf_dir/database
 db_file=$conf_dir/database.ini
+fixture_file=$app_dir/doctrine/fixtures.sql
 
 # pretty colors {{{
 black=$(tput setaf 0)
@@ -63,17 +64,10 @@ fi
 # copy config file samples {{{
 # copy sample config files into place if real ones don't exist yet
 if (( ! $refresh )); then 
-    # main config file {{{
-    if [[ ! -e $app_dir/doctrine/fixtures.sql && -e $app_dir/doctrine/fixtures.sql.sample ]]; then
-        cp $app_dir/doctrine/fixtures.sql $app_dir/doctrine/fixtures.sql.sample
-        echo "[  ${bold}${green}CONFIG${reset}   ] Copying application config file $app_dir/doctrine/fixtures.sql.sample to $app_dir/doctrine/fixtures.sql"
-    fi
-    # }}}
-
-    # main config file {{{
-    if [[ ! -e $config_file && -e $config_file.sample ]]; then
-        cp $config_file.sample $config_file
-        echo "[  ${bold}${green}CONFIG${reset}   ] Copying application config file $config_file.sample to $config_file"
+    # doctrine fixtures {{{
+    if [[ ! -e $fixture_file && -e $fixture_file.sample ]]; then
+        cp $fixture_file.sample $fixture_file
+        echo "[  ${bold}${green}CONFIG${reset}   ] Copying application config file $fixture_file.sample to $fixture_file"
     fi
     # }}}
 
@@ -221,7 +215,7 @@ php $bin_dir/doctrine.php -q orm:schema-tool:create
 
 if [[ -e $app_dir/doctrine/fixtures.sql ]]; then
     echo "[ ${bold}${green}DOCTRINE2${reset} ] Importing Test Data"
-    mysqlBin -h $db_host -u $db_user -p$db_pass $db_name < $app_dir/doctrine/fixtures.sql
+    mysqlBin -h $db_host -u $db_user -p$db_pass $db_name < $fixture_file
 fi
 # }}}
 # }}}
