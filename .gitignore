@@ -1,4 +1,5 @@
 nbproject
+tags
 application/configs/config.php
 application/configs/environment.ini
 application/configs/database.ini
