@@ -1,69 +1,23 @@
 <?php
-// CLI Location Self Awareness
-// ****************************************************************
-$zend_relative_root = 'bin';
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Core
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
 
-$DS = '/..'; $dir_up = $DS;
-$dir_count = count(explode('/', $zend_relative_root));
-for ($x = 1; $x < $dir_count; $x++) {
-    $dir_up .= $DS;
-}
-
-// Zend Framework Configuration
-// ****************************************************************
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . "$dir_up/application"));
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
-// Add library to include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../library'),
-    get_include_path(),
-)));
-
-// Load Zend Application Config
-// ****************************************************************
-require_once APPLICATION_PATH . '/configs/config.php';
-$conn_settings = $zfConfArr['doctrine']['connection'];
-$entities_path = $zfConfArr['doctrine']['settings']['entities_path'];
-$proxies_path  = $zfConfArr['doctrine']['settings']['proxies_path'];
-$log_path      = $zfConfArr['doctrine']['settings']['log_path'];
-
-// Setup Autoloading
-// ****************************************************************
-$required_libs = array(
-    'Awe'      => '',
-    'Doctrine' => '',
-    'Symfony'  => 'Doctrine',
-    'Proxies'  => $proxies_path,
-);
-
-require_once 'Doctrine/Common/ClassLoader.php';
-foreach ($required_libs as $name => $path) {
-    if ($path) {
-        $classLoader = new \Doctrine\Common\ClassLoader($name, $path); 
-    } else {
-        $classLoader = new \Doctrine\Common\ClassLoader($name);
-    }
-    $classLoader->register();
-}
-
-foreach ($entities_path as $name => $path) {
-    $classLoader = new \Doctrine\Common\ClassLoader($name, $path); 
-    $classLoader->register();
-}
-
-// Setup the Entity Manager
-// ****************************************************************
-$config = new \Doctrine\ORM\Configuration();
-$config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
-$config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
-$config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
-$config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($entities_path));
-$config->setProxyDir($proxies_path.'/Proxies');
-$config->setProxyNamespace('Proxies');
-$em = \Doctrine\ORM\EntityManager::create($conn_settings, $config);
+include_once(realpath(dirname(__FILE__).'/../application/common.php'));
+include_once(APPLICATION_PATH.'/doctrine/common.php');
 
 // Command Line Setup
 // ****************************************************************

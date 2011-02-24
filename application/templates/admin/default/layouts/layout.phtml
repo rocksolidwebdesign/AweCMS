@@ -1,0 +1,88 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Theme_Admin_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+?>
+
+<?php
+    $dijit_theme = 'soria';
+
+    $title = $this->layout()->title;
+    $this->headTitle(($title ? "$title - " : 'Admin - ') .  "AWE");
+
+    $skin_folder = '/skin/admin/default';
+    $this->headLink()->prependStylesheet("$skin_folder/css/layout.css");
+    $this->headLink()->prependStylesheet("$skin_folder/css/styles.css");
+
+    $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+    echo $this->doctype('XHTML1_TRANSITIONAL');
+?>
+
+<html dir="ltr">
+    <head>
+        <?php
+            echo $this->headTitle(),"\n";
+            echo $this->headMeta(),"\n";
+            echo $this->headLink(),"\n";
+
+            # Dojo Toolkit
+            $dojo_body_class = '';
+            if ($this->dojo()->isEnabled()) {
+                $dojo_body_class = " class=\"$dijit_theme\"";
+                $this->dojo()
+                     ->setLocalPath("/js/dojo/dojo/dojo.js")
+                     ->addStyleSheetModule('dijit.themes.'.$dijit_theme)
+                     ->setDjConfigOption('parseOnLoad', true);
+
+                echo $this->dojo(),"\n";
+            }
+
+            # jQuery
+            if ($this->jQuery()->isEnabled()) {
+                //$this->jQuery()->setLocalPath('/js/jquery/jquery-1.5.1rc1.js');
+                //$this->jQuery()->setLocalPath('/js/jquery/jquery-1.4.4.min.js');
+                $this->jQuery()->setLocalPath('/js/jquery/jquery-1.4.2.min.js');
+                $this->jQuery()->setUiLocalPath('/js/jquery/jquery-ui-1.8.9.custom.min.js');
+                $this->jQuery()->addStylesheet('/js/jquery/css/redmond/jquery-ui-1.8.9.custom.css');
+
+                echo $this->jQuery();
+            }
+
+            echo $this->headScript(),"\n";
+            echo $this->headStyle(),"\n";
+        ?>
+        <link rel="shortcut icon" href="/admin_favicon.ico" />
+    </head>
+    <body<?= $dojo_body_class ?>>
+        <?= $this->partial("_header.phtml"); ?>
+        <table id="admin_columns">
+            <tr>
+                <td id="left_col">
+                    <div id="menu_container">
+                        <?= $this->partial("_menu.phtml"); ?>
+                    </div>
+                </td>
+                <td id="right_col">
+                    <?php echo $this->layout()->content; ?>
+                    <?php echo $this->inlineScript(); ?>
+                </td>
+            </tr>
+        </table>
+        <?= $this->partial("_footer.phtml"); ?>
+    </body>
+</html>
+
+

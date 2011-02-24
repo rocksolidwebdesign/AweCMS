@@ -283,16 +283,18 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
                     $this->doctrine_em->flush();
                     break; // }}}
                 case 'many_to_one': // {{{
-                    if (!isset($post[$property.'_ids'])) {
+                    if (!isset($post[$property.'_id'])) {
                         continue;
                     }
 
                     $value  = $post[$property.'_id'];
-                    $target = $anno[$a_m21]->targetEntity;
 
-                    $foreign_entity = $this->doctrine_em->getReference($target, $value);
-                    if ($foreign_entity) {
-                        $entity->$property = $foreign_entity;
+                    if ($value) {
+                        $target = $anno[$a_m21]->targetEntity;
+                        $foreign_entity = $this->doctrine_em->getReference($target, $value);
+                        if ($foreign_entity) {
+                            $entity->$property = $foreign_entity;
+                        }
                     }
                     break; // }}}
                 case 'one_to_one': // {{{

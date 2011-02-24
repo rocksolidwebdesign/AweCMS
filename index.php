@@ -16,20 +16,8 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  */
 
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
-
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
-set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../library'),
-    get_include_path(),
-)));
-
+require_once 'application/common.php';
 require_once 'Zend/Application.php';
-
-require_once APPLICATION_PATH . '/configs/config.php';
 
 $application = new Zend_Application(
     APPLICATION_ENV,

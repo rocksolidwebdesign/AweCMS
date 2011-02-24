@@ -24,19 +24,29 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
     {
         parent::init();
 
+        $module_name    = $this->getRequest()->getModuleName();
+
         $config_options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
-        $theme_name = $config_options['awe']['theme'][$this->controller_type];
+        $theme_name     = $config_options['awe']['theme'][$this->controller_type];
 
-        $module_name = $this->getRequest()->getModuleName();
+        //$namespace = substr($this->controller_type, 0, strpos('_', $this->controller_type));
+        //$template_path = "/$this->controller_type/$theme_name/views/scripts/$namespace/$module_name";
 
-        $this->view->addScriptPath(
-            APPLICATION_PATH . "/templates/$this->controller_type/$theme_name/views/scripts");
+        $theme_path    = "$this->controller_type/$theme_name";
+        $template_path = "/templates/$theme_path/views/scripts";
+        $skin_path     = "/skin/$theme_path";
+
+        \Zend_Registry::set('awe_theme_skin_path', $skin_path);
+
+        //$this->view->addScriptPath(APPLICATION_PATH . '/templates' . $template_path);
+        //$this->pview = new Zend_View();
+        //$this->pview->setScriptPath(APPLICATION_PATH . '/modules/core/access/views/scripts');
+        //$this->pview->addScriptPath(APPLICATION_PATH . '/templates' . $template_path);
+        $this->view->addScriptPath(APPLICATION_PATH . $template_path);
 
         $this->pview = new Zend_View();
-        $this->pview->setScriptPath(
-            APPLICATION_PATH . '/modules/core/access/views/scripts');
-        $this->pview->addScriptPath(
-            APPLICATION_PATH . "/templates/$this->controller_type/$theme_name/views/scripts");
+        $this->pview->setScriptPath(APPLICATION_PATH . '/modules/core/access/views/scripts');
+        $this->pview->addScriptPath(APPLICATION_PATH . $template_path);
     }
 
     public function renderDynamicPlaceholder($name, $script, $vars)

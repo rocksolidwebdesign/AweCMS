@@ -24,10 +24,11 @@
 <table class="awe-grid">
     <tr>
         <? foreach ($this->columns as $def): ?>
-            <? $def = $def['annotations']; ?>
-            <? if (isset($def[$a_col]) && isset($def[$a_awe])): ?>
-                <? if (is_null($def[$a_awe]->no_list)): ?>
-                    <th><?= $def[$a_awe]->list_label ? $def[$a_awe]->list_label : $def[$a_awe]->label ?></th>
+            <? $anno = $def['annotations']; ?>
+            <? if (isset($anno[$a_col]) && isset($anno[$a_awe])): ?>
+                <? if (is_null($anno[$a_awe]->no_list)): ?>
+                <? $label = $anno[$a_awe]->list_label ? $anno[$a_awe]->list_label : $anno[$a_awe]->label ? $anno[$a_awe]->label : ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name)))); ?>
+                <th><?= $label; ?></th>
                 <? endif; ?>
             <? endif; ?>
         <? endforeach; ?>
@@ -36,16 +37,18 @@
     <? $x = 0; foreach($this->entities as $entity): ?>
     <tr class="<?= ($x++ % 2 ? 'alt' : ''); ?>">
         <? foreach ($this->columns as $def): ?>
-            <? $def = $def['annotations']; ?>
-            <? if (isset($def[$a_col]) && isset($def[$a_awe])): ?>
-                <? if (is_null($def[$a_awe]->no_list)): ?>
-                    <? $column = $def[$a_col]->name ?>
-                    <? $type = $def[$a_col]->type ?>
+            <? $anno = $def['annotations']; ?>
+            <? if (isset($anno[$a_col]) && isset($anno[$a_awe])): ?>
+                <? if (is_null($anno[$a_awe]->no_list)): ?>
+                    <? $column = $anno[$a_col]->name ?>
+                    <? $type   = $anno[$a_col]->type ?>
+
                     <? if ($type == 'datetime'): ?>
-                    <td><?= $entity->$column->format('m/d/Y'); ?></td>
+                        <td><?= $entity->$column->format('m/d/Y'); ?></td>
                     <? else: ?>
-                    <td><?= $entity->$column; ?></td>
+                        <td><?= $entity->$column; ?></td>
                     <? endif; ?>
+
                 <? endif; ?>
             <? endif; ?>
         <? endforeach; ?>
