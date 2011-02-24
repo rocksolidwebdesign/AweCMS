@@ -60,9 +60,23 @@ else
 fi
 # }}}
 
-# setup config files {{{
+# copy config file samples {{{
 # copy sample config files into place if real ones don't exist yet
 if (( ! $refresh )); then 
+    # main config file {{{
+    if [[ ! -e $app_dir/doctrine/fixtures.sql && -e $app_dir/doctrine/fixtures.sql.sample ]]; then
+        cp $app_dir/doctrine/fixtures.sql $app_dir/doctrine/fixtures.sql.sample
+        echo "[  ${bold}${green}CONFIG${reset}   ] Copying application config file $app_dir/doctrine/fixtures.sql.sample to $app_dir/doctrine/fixtures.sql"
+    fi
+    # }}}
+
+    # main config file {{{
+    if [[ ! -e $config_file && -e $config_file.sample ]]; then
+        cp $config_file.sample $config_file
+        echo "[  ${bold}${green}CONFIG${reset}   ] Copying application config file $config_file.sample to $config_file"
+    fi
+    # }}}
+
     # main config file {{{
     if [[ ! -e $config_file && -e $config_file.sample ]]; then
         cp $config_file.sample $config_file
@@ -205,8 +219,10 @@ mysqlBin -h $db_host -u $db_user -p$db_pass -e "CREATE DATABASE $db_name"
 echo "[ ${bold}${green}DOCTRINE2${reset} ] Creating Tables..."
 php $bin_dir/doctrine.php -q orm:schema-tool:create
 
-echo "[ ${bold}${green}DOCTRINE2${reset} ] Importing Test Data"
-mysqlBin -h $db_host -u $db_user -p$db_pass $db_name < $app_dir/doctrine/fixtures.sql
+if [[ -e $app_dir/doctrine/fixtures.sql ]]; then
+    echo "[ ${bold}${green}DOCTRINE2${reset} ] Importing Test Data"
+    mysqlBin -h $db_host -u $db_user -p$db_pass $db_name < $app_dir/doctrine/fixtures.sql
+fi
 # }}}
 # }}}
 
