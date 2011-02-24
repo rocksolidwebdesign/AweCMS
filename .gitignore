@@ -1,4 +1,7 @@
 nbproject
 application/configs/config.php
+application/configs/environment.ini
+application/configs/database.ini
+application/configs/database/*.ini
 application/doctrine/Proxies/*.php
-application/doctrine/log/doctrine.log
+application/doctrine/log/*.log
