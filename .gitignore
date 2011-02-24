@@ -2,8 +2,8 @@ nbproject
 tags
 application/configs/config.php
 application/configs/environment.ini
-application/configs/fixtures.sql
 application/configs/database.ini
 application/configs/database/*.ini
+application/doctrine/fixtures.sql
 application/doctrine/Proxies/*.php
 application/doctrine/log/*.log
