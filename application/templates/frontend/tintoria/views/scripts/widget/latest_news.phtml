@@ -1,0 +1,32 @@
+<?php
+/**
+ * AweCMS
+ *
+ * LICENSE
+ *
+ * This source file is subject to the BSD license that is bundled
+ * with this package in the file LICENSE.txt
+ *
+ * It is also available through the world-wide-web at this URL:
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * @category   AweCMS
+ * @package    AweCMS_Theme_Frontend_Default
+ * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
+ * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
+ */
+?>
+<div id="news_sidebar">
+    <h1>News</h1>
+    <?php foreach ($this->entities as $blog_entry): ?>
+        <div class="blog-entry">
+            <h2><?php echo $blog_entry->title; ?></h2>
+            <div class="blog-entry-content">
+                <?php echo substr($blog_entry->content, 0, 100); ?>
+            </div>
+            <div class="blog-entry-date">
+                <?php echo $blog_entry->pub_date->format('M j, Y h:ia'); ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

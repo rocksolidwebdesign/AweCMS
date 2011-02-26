@@ -16,7 +16,6 @@
  */
 
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -41,10 +40,11 @@ body {
     background-repeat: repeat-x;
     color: white;
     width: 100%;
-    height: 100px;
+    height: 30px;
     border-bottom: 1px solid #000;
 }
 
+/*
 #header h1 {
     background: url(../images/admin_header.jpg);
     background-repeat: no-repeat;
@@ -54,6 +54,7 @@ body {
     height: 70px;
     border: 0;
 }
+    */
 
 #headerShadow {
     height: 10px;
@@ -133,14 +134,9 @@ body {
     padding: 10px;
 }
 
-#push {
-    height: 30px;
-}
-
 #footer {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    bottom: 0;
     background: url(../images/grey_bg.gif) #006;
     color: #448;
     width: 100%;

@@ -18,11 +18,6 @@
 
 class Admin_IndexController extends Awe_Controller_Admin
 {
-    public function init()
-    {
-        $auth = Zend_Auth::getInstance()->setStorage(new Zend_Auth_Storage_Session('admin'));
-    }
-
     public function indexAction()
     {
     }

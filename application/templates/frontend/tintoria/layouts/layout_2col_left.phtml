@@ -1,0 +1,56 @@
+<? $skin_dir = '/skin/frontend/tintoria'; ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Tintoria Piana - Flame Retardant - Automotive Acoustic Material</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="keywords" content="Flame Retardant, FR treated rayon fiber, Automotive Acoustic Material,CPSC 16 CFR Part 1633, ASTM E84, UL 94, FMVSS 302, natural fibers including bleached cotton, scoured cotton, rayon, kenaf, jute, flax, wool, cashmere, shoddy" />
+        <meta name="description" content="Through patented technology, our flame retardant is the most efficient treatment in the market. Our process allows the FR chemistry to penetrate into the fiber and distribute evenly throughout the fiber." />
+        <link rel="stylesheet" type="text/css" href="<?= $skin_dir; ?>/css/style.css" />
+        <!--[if IE]>
+          <link rel="stylesheet" type="text/css" href="<?= $skin_dir; ?>/css/style_ie.css" />
+        <![endif]-->
+        <!--[if IE 6]>
+          <link rel="stylesheet" type="text/css" href="<?= $skin_dir; ?>/css/style_ie6.css" />
+        <![endif]-->
+        <link rel="stylesheet" href="<?= $skin_dir; ?>/css/lightbox.css" type="text/css" media="screen" />
+        <script type="text/javascript" src="<?= $skin_dir; ?>/js/prototype.js"></script>
+        <script type="text/javascript" src="<?= $skin_dir; ?>/js/scriptaculous.js?load=effects"></script>
+        <script type="text/javascript" src="<?= $skin_dir; ?>/js/lightbox.js"></script>
+        <script language="javascript">AC_FL_RunContent = 0;</script>
+        <script src="<?= $skin_dir; ?>/AC_RunActiveContent.js" language="javascript"></script>
+    </head>
+    <body>
+        <?= $this->partial('_header.phtml'); ?>
+        <div id="outer">
+            <div id="container">
+                <div id="sidebar">
+                    <div id="head" style="height: 73px;"></div>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div id="pageContent">
+                    <?
+                        $title = false;
+                        if (isset($this->page)) {
+                            $title = $this->page->title;
+                        } elseif (isset($this->entry)) {
+                            $title = 'Blog';
+                        }
+                    ?>
+                    <? if ($title): ?>
+                        <h1><?= $title; ?></h1>
+                    <? endif; ?>
+                    <?= $this->layout()->content ?>
+                </div><br class="clearit" />
+            </div>
+
+            <?= $this->partial('_footer.phtml'); ?>
+        </div>
+    </body>
+</html>

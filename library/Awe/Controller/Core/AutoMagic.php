@@ -67,21 +67,21 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
     public function indexAction() // {{{
     {
         // get records with pagination {{{
-        $page  = isset($_GET['page']) ? $_GET['page'] : 0;
-        $limit = isset($_GET['rows']) ? $_GET['rows'] : 0;
+        $page  = isset($_GET['page']) ? $_GET['page'] : 1;
+        $limit = isset($_GET['rows']) ? $_GET['rows'] : 10;
         $sidx  = isset($_GET['sidx']) ? $_GET['sidx'] : '';
         $sord  = isset($_GET['sord']) ? $_GET['sord'] : '';
 
         $dql = "SELECT COUNT(e.id) FROM $this->entity_name e";
         $count = $this->doctrine_em->createQuery($dql)->getSingleScalarResult();
 
-        $total_pages = $limit && ($count > 0) ? ceil($count / $limit) : 1;
-        $page =  $page > $total_pages ?  $total_pages :  $page;
-        $order_by =  $sidx ?  "ORDER BY e.$sidx $sord"  :  '';
-        $start =  $limit * $page - $limit;
+        $total_pages  =  $limit && ($count > 0) ? ceil($count / $limit) : 1;
+        $page         =  $page > $total_pages ?  $total_pages :  $page;
+        $order_by     =  $sidx ?  "ORDER BY e.$sidx $sord"  :  '';
+        $start        =  $page ? $limit * $page - $limit : $page;
 
-        $dql = "SELECT e FROM $this->entity_name e $order_by";
-        $query = $this->doctrine_em->createQuery($dql);
+        $dql          =  "SELECT e FROM $this->entity_name e $order_by";    
+        $query        =  $this->doctrine_em->createQuery($dql);             
 
         if ($limit) {
             $query->setMaxResults($limit);
@@ -94,9 +94,12 @@ class Awe_Controller_Core_AutoMagic extends Awe_Controller_Core_Protected
         $this->view->entities = $query->getResult();
         $this->view->columns  = $this->doctrine_columns;
 
-        $this->view->page_number  = $page;
-        $this->view->total_pages  = $total_pages;
-        $this->view->record_count = $count;
+        $this->view->page_number   = $page;
+        $this->view->total_records = $total_pages;
+        $this->view->total_pages   = $total_pages;
+        $this->view->record_count  = $count;
+        $this->view->start_record  = $start + 1;
+        $this->view->end_record    = $start + $limit;
 
         if ($this->has_format) {
             $this->_helper->getHelper('ViewRenderer')->renderScript("crud/index.$this->response_format");

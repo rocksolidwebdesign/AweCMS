@@ -27,7 +27,6 @@ class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
     public function init()
     {
         // If not logging in or out and not authenticated
-        /*
         if (!($this->isPublic() || $this->isLoggedIn()))
         {
             $sess = new Zend_Session_Namespace('admin_login_target');
@@ -39,7 +38,6 @@ class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
             // Force login
             return $this->_helper->redirector('login', 'auth', 'admin');
         }
-        */
 
         parent::init();
     }

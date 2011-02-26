@@ -43,7 +43,9 @@
             if ($this->dojo()->isEnabled()) {
                 $dojo_body_class = " class=\"$dijit_theme\"";
                 $this->dojo()
-                     ->setLocalPath("/js/dojo/dojo/dojo.js")
+                     ->setLocalPath("/js/release/dojo/dojo.js")
+                     ->addLayer("/js/release/dojo/awedojo.js")
+                     ->setDjConfigOption('dojoBlankHtmlUrl', '/js/dojo/release/dojo/dojo/resources/blank.html')
                      ->addStyleSheetModule('dijit.themes.'.$dijit_theme)
                      ->setDjConfigOption('parseOnLoad', true);
 

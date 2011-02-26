@@ -23,10 +23,6 @@ class Admin_AuthController extends Awe_Controller_Admin
         'logout'
     );
 
-    public function dashboardAction()
-    {
-    }
-
     // loginAction {{{
     public function loginAction()
     {
@@ -53,14 +49,14 @@ class Admin_AuthController extends Awe_Controller_Admin
 
         $this->view->form = $form;
 
-        $em = \Zend_Registry::get('doctrine_entity_manager');
-        $page  = $em->find('\Entities\Core\Cms\Page', 1);
+        $this->_helper->layout->setLayout('layout_login');
     }
     // }}}
     // logoutAction {{{
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
+        $this->_helper->layout->setLayout('layout_login');
     }
     // }}}
 }

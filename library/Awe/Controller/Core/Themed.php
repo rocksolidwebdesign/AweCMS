@@ -24,29 +24,45 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
     {
         parent::init();
 
-        $module_name    = $this->getRequest()->getModuleName();
-
         $config_options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
-        $theme_name     = $config_options['awe']['theme'][$this->controller_type];
 
-        //$namespace = substr($this->controller_type, 0, strpos('_', $this->controller_type));
-        //$template_path = "/$this->controller_type/$theme_name/views/scripts/$namespace/$module_name";
+        $module_name      = $this->getRequest()->getModuleName();
+        $controller_name  = $this->getRequest()->getControllerName();
+        $controller_type  = $this->controller_type;
+        $theme_name       = $config_options['awe']['theme'][$this->controller_type];
+        $namespace        = substr($controller_name, 0, strpos('_', $controller_name));
+        $templates_folder = APPLICATION_PATH . '/templates';
 
-        $theme_path    = "$this->controller_type/$theme_name";
-        $template_path = "/templates/$theme_path/views/scripts";
-        $skin_path     = "/skin/$theme_path";
+        $paths = array();
 
-        \Zend_Registry::set('awe_theme_skin_path', $skin_path);
+        // first check admin theme
+        // then check admin default
+        // then frontend theme
+        // then frontend default
+        $paths[] = "/frontend/default/views/scripts/$module_name";
+        if ($theme_name != 'default') {
+            $paths[] = "/frontend/$theme_name/views/scripts/$module_name";
+        }
 
-        //$this->view->addScriptPath(APPLICATION_PATH . '/templates' . $template_path);
-        //$this->pview = new Zend_View();
-        //$this->pview->setScriptPath(APPLICATION_PATH . '/modules/core/access/views/scripts');
-        //$this->pview->addScriptPath(APPLICATION_PATH . '/templates' . $template_path);
-        $this->view->addScriptPath(APPLICATION_PATH . $template_path);
+        $skin_path = "/skin/frontend/$theme_name";
+
+        if ($module_name == 'admin') {
+            $paths[] = "/admin/default/views/scripts";
+            if ($theme_name != 'default') {
+                $paths[] = "/admin/$theme_name/views/scripts";
+            }
+
+            $skin_path = "/skin/admin/$theme_name";
+        }
 
         $this->pview = new Zend_View();
-        $this->pview->setScriptPath(APPLICATION_PATH . '/modules/core/access/views/scripts');
-        $this->pview->addScriptPath(APPLICATION_PATH . $template_path);
+        $this->pview->addScriptPath($templates_folder . "/frontend/$theme_name/layouts/widgets");
+
+        \Zend_Registry::set('awe_theme_skin_path', $skin_path);
+        foreach ($paths as $path) {
+            $full_path = $templates_folder . $path;
+            $this->view->addScriptPath($full_path);
+        }
     }
 
     public function renderDynamicPlaceholder($name, $script, $vars)

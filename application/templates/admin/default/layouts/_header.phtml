@@ -18,13 +18,15 @@
 ?>
         <div id="wrapper">
             <div id="header">
-                <h1>Awe Admin</h1>
                 <div id="status_bar">
-                    <a href="/admin">Admin</a> | 
                     <a href="/">View Site</a> |
-                    <a href="/admin/auth/logout">Log Out</a>
+                    <?php if (Zend_Auth::getInstance()->hasIdentity()): ?>
+                        <a href="/admin/auth/logout">Log Out</a>
+                    <?php else: ?>
+                        <a href="/admin/auth/login">Log In</a>
+                    <?php endif; ?>
                     <span style="float: right; padding-right: 15px;">
-                        Advanced Website Environment and Content Management System
+                        Advanced Website Environment
                     </span>
                 </div>
             </div>
