@@ -18,7 +18,7 @@
 
 class Awe_Controller_Frontend_Widget_Layout extends Awe_Controller_Frontend
 {
-    protected $_em;
+    protected $_doctrine;
 
     public function renderLayoutWidgets($containers)
     {
@@ -26,20 +26,20 @@ class Awe_Controller_Frontend_Widget_Layout extends Awe_Controller_Frontend
 
             $results = array();
             foreach ($container->widget_set->widget_set_members as $member) {
-                $widget_type = $member->widget->data_source_type;
+                $widgetType = $member->widget->data_source_type;
 
                 $entities = '';
-                if ($widget_type) {
-                    ucwords(strtolower($widget_type));
-                    $method = "widgetDataSource$widget_type";
+                if ($widgetType) {
+                    ucwords(strtolower($widgetType));
+                    $method = "widgetDataSource$widgetType";
                     $entities = method_exists($this, $method) ? $this->$method($member->widget) : '';
                 }
 
-                $template_file      =   $member->widget->template_file;
-                $template_var_name  =   $member->widget->template_var_name ? $member->widget->template_var_name : 'entities';
-                $vars               =   array($template_var_name => $entities);
+                $templateFile        =    $member->widget->template_file;                                                   
+                $templateVarName     =    $member->widget->template_var_name ? $member->widget->template_var_name : 'entities';
+                $vars                =    array($templateVarName => $entities);                                            
 
-                $results[$member->display_order] = $this->renderDynamicTemplate($template_file,$vars);
+                $results[$member->display_order] = $this->renderDynamicTemplate($templateFile,$vars);
             }
 
             foreach ($results as $result) {
@@ -79,12 +79,12 @@ class Awe_Controller_Frontend_Widget_Layout extends Awe_Controller_Frontend
 
     public function getDoctrineEm()
     {
-        if (!$this->_em) {
-            $this->_em = $this->getInvokeArg('bootstrap')
+        if (!$this->_doctrine) {
+            $this->_doctrine = $this->getInvokeArg('bootstrap')
                 ->getResource('doctrine');
         }
 
-        return $this->_em;
+        return $this->_doctrine;
     }
 
     public function widgetDataSourceDql($widget)
@@ -92,20 +92,20 @@ class Awe_Controller_Frontend_Widget_Layout extends Awe_Controller_Frontend
         $dql  =  $widget->data_source_dql;
 
         if (!$dql) {
-            $entity_name    =  $widget->dql_entity_name;
-            $order_by       =  $widget->dql_order_by;
+            $entityName    =  $widget->dql_entity_name;
+            $orderBy       =  $widget->dql_order_by;
 
-            $dql = "SELECT e FROM $entity_name e";
-            if ($order_by) {
-                $dql .= " ORDER BY e.$order_by";
+            $dql = "SELECT e FROM $entityName e";
+            if ($orderBy) {
+                $dql .= " ORDER BY e.$orderBy";
             }
         }
 
-        $max_results = $widget->dql_max_results ? $widget->dql_max_results : 1;
+        $maxResults = $widget->dql_max_results ? $widget->dql_max_results : 1;
 
         return $this->getDoctrineEm()
             ->createQuery($dql)
-            ->setMaxResults($max_results)
+            ->setMaxResults($maxResults)
             ->getResult();
     }
 }

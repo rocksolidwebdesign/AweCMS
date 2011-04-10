@@ -19,8 +19,8 @@
 class Admin_Core_Design_LayoutcontainerController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Design\LayoutContainer';
-    protected $entity_label = 'Layout Container';
-    protected $entity_label_plural = 'Layout Containers';
-    protected $controller_name = 'core_design_layoutcontainer';
+    protected $entityLabel = 'Layout Container';
+    protected $entityLabelPlural = 'Layout Containers';
+    protected $controllerName = 'core_design_layoutcontainer';
 }
 ?>

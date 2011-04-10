@@ -19,8 +19,8 @@
  class Admin_Core_Premium_PlanController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Premium\Plan';
-    protected $entity_label = 'Premium Plan';
-    protected $entity_label_plural = 'Premium Plans';
-    protected $controller_name = 'core_premium_plan';
+    protected $entityLabel = 'Premium Plan';
+    protected $entityLabelPlural = 'Premium Plans';
+    protected $controllerName = 'core_premium_plan';
 }
 ?>

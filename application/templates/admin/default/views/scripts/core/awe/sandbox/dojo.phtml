@@ -22,7 +22,7 @@ Here's some text before the container
 <div class="claro">
 <div id="myGridContainer" style="width: 750px; height: 350px; border: 1px solid black;"></div>
 </div>
-<? $this->dojo()->onLoadCaptureStart() ?>
+<?php $this->dojo()->onLoadCaptureStart(); ?>
 function() {
     var gridLayout = [
         { name: 'Id'           ,  field: 'id', width: 'auto'},
@@ -52,7 +52,7 @@ function() {
 
     myGrid.startup();
 }
-<? $this->dojo()->onLoadCaptureEnd() ?>
+<?php $this->dojo()->onLoadCaptureEnd(); ?>
 <p>
 Here's some text after it
 </p>

@@ -20,7 +20,7 @@ class Awe_Controller_Frontend extends Awe_Controller_Core_Themed
 {
     public function init()
     {
-        $this->controller_type = 'frontend';
+        $this->controllerType = 'frontend';
         parent::init();
     }
 }

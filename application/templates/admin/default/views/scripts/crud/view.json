@@ -20,14 +20,14 @@
     extract($gANNOTATION_KEYS);
     $entity = $this->entity;
     $data = array();
-    foreach ($this->columns as $column_name => $def) {
+    foreach ($this->columns as $columnName => $def) {
         $anno = $def['annotations'];
-        if (isset($anno[$a_col]) && isset($anno[$a_awe])) {
-            $type = $anno[$a_col]->type;
+        if (isset($anno[$annoKeyCol]) && isset($anno[$annoKeyAwe])) {
+            $type = $anno[$annoKeyCol]->type;
             if ($type == 'datetime' || $type == 'date') {
-                $data[$column_name] = $entity->$column_name->format('m/d/Y');
+                $data[$columnName] = $entity->$columnName->format('m/d/Y');
             } else {
-                $data[$column_name] = $entity->$column_name;
+                $data[$columnName] = $entity->$columnName;
             }
         }
     }

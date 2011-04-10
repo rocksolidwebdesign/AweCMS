@@ -19,8 +19,8 @@
 class Admin_Core_Blog_CommentController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Blog\Comment';
-    protected $entity_label = 'Blog Comment';
-    protected $entity_label_plural = 'Blog Comments';
-    protected $controller_name = 'core_blog_comment';
+    protected $entityLabel = 'Blog Comment';
+    protected $entityLabelPlural = 'Blog Comments';
+    protected $controllerName = 'core_blog_comment';
 }
 ?>

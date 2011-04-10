@@ -24,64 +24,60 @@
     $sidx  = isset($_GET['sidx']) ? $_GET['sidx'] : '';
     $sord  = isset($_GET['sord']) ? $_GET['sord'] : '';
 
-    $self_link = "/admin/$this->controller_name";
-    $sort_query = $sidx ? "sidx=$sidx&sord=$sord" : '';
+    $selfLink = "/admin/$this->controllerName";
+    $sortQuery = $sidx ? "sidx=$sidx&sord=$sord" : '';
 
     // by default show 5 pages on either side
-    $pager_radius = 5;
+    $pagerRadius = 5;
 
-    $lbound = $this->page_number - $pager_radius;
-    $rbound = $this->page_number + $pager_radius;
+    $lBound = $this->pageNumber - $pagerRadius;
+    $rBound = $this->pageNumber + $pagerRadius;
 
-    $lbound = $lbound  > 0                  ? $lbound : 1;
-    $rbound = $rbound <= $this->total_pages ? $rbound : $this->total_pages;
+    $lBound = $lBound  > 0                 ? $lBound : 1;
+    $rBound = $rBound <= $this->totalPages ? $rBound : $this->totalPages;
 
     $lnum = $page - 1 ? $page - 1 : 1;
-    $rnum = $page + 1 <= $this->total_pages ? $page + 1 : $this->total_pages;
+    $rnum = $page + 1 <= $this->totalPages ? $page + 1 : $this->totalPages;
 
-    $qsav = "$self_link?$sort_query&rows=$limit";
+    $qsav = "$selfLink?$sortQuery&rows=$limit";
 
     $first = "$qsav&page=1";
     $prev  = "$qsav&page=$lnum";
 
     $next  = "$qsav&page=$rnum";
-    $last  = "$qsav&page=$this->total_pages";
+    $last  = "$qsav&page=$this->totalPages";
 
-    $pager_sizes[] = 10;
-    $pager_sizes[] = 25;
-    $pager_sizes[] = 50;
-    $pager_sizes[] = 100;
-    $pager_sizes[] = 250;
-    $pager_sizes[] = 500;
+    $pagerSizes[] = 10;
+    $pagerSizes[] = 25;
+    $pagerSizes[] = 50;
+    $pagerSizes[] = 100;
+    $pagerSizes[] = 250;
+    $pagerSizes[] = 500;
     // }}}
 ?>
-<?php // Top Pager {{{ ?>
 <h1><?php echo $this->entity_label_plural; ?></h1>
-<a class="awe-grid-new-link" href="<?php echo $self_link; ?>/edit/">Add New</a>
+<a class="awe-grid-new-link" href="<?php echo $selfLink; ?>/edit/">Add New</a>
 <div class="awe-grid-pager awe-grid-pager-top">
     <div class="awe-grid-pager-stats">
         Showing <strong><?php echo $this->start_record; ?>
             - <?php echo $this->end_record; ?></strong>
         of <strong><?php echo $this->record_count; ?></strong> total
     </div>
-    <?php // Page Numbers {{{ ?>
     <div class="awe-grid-pager-numbers">
         <a href="<?php echo $first; ?>" class="no-under"> first </a>
         <a href="<?php echo $prev; ?>" class="no-under"> &laquo; </a>
 
-        <?php for ($x = $lbound; $x <= $rbound; $x++): ?>
-            <?php $cur_page = $x == $page ? ' style="font-weight: bold;"' : ''; ?>
-            <?php $page_url = "$qsav&page=$x"; ?>
-            <a href="<?php echo $page_url; ?>"<?php echo $cur_page ?>><?php echo $x; ?></a>
+        <?php for ($x = $lBound; $x <= $rBound; $x++): ?>
+            <?php $curPage = $x == $page ? ' style="font-weight: bold;"' : ''; ?>
+            <?php $pageUrl = "$qsav&page=$x"; ?>
+            <a href="<?php echo $pageUrl; ?>"<?php echo $curPage ?>><?php echo $x; ?></a>
         <?php endfor; ?>
 
         <a href="<?php echo $next; ?>" class="no-under"> &raquo; </a>
         <a href="<?php echo $last; ?>" class="no-under"> last </a>
     </div>
-    <?php // Page Numbers }}} ?>
-    <?php // Rows Per Page Dropdown {{{ ?>
     <div class="awe-grid-pager-size">
-        <form id="pager_num_rows" method="get" action="<?php echo "$self_link?$sort_query"; ?>">
+        <form id="pager_num_rows" method="get" action="<?php echo "$selfLink?$sortQuery"; ?>">
             <?php if ($sidx): ?>
                 <input type="hidden" name="sidx" value="<?php echo $sidx; ?>"/>
                 <?php if ($sord): ?>
@@ -89,7 +85,7 @@
                 <?php endif; ?>
             <?php endif; ?>
             <select name="rows" onchange="document.getElementById('pager_num_rows').submit()">
-                <?php foreach ($pager_sizes as $psize): ?>
+                <?php foreach ($pagerSizes as $psize): ?>
                     <?php $sel = ($psize == $limit ? ' selected="selected"' : ''); ?>
                     <option value="<?php echo $psize; ?>"<?php echo $sel; ?>><?php echo $psize; ?></option>
                 <?php endforeach; ?>
@@ -97,43 +93,37 @@
             Rows Per Page
         </form>
     </div>
-    <?php // Rows Per Page Dropdown }}} ?>
 </div>
-<?php // Top Pager }}} ?>
-<?php // Results {{{ ?>
 <table class="awe-grid">
-    <?php // Column Headers {{{ ?>
     <tr>
         <?php $colspan = 1; ?>
         <?php foreach ($this->columns as $def): ?>
             <?php $anno = $def['annotations']; ?>
-            <?php if (isset($anno[$a_col]) && isset($anno[$a_awe])): ?>
-                <?php if (is_null($anno[$a_awe]->no_list)): ?>
+            <?php if (isset($anno[$annoKeyCol]) && isset($anno[$annoKeyAwe])): ?>
+                <?php if (is_null($anno[$annoKeyAwe]->noList)): ?>
                 <?php
-                    $col_name     =  (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name);
-                    $label        =  $anno[$a_awe]->list_label ? $anno[$a_awe]->list_label : $anno[$a_awe]->label ? $anno[$a_awe]->label : ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', $col_name)));
-                    $sort_on      =  "sidx=$col_name";
-                    $sort_order   =  $sidx != $col_name ? "sord=ASC" : ($sord == 'ASC' ? 'sord=DESC' : 'sord=ASC');
-                    $sort_label   =  $sidx != $col_name ? "^" : ($sord == 'ASC' ? 'v' : '^');
-                    $column_sort  =  "$sort_on&$sort_order&rows=$limit";
+                    $colName     =  (isset($anno[$annoKeyCol]) && $anno[$annoKeyCol]->name ? $anno[$annoKeyCol]->name : $property_name);
+                    $label       =  $anno[$annoKeyAwe]->list_label ? $anno[$annoKeyAwe]->list_label : $anno[$annoKeyAwe]->label ? $anno[$annoKeyAwe]->label : ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', $colName)));
+                    $sortOn      =  "sidx=$colName";
+                    $sortOrder   =  $sidx != $colName ? "sord=ASC" : ($sord == 'ASC' ? 'sord=DESC' : 'sord=ASC');
+                    $sortLabel   =  $sidx != $colName ? "^" : ($sord == 'ASC' ? 'v' : '^');
+                    $columnSort  =  "$sortOn&$sortOrder&rows=$limit";
                     $colspan++;
                 ?>
-                <th><?php echo $label; ?> <a style="text-decoration: none;" href="<?php echo "$self_link?$column_sort"; ?>"><?php echo $sort_label; ?></a></th>
+                <th><?php echo $label; ?> <a style="text-decoration: none;" href="<?php echo "$selfLink?$columnSort"; ?>"><?php echo $sortLabel; ?></a></th>
                 <?php endif; ?>
             <?php endif; ?>
         <?php endforeach; ?>
         <th class="awe-grid-action-column">Actions</th>
     </tr>
-    <?php // Column Headers }}} ?>
-    <?php // Rows {{{ ?>
     <?php $x = 0; foreach($this->entities as $entity): ?>
     <tr class="<?php echo ($x++ % 2 ? 'alt' : ''); ?>">
         <?php foreach ($this->columns as $def): ?>
             <?php $anno = $def['annotations']; ?>
-            <?php if (isset($anno[$a_col]) && isset($anno[$a_awe])): ?>
-                <?php if (is_null($anno[$a_awe]->no_list)): ?>
-                    <?php $column = $anno[$a_col]->name ?>
-                    <?php $type   = $anno[$a_col]->type ?>
+            <?php if (isset($anno[$annoKeyCol]) && isset($anno[$annoKeyAwe])): ?>
+                <?php if (is_null($anno[$annoKeyAwe]->noList)): ?>
+                    <?php $column = $anno[$annoKeyCol]->name ?>
+                    <?php $type   = $anno[$annoKeyCol]->type ?>
 
                     <?php if ($type == 'datetime'): ?>
                         <td><?php echo $entity->$column->format('m/d/Y'); ?></td>
@@ -145,33 +135,27 @@
             <?php endif; ?>
         <?php endforeach; ?>
         <td class="awe-grid-actions">
-            <a class="awe-grid-edit-link awe-grid-action-link" href="/admin/<?php echo $this->controller_name; ?>/edit/id/<?php echo $entity->id; ?>">EDIT</a>
-            <a class="awe-grid-delete-link awe-grid-action-link" href="/admin/<?php echo $this->controller_name; ?>/delete/id/<?php echo $entity->id; ?>">DELETE</a>
+            <a class="awe-grid-edit-link awe-grid-action-link" href="/admin/<?php echo $this->controllerName; ?>/edit/id/<?php echo $entity->id; ?>">EDIT</a>
+            <a class="awe-grid-delete-link awe-grid-action-link" href="/admin/<?php echo $this->controllerName; ?>/delete/id/<?php echo $entity->id; ?>">DELETE</a>
         </td>
     </tr>
     <?php endforeach; ?>
-    <?php // Rows }}} ?>
 </table>
-<?php // Results }}} ?>
-<?php // Bottom Pager {{{ ?>
 <div class="awe-grid-pager awe-grid-pager-bottom">
     <div class="awe-grid-pager-stats">
-        Page <?php echo $this->page_number; ?> of <?php echo $this->total_pages; ?>
+        Page <?php echo $this->pageNumber; ?> of <?php echo $this->totalPages; ?>
     </div>
-    <?php // Page Numbers {{{ ?>
     <div class="awe-grid-pager-numbers">
         <a href="<?php echo $first; ?>" class="no-under"> first </a>
         <a href="<?php echo $prev; ?>" class="no-under"> &laquo; </a>
 
-        <?php for ($x = $lbound; $x <= $rbound; $x++): ?>
-            <?php $cur_page = $x == $page ? ' style="font-weight: bold;"' : ''; ?>
-            <?php $page_url = "$qsav&page=$x"; ?>
-            <a href="<?php echo $page_url; ?>"<?php echo $cur_page ?>><?php echo $x; ?></a>
+        <?php for ($x = $lBound; $x <= $rBound; $x++): ?>
+            <?php $curPage = $x == $page ? ' style="font-weight: bold;"' : ''; ?>
+            <?php $pageUrl = "$qsav&page=$x"; ?>
+            <a href="<?php echo $pageUrl; ?>"<?php echo $curPage ?>><?php echo $x; ?></a>
         <?php endfor; ?>
 
         <a href="<?php echo $next; ?>" class="no-under"> &raquo; </a>
         <a href="<?php echo $last; ?>" class="no-under"> last </a>
     </div>
-    <?php // Page Numbers }}} ?>
 </div>
-<?php // Bottom Pager }}} ?>

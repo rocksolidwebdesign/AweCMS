@@ -19,8 +19,8 @@
 class Admin_Core_Access_GroupController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Access\Group';
-    protected $entity_label = 'Group';
-    protected $entity_label_plural = 'Groups';
-    protected $controller_name = 'core_access_group';
+    protected $entityLabel = 'Group';
+    protected $entityLabelPlural = 'Groups';
+    protected $controllerName = 'core_access_group';
 }
 ?>

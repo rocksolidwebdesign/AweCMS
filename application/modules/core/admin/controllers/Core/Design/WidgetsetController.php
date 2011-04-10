@@ -19,8 +19,8 @@
 class Admin_Core_Design_WidgetsetController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Design\WidgetSet';
-    protected $entity_label = 'Widget Set';
-    protected $entity_label_plural = 'Widget Sets';
-    protected $controller_name = 'core_design_widgetset';
+    protected $entityLabel = 'Widget Set';
+    protected $entityLabelPlural = 'Widget Sets';
+    protected $controllerName = 'core_design_widgetset';
 }
 ?>

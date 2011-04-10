@@ -20,7 +20,7 @@ class Awe_Controller_AutoAdmin extends Awe_Controller_Core_AutoMagic
 {
     public function init()
     {
-        $this->controller_type = 'admin';
+        $this->controllerType = 'admin';
         parent::init();
     }
 }

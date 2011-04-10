@@ -32,7 +32,7 @@ class Comment extends \Entities\Core\AbstractEntity
      * @JoinColumn(name="entry_id", referencedColumnName="id")
      * @awe:AutoFormElement(
      *     label="Parent Entry",
-     *     display_column="title"
+     *     displayColumn="title"
      * )
      */
     protected $entry;
@@ -56,7 +56,7 @@ class Comment extends \Entities\Core\AbstractEntity
      * @Column(name="content", type="text")
      * @awe:AutoFormElement(
      *     label="Entry Body",
-     *     no_list="True",
+     *     noList="True",
      *     type="Awe_Dojo_Form_Element_Editor",
      *     params={"plugins"={"prettyprint","breadcrumb","viewSource","undo", "redo", "cut", "copy", "paste", "bold", "italic", "underline", "strikethrough", "insertOrderedList", "insertUnorderedList", "indent", "outdent", "justifyLeft", "justifyRight", "justifyCenter", "justifyFull", "createLink", "insertImage", "fontName",  "formatBlock", "fontSize", "foreColor", "hiliteColor", "fullScreen", "enterKeyHandling", "print", "tabIndent", "toggleDir", "newPage", "insertTable", "modifyTable", "InsertTableRowBefore", "InsertTableRowAfter", "insertTableColumnBefore", "insertTableColumnAfter", "deleteTableRow", "deleteTableColumn", "colorTableCell", "tableContextMenu"}}
      * )

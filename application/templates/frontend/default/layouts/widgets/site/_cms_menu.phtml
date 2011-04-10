@@ -16,11 +16,11 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  */
 ?>
-<? $children = $this->children; ?>
-<? if($children->count()): ?>
+<?php $children = $this->children; ?>
+<?php if ($children->count()): ?>
 <ul>
-    <? foreach($children as $child): ?>
-        <li><a href="<?= $child->getUrl(); ?>"><?= $child->title; ?></a></li>
-    <? endforeach; ?>
+    <?php foreach($children as $child): ?>
+        <li><a href="<?php echo $child->getUrl(); ?>"><?php echo $child->title; ?></a></li>
+    <?php endforeach; ?>
 </ul>
-<? endif; ?>
+<?php endif; ?>

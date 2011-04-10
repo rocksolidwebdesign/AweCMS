@@ -19,8 +19,8 @@
 class Admin_Core_Premium_SubscriptionController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Premium\Subscription';
-    protected $entity_label = 'Premium Subscription';
-    protected $entity_label_plural = 'Premium Subscriptions';
-    protected $controller_name = 'premium_subscription';
+    protected $entityLabel = 'Premium Subscription';
+    protected $entityLabelPlural = 'Premium Subscriptions';
+    protected $controllerName = 'premium_subscription';
 }
 ?>

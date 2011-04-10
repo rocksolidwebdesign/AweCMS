@@ -20,11 +20,6 @@ class Cms_PageController extends Awe_Controller_Frontend_Widget_Layout
 {
     protected $_page = null;
 
-    protected $_public_actions = array(
-        'login',
-        'logout',
-    );
-
     public function viewAction()
     {
         $page = $this->getPage();
@@ -72,17 +67,17 @@ class Cms_PageController extends Awe_Controller_Frontend_Widget_Layout
     protected function getPage()
     {
         if ($this->_page == null) {
-            $page_id = $this->getRequest()->getParam('id');
+            $pageId = $this->getRequest()->getParam('id');
 
-            if (!$page_id)
+            if (!$pageId)
             {
-                $page_id = 1;
+                $pageId = 1;
             }
 
             $em = $this->getInvokeArg('bootstrap')
                        ->getResource('doctrine');
 
-            $this->_page  = $em->find('\Entities\Core\Cms\Page', $page_id);
+            $this->_page  = $em->find('\Entities\Core\Cms\Page', $pageId);
         }
 
         return $this->_page;

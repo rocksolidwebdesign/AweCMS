@@ -11,14 +11,14 @@
  * http://www.opensource.org/licenses/bsd-license.php
  */
 
-namespace Entities\Core\Premium;
+namespace Entities\Core\Access;
 
 /**
  * @Entity
- * @Table(name="premium_plan")
+ * @Table(name="access_group")
  * @HasLifecycleCallbacks
  */
-class Plan extends \Entities\Core\AbstractEntity
+class Group extends \Entities\Core\AbstractEntity
 {
     /**
      * @Id @Column(name="id", type="integer")
@@ -30,7 +30,7 @@ class Plan extends \Entities\Core\AbstractEntity
     /**
      * @Column(name="title", type="string", length=255)
      * @awe:AutoFormElement(
-     *     label="Title", 
+     *     label="Label",
      *     type="Zend_Dojo_Form_Element_TextBox",
      *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
      * )
@@ -38,53 +38,28 @@ class Plan extends \Entities\Core\AbstractEntity
     protected $title;
 
     /**
-     * @Column(name="free_trial", type="integer")
+     * @Column(name="codename", type="string", length=255)
      * @awe:AutoFormElement(
-     *     label="Free Trial Period (in days)",
+     *     label="Unique ID",
      *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_Int"=""}
+     *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
      * )
      */
-    protected $free_trial;
+    protected $codename;
 
     /**
-     * @Column(name="price", type="string", length=255)
+     * @ManyToMany(targetEntity="\Entities\Core\Access\User", mappedBy="groups")
+     * @JoinTable(
+     *      name="access_user_group",
+     *      joinColumns={@JoinColumn(name="group_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
      * @awe:AutoFormElement(
-     *     label="Price",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_Float"=""}
+     *     label="Users",
+     *     displayColumn="username"
      * )
      */
-    protected $price;
-
-    /**
-     * @Column(name="duration", type="integer")
-     * @awe:AutoFormElement(
-     *     label="Normal Duration (in days)",
-     *     type="Zend_Dojo_Form_Element_TextBox",
-     *     validators={"Zend_Validate_Int"=""}
-     * )
-     */
-    protected $duration;
-
-    /**
-     * @Column(name="auto_renew", type="integer")
-     * @awe:AutoFormElement(
-     *     label="Renew Automatically?",
-     *     type="Zend_Dojo_Form_Element_CheckBox"
-     * )
-     */
-    protected $auto_renew;
-
-    /**
-     * @Column(name="content", type="text")
-     * @awe:AutoFormElement(
-     *     label="Description",
-     *     type="Zend_Dojo_Form_Element_Editor",
-     *     no_list="True"
-     * )
-     */
-    protected $content;
+    public $users;
 
     /** @Column(type="datetime") */
     private $created_at;
@@ -100,6 +75,8 @@ class Plan extends \Entities\Core\AbstractEntity
 
     public function __construct()
     {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+
         $this->created_at = $this->updated_at = new \DateTime("now");
     }
 }

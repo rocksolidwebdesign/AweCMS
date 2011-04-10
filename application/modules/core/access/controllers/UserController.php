@@ -18,18 +18,16 @@
 
 class Access_UserController extends Awe_Controller_Frontend
 {
-    // isLoggedIn {{{
     public function isLoggedIn()
     {
         return Zend_Auth::getInstance()->hasIdentity();
     }
-    // }}}
-    // loginAction {{{
+
     public function loginAction()
     {
         $form = new Access_Form_Login();
 
-        $this->view->login_attempt = '';
+        $this->view->loginAttempt = '';
         $request = $this->getRequest();
         if ($request->isPost())
         {
@@ -43,7 +41,7 @@ class Access_UserController extends Awe_Controller_Frontend
                     return $this->_helper->redirector($sess->action, $sess->controller, $sess->module);
                 }
 
-                $this->view->login_attempt = 'invalid';
+                $this->view->loginAttempt = 'invalid';
             }
         }
 
@@ -79,11 +77,9 @@ class Access_UserController extends Awe_Controller_Frontend
             'breadcrumbs', 'site/_breadcrumbs.phtml', 
             array('breadcrumbs' => $breadcrumbs));
     }
-    // }}}
-    // logoutAction {{{
+
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
     }
-    // }}}
 }

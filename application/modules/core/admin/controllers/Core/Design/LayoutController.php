@@ -19,8 +19,8 @@
 class Admin_Core_Design_LayoutController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Design\Layout';
-    protected $entity_label = 'Layout';
-    protected $entity_label_plural = 'Layouts';
-    protected $controller_name = 'core_design_layout';
+    protected $entityLabel = 'Layout';
+    protected $entityLabelPlural = 'Layouts';
+    protected $controllerName = 'core_design_layout';
 }
 ?>

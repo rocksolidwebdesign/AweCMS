@@ -19,8 +19,8 @@
 class Admin_Core_Cms_PageController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Cms\Page';
-    protected $entity_label = 'Page';
-    protected $entity_label_plural = 'Pages';
-    protected $controller_name = 'core_cms_page';
+    protected $entityLabel = 'Page';
+    protected $entityLabelPlural = 'Pages';
+    protected $controllerName = 'core_cms_page';
 }
 ?>

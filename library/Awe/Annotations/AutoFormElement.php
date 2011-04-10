@@ -21,13 +21,13 @@ final class AutoFormElement extends Annotation
     public $options;
     public $label;
     public $validators;
-    public $display_column;
+    public $displayColumn;
     public $name;
-    public $edit_inline;
-    public $compact_view;
-    public $add_method;
-    public $clear_method;
+    public $editInline;
+    public $compactView;
+    public $addMethod;
+    public $clearMethod;
     public $params;
-    public $no_list;
-    public $list_label;
+    public $noList;
+    public $listLabel;
 }

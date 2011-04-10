@@ -1,4 +1,4 @@
-db_host=localhost
-db_name=awecms
-db_user=awecms
-db_pass=awecms
+dbHost=localhost
+dbName=awecms
+dbUser=awecms
+dbPass=awecms

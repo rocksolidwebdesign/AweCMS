@@ -21,14 +21,14 @@
     $entities = array();
     foreach($this->entities as $entity) {
         $data = array();
-        foreach ($this->columns as $column_name => $def) {
+        foreach ($this->columns as $columnName => $def) {
             $anno = $def['annotations'];
-            if (isset($anno[$a_col]) && !isset($anno[$a_id]) && isset($anno[$a_awe]) && is_null($anno[$a_awe]->no_list)) {
-                $type = $anno[$a_col]->type;
+            if (isset($anno[$annoKeyCol]) && !isset($anno[$a_id]) && isset($anno[$annoKeyAwe]) && is_null($anno[$annoKeyAwe]->noList)) {
+                $type = $anno[$annoKeyCol]->type;
                 if ($type == 'datetime' || $type == 'date') {
-                    $data['cell'][] = $entity->$column_name->format('m/d/Y');
+                    $data['cell'][] = $entity->$columnName->format('m/d/Y');
                 } else {
-                    $data['cell'][] = $entity->$column_name;
+                    $data['cell'][] = $entity->$columnName;
                 }
             }
         }
@@ -36,9 +36,9 @@
         $entities[] = $data;
     }
 
-    $json['page']    = $this->page_number;
-    $json['total']   = $this->total_pages;
-    $json['records'] = $this->record_count;
+    $json['page']    = $this->pageNumber;
+    $json['total']   = $this->totalPages;
+    $json['records'] = $this->recordCount;
     $json['rows']    = $entities;
 
     echo json_encode($json);

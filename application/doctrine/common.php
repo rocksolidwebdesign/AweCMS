@@ -18,27 +18,27 @@
 
 // always use array cache on the CLI
 if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
-    $cache_type = '\Doctrine\Common\Cache\ArrayCache';
+    $cacheType = '\Doctrine\Common\Cache\ArrayCache';
 } else {
-    $cache_type = $zfConfArr['doctrine']['settings']['cache_type'];
+    $cacheType = $zfConfigArray['doctrine']['settings']['cacheType'];
 }
-$log_path       = $zfConfArr['doctrine']['settings']['log_path'];
-$proxies_path   = $zfConfArr['doctrine']['settings']['proxies_path'];
-$entities_path  = $zfConfArr['doctrine']['settings']['entities_path'];
-$entities_path  = is_array($entities_path) ? $entities_path : array($entities_path);
-$db_logins      = $zfConfArr['doctrine']['connection'];
+$logPath       = $zfConfigArray['doctrine']['settings']['logPath'];
+$proxiesPath   = $zfConfigArray['doctrine']['settings']['proxiesPath'];
+$entitiesPath  = $zfConfigArray['doctrine']['settings']['entitiesPath'];
+$entitiesPath  = is_array($entitiesPath) ? $entitiesPath : array($entitiesPath);
+$dbLogins      = $zfConfigArray['doctrine']['connection'];
 
 // Setup Autloading
 // ****************************************************************
-$required_libs = array(
+$requiredLibs = array(
     'Awe'      => '',
     'Doctrine' => '',
     'Symfony'  => 'Doctrine',
-    'Proxies'  => $proxies_path,
+    'Proxies'  => $proxiesPath,
 );
 
 require_once 'Doctrine/Common/ClassLoader.php';
-foreach ($required_libs as $name => $path) {
+foreach ($requiredLibs as $name => $path) {
     if ($path) {
         $classLoader = new \Doctrine\Common\ClassLoader($name, $path);
     } else {
@@ -47,39 +47,39 @@ foreach ($required_libs as $name => $path) {
     $classLoader->register();
 }
 
-foreach ($entities_path as $name => $path) {
+foreach ($entitiesPath as $name => $path) {
     $classLoader = new \Doctrine\Common\ClassLoader($name, $path);
     $classLoader->register();
 }
 
 // Setup Entity Manager
 // ****************************************************************
-$orm_config = new \Doctrine\ORM\Configuration();
+$ormConfig = new \Doctrine\ORM\Configuration();
 
 // custom zend form annotations
-$anno_reader = new \Doctrine\Common\Annotations\AnnotationReader();
-$anno_reader->setAutoloadAnnotations(true);
-$anno_reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
-$anno_reader->setAnnotationNamespaceAlias('Awe\Annotations\\', 'awe');
-$anno_driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($anno_reader, $entities_path);
-$orm_config->setMetadataDriverImpl($anno_driver);
+$annoReader = new \Doctrine\Common\Annotations\AnnotationReader();
+$annoReader->setAutoloadAnnotations(true);
+$annoReader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
+$annoReader->setAnnotationNamespaceAlias('Awe\Annotations\\', 'awe');
+$annoDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($annoReader, $entitiesPath);
+$ormConfig->setMetadataDriverImpl($annoDriver);
 
 // logging
-$orm_config->setSQLLogger(new \Doctrine\DBAL\Logging\FileSQLLogger($log_path));
+$ormConfig->setSQLLogger(new \Doctrine\DBAL\Logging\FileSQLLogger($logPath));
 
 // caching
-if (is_array($cache_type)) {
-    $orm_config->setQueryCacheImpl(new $cache_type['query']);
-    $orm_config->setMetadataCacheImpl(new $cache_type['metadata']);
+if (is_array($cacheType)) {
+    $ormConfig->setQueryCacheImpl(new $cacheType['query']);
+    $ormConfig->setMetadataCacheImpl(new $cacheType['metadata']);
 } else {
-    $orm_config->setQueryCacheImpl(new $cache_type);
-    $orm_config->setMetadataCacheImpl(new $cache_type);
+    $ormConfig->setQueryCacheImpl(new $cacheType);
+    $ormConfig->setMetadataCacheImpl(new $cacheType);
 }
 
 // proxies
-$orm_config->setAutoGenerateProxyClasses(true);
-$orm_config->setProxyDir($proxies_path . '/Proxies');
-$orm_config->setProxyNamespace('Proxies');
+$ormConfig->setAutoGenerateProxyClasses(true);
+$ormConfig->setProxyDir($proxiesPath . '/Proxies');
+$ormConfig->setProxyNamespace('Proxies');
 
 // Start Doctrine
-$em = \Doctrine\ORM\EntityManager::create($db_logins, $orm_config);
+$em = \Doctrine\ORM\EntityManager::create($dbLogins, $ormConfig);

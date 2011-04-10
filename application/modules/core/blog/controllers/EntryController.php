@@ -39,16 +39,16 @@ class Blog_EntryController extends Awe_Controller_Frontend_Widget_Layout
     protected function getEntry()
     {
         if ($this->_entry == null) {
-            $entry_id = $this->getRequest()->getParam('id');
+            $entryId = $this->getRequest()->getParam('id');
 
-            if (!$entry_id) {
-                $entry_id = 1;
+            if (!$entryId) {
+                $entryId = 1;
             }
 
             $em = $this->getInvokeArg('bootstrap')
                        ->getResource('doctrine');
 
-            $this->_entry  = $em->find('\Entities\Core\Blog\Entry', $entry_id);
+            $this->_entry  = $em->find('\Entities\Core\Blog\Entry', $entryId);
         }
 
         return $this->_entry;

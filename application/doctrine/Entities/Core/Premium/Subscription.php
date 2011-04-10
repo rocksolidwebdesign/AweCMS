@@ -33,7 +33,7 @@ class Subscription extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     label="Username",
      *     name="user",
-     *     display_column="username"
+     *     displayColumn="username"
      * )
      */
     protected $user;

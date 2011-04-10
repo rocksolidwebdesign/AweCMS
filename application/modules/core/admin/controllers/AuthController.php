@@ -18,18 +18,17 @@
 
 class Admin_AuthController extends Awe_Controller_Admin
 {
-    protected $_public_actions = array(
+    protected $_publicActions = array(
         'login',
         'logout'
     );
 
-    // loginAction {{{
     public function loginAction()
     {
         $sess = new Zend_Session_Namespace('login_target');
         $form = new Access_Form_Login();
 
-        $this->view->login_attempt = '';
+        $this->view->loginAttempt = '';
         $request = $this->getRequest();
         if ($request->isPost())
         {
@@ -43,7 +42,7 @@ class Admin_AuthController extends Awe_Controller_Admin
                     return $this->_helper->redirector($sess->action, $sess->controller, $sess->module);
                 }
 
-                $this->view->login_attempt = 'invalid';
+                $this->view->loginAttempt = 'invalid';
             }
         }
 
@@ -51,12 +50,10 @@ class Admin_AuthController extends Awe_Controller_Admin
 
         $this->_helper->layout->setLayout('layout_login');
     }
-    // }}}
-    // logoutAction {{{
+
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->layout->setLayout('layout_login');
     }
-    // }}}
 }

@@ -18,6 +18,6 @@
 ?>
 <ul id="breadcrumbs">
     <? foreach($this->breadcrumbs as $crumb): ?>
-    <li>&raquo; <a href="<?= $crumb['url']; ?>"><?= $crumb['title']; ?></a></li>
+    <li>&raquo; <a href="<?php echo $crumb['url']; ?>"><?php echo $crumb['title']; ?></a></li>
     <? endforeach; ?>
 </ul>

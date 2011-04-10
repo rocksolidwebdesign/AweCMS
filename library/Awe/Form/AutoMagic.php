@@ -11,33 +11,32 @@
  * http://www.opensource.org/licenses/bsd-license.php
  *
  * @category   AweCMS
- * @package    AweCMS_Admin_Autocrud
+ * @package    AweCMS_Admin_AutoCrud
  * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  */
 
 class Awe_Form_AutoMagic extends Zend_Form_SubForm
 {
-    // properties {{{
-    protected $repopulation_data;
-    protected $parent_autocrud;
-    protected $parent_entity;
-    protected $autocrud_form;
-    protected $entity_columns;
-    protected $auto_subforms;
-    protected $is_scaffolding;
-    protected $is_restful = false;
+    // properties
+    protected $repopData;
+    protected $parentAutoCrud;
+    protected $parentEntity;
+    protected $autoCrudForm;
+    protected $entityColumns;
+    protected $autoSubForms;
+    protected $isScaffolding;
+    protected $isRestful = false;
     protected $scaffolding = array();
-    protected $scaffolding_form;
-    protected $scaffolding_form_docblock;
-    protected $scaffolding_form_init_method_body;
-    protected $recurse_subentities;
-    protected $doctrine_em;
-    protected $doctrine_ar;
-    protected $annotation_keys = array();
-    // }}}
+    protected $scaffoldingForm;
+    protected $scaffoldingFormDocBlock;
+    protected $scaffoldingFormInitMethodBody;
+    protected $recurseSubEntities;
+    protected $_doctrine;
+    protected $_reader;
+    protected $annotationKeys = array();
 
-    public function __construct( // {{{
+    public function __construct( //
         $name      =  null,
         $columns   =  null,
         $data      =  null,
@@ -48,275 +47,250 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
         parent::__construct($name);
 
         // setup params
-        $this->is_restful           =  $name == 'rest_entity' ? true : false;
-        $this->recurse_subentities  =  $recurse;
-        $this->repopulation_data    =  $data;
-        $this->parent_entity        =  $parent;
-        $this->entity_columns       =  $columns;
-        $this->auto_subforms        =  array();
+        $this->isRestful           =  $name == 'rest_entity' ? true : false;
+        $this->recurseSubEntities  =  $recurse;
+        $this->repopData           =  $data;
+        $this->parentEntity        =  $parent;
+        $this->entityColumns       =  $columns;
+        $this->autoSubForms        =  array();
 
         // setup doctrine
-        $this->doctrine_em = \Zend_Registry::get('doctrine_entity_manager');
-        $this->doctrine_ar = \Zend_Registry::get('doctrine_annotation_reader');
+        $this->_doctrine = \Zend_Registry::get('doctrineEm');
+        $this->_reader   = \Zend_Registry::get('doctrineAr');
 
         $this->buildAutoForm();
     }
-    // }}}
 
-    protected function buildAutoForm() { // {{{
+    protected function buildAutoForm() { //
         global $gANNOTATION_KEYS;
         extract($gANNOTATION_KEYS);
 
-        if ($this->recurse_subentities) {
+        if ($this->recurseSubEntities) {
             $this->addSaveButton('upper_submit');
         }
 
-        foreach ($this->entity_columns as $property_name => $def) {
-            if (!isset($def['annotations'][$a_awe])) {
+        foreach ($this->entityColumns as $propertyName => $def) {
+            if (!isset($def['annotations'][$annoKeyAwe])) {
                 continue;
             }
 
-            $element_type = false;
+            $elementType = false;
             $element = false;
 
             // annotation keys
             $anno = $def['annotations'];
 
-            // determine element type {{{
-            if (isset($anno[$a_id])) {
-                $element_type = 'hidden_primary_key';
+            // determine element type
+            if (isset($anno[$annoKeyId])) {
+                $elementType = 'hidden_primary_key';
             }
-            else if (isset($anno[$a_m21])) {
-                $element_type = $this->recurse_subentities ? 'foreign_dropdown' : 'hidden_foreign_key';
+            else if (isset($anno[$annoKeyM21])) {
+                $elementType = $this->recurseSubEntities ? 'foreign_dropdown' : 'hidden_foreign_key';
             }
-            else if (isset($anno[$a_12m]) && $this->recurse_subentities && $anno[$a_awe]->edit_inline && $this->repopulation_data && !$this->is_restful) {
-                $element_type = 'foreign_edit_inline';
+            else if (isset($anno[$annoKey12m]) && $this->recurseSubEntities && $anno[$annoKeyAwe]->editInline && $this->repopData && !$this->isRestful) {
+                $elementType = 'foreign_editInline';
             }
-            else if (isset($anno[$a_m2m])) {
-                $element_type = 'foreign_multi_checkbox';
+            else if (isset($anno[$annoKeyM2m])) {
+                $elementType = 'foreign_multi_checkbox';
             }
-            else if (isset($anno[$a_col])) {
-                $element_type = 'entity';
+            else if (isset($anno[$annoKeyCol])) {
+                $elementType = 'entity';
             }
-            // }}}
 
-            // Render that type of element {{{
-            switch ($element_type) {
-                case 'hidden_primary_key': // {{{
+            // Render that type of element
+            switch ($elementType) {
+                case 'hidden_primary_key': //
                     $element = new Zend_Form_Element_Hidden('id');
                     $element->setDecorators(array('ViewHelper'));
-                    if ($this->repopulation_data) {
-                        $element->setValue($this->repopulation_data->id);
+                    if ($this->repopData) {
+                        $element->setValue($this->repopData->id);
                     }
                     break;
-                    // }}}
 
-                case 'hidden_foreign_key': // {{{
-                    $element_name  = isset($anno[$a_join_column]->name) ? $anno[$a_join_column]->name : $property_name.'_id';
+                case 'hidden_foreign_key': //
+                    $elementName  = isset($anno[$annoKeyJoinColumn]->name) ? $anno[$annoKeyJoinColumn]->name : $propertyName.'_id';
 
-                    $element = new Zend_Form_Element_Hidden($element_name);
+                    $element = new Zend_Form_Element_Hidden($elementName);
                     $element->setDecorators(array('ViewHelper'));
-                    $element->setValue($this->repopulation_data->$property_name->id);
+                    $element->setValue($this->repopData->$propertyName->id);
                     break;
-                    // }}}
 
-                case 'entity': // {{{
-                    // setup properties {{{
+                case 'entity': //
+                    // setup properties
 
                     // use a label param if set, 
                     // otherwise use the @Column annotation's name property
                         // replace underscores with spaces and capitalize each word
                     // otherwise default to the property name of the object
-                    $label         = $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
-                    $type          = $anno[$a_awe]->type        ?  $anno[$a_awe]->type        :  $this->getDefaultElementType($anno[$a_col]->type);
-                    $col_type      = $anno[$a_col]->type;
-                    $params        = isset($anno[$a_awe]->params) ? $anno[$a_awe]->params : array();
-                    $validators    = count((array)$anno[$a_awe]->validators) ? (array)$anno[$a_awe]->validators : $this->getDefaultElementValidators($anno[$a_col]);
-                    // }}}
+                    $label         = $anno[$annoKeyAwe]->label       ?  $anno[$annoKeyAwe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$annoKeyCol]) && $anno[$annoKeyCol]->name ? $anno[$annoKeyCol]->name : $propertyName))));
+                    $type          = $anno[$annoKeyAwe]->type        ?  $anno[$annoKeyAwe]->type        :  $this->getDefaultElementType($anno[$annoKeyCol]->type);
+                    $colType       = $anno[$annoKeyCol]->type;
+                    $params        = isset($anno[$annoKeyAwe]->params) ? $anno[$annoKeyAwe]->params : array();
+                    $validators    = count((array)$anno[$annoKeyAwe]->validators) ? (array)$anno[$annoKeyAwe]->validators : $this->getDefaultElementValidators($anno[$annoKeyCol]);
 
-                    // build element {{{
-                    $element = new $type($property_name, $params);
+                    // build element
+                    $element = new $type($propertyName, $params);
                     $element->setLabel($label);
 
-                    $validator_list = array();
+                    $validatorList = array();
                     foreach ($validators as $v => $args) {
-                        $validator_list[] = new $v((array)$args);
+                        $validatorList[] = new $v((array)$args);
                     }
-                    $element->setValidators($validator_list);
-                    // }}}
+                    $element->setValidators($validatorList);
 
-                    // repopulate data {{{
-                    if ($this->repopulation_data) {
-                        if ($col_type == 'datetime' || $col_type == 'date') {
-                            $value = $this->repopulation_data->$property_name->format('Y-m-d');
+                    // repopulate data
+                    if ($this->repopData) {
+                        if ($colType == 'datetime' || $colType == 'date') {
+                            $value = $this->repopData->$propertyName->format('Y-m-d');
                         } else {
-                            $value = $this->repopulation_data->$property_name;
+                            $value = $this->repopData->$propertyName;
                         }
                         $element->setValue($value);
                     }
-                    // }}}
 
                     break;
-                    // }}}
 
-                case 'foreign_dropdown': // {{{
-                    // setup properties {{{
-                    $label           =  $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
-                    $target_entity   =  $anno[$a_m21]->targetEntity;
-                    $display_column  =  $anno[$a_awe]->display_column;
-                    $join_column     =  $anno[$a_join_column]->name;
-                    // }}}
+                case 'foreign_dropdown': //
+                    // setup properties
+                    $label           =  $anno[$annoKeyAwe]->label       ?  $anno[$annoKeyAwe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$annoKeyCol]) && $anno[$annoKeyCol]->name ? $anno[$annoKeyCol]->name : $propertyName))));
+                    $targetEntity    =  $anno[$annoKeyM21]->targetEntity;
+                    $displayColumn  =  $anno[$annoKeyAwe]->displayColumn;
+                    $join_column     =  $anno[$annoKeyJoinColumn]->name;
 
-                    // get related entities {{{
-                    $dql = "select e from $target_entity e";
-                    $foreign_entities = $this->doctrine_em->createQuery($dql)->getResult();
+                    // get related entities
+                    $dql = "select e from $targetEntity e";
+                    $foreignEntities = $this->_doctrine->createQuery($dql)->getResult();
 
                     $dropdowns = array();
                     $dropdowns[''] = '';
-                    foreach ($foreign_entities as $id => $f) {
-                        $dropdowns[$f->id] = $f->$display_column;
+                    foreach ($foreignEntities as $id => $f) {
+                        $dropdowns[$f->id] = $f->$displayColumn;
                     }
-                    // }}}
 
-                    // build element {{{
+                    // build element
                     $element = new Zend_Form_Element_Select($join_column);
                     $element->setMultiOptions($dropdowns);
                     $element->setLabel($label);
-                    // }}}
 
-                    // repopulate data {{{
-                    if ($this->repopulation_data && $this->repopulation_data->$property_name) {
-                        $element->setValue($this->repopulation_data->$property_name->id);
+                    // repopulate data
+                    if ($this->repopData && $this->repopData->$propertyName) {
+                        $element->setValue($this->repopData->$propertyName->id);
                     }
-                    // }}}
 
                     break;
-                    // }}}
 
-                case 'foreign_multi_checkbox': // {{{
-                    // setup properties {{{
-                    $label           = $anno[$a_awe]->label       ?  $anno[$a_awe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
-                    $target_entity   = $anno[$a_m2m]->targetEntity;
-                    $display_column  = $anno[$a_awe]->display_column;
-                    $inverse_column  = $anno[$a_join_table]->inverseJoinColumns[0]->name;
+                case 'foreign_multi_checkbox': //
+                    // setup properties
+                    $label           = $anno[$annoKeyAwe]->label       ?  $anno[$annoKeyAwe]->label       :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$annoKeyCol]) && $anno[$annoKeyCol]->name ? $anno[$annoKeyCol]->name : $propertyName))));
+                    $targetEntity    = $anno[$annoKeyM2m]->targetEntity;
+                    $displayColumn   = $anno[$annoKeyAwe]->displayColumn;
+                    $inverseColumn  = $anno[$annoKeyJoinTable]->inverseJoinColumns[0]->name;
 
-                    $target_id       = str_replace('\\', '_', $target_entity);
-                    $attribute       = str_replace('_id', '', "{$inverse_column}s");
-                    // }}}
+                    $targetId        = str_replace('\\', '_', $targetEntity);
+                    $attribute       = str_replace('_id', '', "{$inverseColumn}s");
 
-                    // get related entities {{{
-                    $dql = "select e from $target_entity e";
-                    $foreign_entities = $this->doctrine_em->createQuery($dql)->getResult();
-                    $foreign_columns  = $this->getEntityColumnDefs($target_entity);
+                    // get related entities
+                    $dql = "select e from $targetEntity e";
+                    $foreignEntities = $this->_doctrine->createQuery($dql)->getResult();
+                    $foreignColumns  = $this->getEntityColumnDefs($targetEntity);
 
                     $options = array();
-                    if (count($foreign_entities)) {
-                        foreach ($foreign_entities as $fe) {
-                            $options[$fe->id] = $fe->$display_column;
+                    if (count($foreignEntities)) {
+                        foreach ($foreignEntities as $fe) {
+                            $options[$fe->id] = $fe->$displayColumn;
                         }
                     }
-                    // }}}
 
-                    // build element {{{
-                    $element = new Zend_Form_Element_MultiCheckbox("{$inverse_column}s");
+                    // build element
+                    $element = new Zend_Form_Element_MultiCheckbox("{$inverseColumn}s");
                     $element->setMultiOptions($options);
                     $element->setLabel($label);
-                    // }}}
 
-                    // repopulate data {{{
+                    // repopulate data
                     $values = array();
-                    foreach ($this->repopulation_data->$attribute as $sub_entity) {
-                        $values[] = $sub_entity->id;
+                    foreach ($this->repopData->$attribute as $subEntity) {
+                        $values[] = $subEntity->id;
                     }
                     $element->setValue($values);
-                    // }}}
 
                     break;
-                    // }}}
 
-                case 'foreign_edit_inline': // {{{
-                    // setup properties {{{
-                    $label           = $anno[$a_awe]->label  ?  $anno[$a_awe]->label :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$a_col]) && $anno[$a_col]->name ? $anno[$a_col]->name : $property_name))));
-                    $target_entity   = $anno[$a_12m]->targetEntity;
-                    $edit_inline     = $anno[$a_awe]->edit_inline;
-                    $target_id       = str_replace('\\', '_', $target_entity);
-                    $subform_name    = "{$target_id}_subform";
-                    // }}}
+                case 'foreign_editInline': //
+                    // setup properties
+                    $label          = $anno[$annoKeyAwe]->label  ?  $anno[$annoKeyAwe]->label :  ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', (isset($anno[$annoKeyCol]) && $anno[$annoKeyCol]->name ? $anno[$annoKeyCol]->name : $propertyName))));
+                    $targetEntity   = $anno[$annoKey12m]->targetEntity;
+                    $editInline     = $anno[$annoKeyAwe]->editInline;
+                    $targetId       = str_replace('\\', '_', $targetEntity);
+                    $subformName    = "{$targetId}_subform";
 
-                    // get sub entities {{{
-                    $sub_entities        = $this->repopulation_data->$property_name;
-                    $sub_entity_columns  = $this->getEntityColumnDefs($target_entity);
-                    // }}}
+                    // get sub entities
+                    $sub_entities        = $this->repopData->$propertyName;
+                    $subEntityColumns  = $this->getEntityColumnDefs($targetEntity);
 
-                    // build sub forms {{{
+                    // build sub forms
                     $subform = new Zend_Form_SubForm();
                     $subform->setLegend($label);
 
                     $recurse = false;
-                    $parent  = $this->repopulation_data;
-                    $x = 0; foreach ($sub_entities as $sub_entity) {
-                        $auto_crud = new Awe_Form_AutoMagic(
-                            $subform_name, 
-                            $sub_entity_columns, 
-                            $sub_entity, 
+                    $parent  = $this->repopData;
+                    $x = 0; foreach ($sub_entities as $subEntity) {
+                        $autoCrudForm = new Awe_Form_AutoMagic(
+                            $subformName, 
+                            $subEntityColumns, 
+                            $subEntity, 
                             $recurse, 
                             $parent
                         );
 
-                        $subform->addSubform($auto_crud, $x++);
+                        $subform->addSubform($autoCrudForm, $x++);
                     }
 
-                    $this->addSubform($subform, $target_id);
-                    // }}}
+                    $this->addSubform($subform, $targetId);
 
                     break;
-                    // }}}
             }
-            // }}}
 
             if ($element) {
                 $this->getAutoSubform('entity')->addElement($element);
             }
         }
 
-        if ($this->recurse_subentities) {
+        if ($this->recurseSubEntities) {
             $this->addSaveButton('lower_submit');
         }
     }
-    // }}}
 
-    protected function getDefaultElementType($col_type) // {{{
+    protected function getDefaultElementType($colType) //
     {
-        switch ($col_type) {
+        switch ($colType) {
             case 'date':
-                $element_type = 'Zend_Dojo_Form_Element_DateTextBox';
-                $validators   = 'Zend_Dojo_Form_Element_DateTextBox';
+                $elementType = 'Zend_Dojo_Form_Element_DateTextBox';
+                $validators  = 'Zend_Dojo_Form_Element_DateTextBox';
                 break;
             case 'time':
-                $element_type = 'Zend_Dojo_Form_Element_TimeTextBox';
+                $elementType = 'Zend_Dojo_Form_Element_TimeTextBox';
                 break;
             case 'datetime':
-                $element_type = 'Zend_Dojo_Form_Element_DateTextBox';
+                $elementType = 'Zend_Dojo_Form_Element_DateTextBox';
                 break;
             case 'text':
-                $element_type = 'Zend_Dojo_Form_Element_Textarea';
+                $elementType = 'Zend_Dojo_Form_Element_Textarea';
                 break;
             case 'string':
             case 'integer':
             default:
-                $element_type = 'Zend_Dojo_Form_Element_TextBox';
+                $elementType = 'Zend_Dojo_Form_Element_TextBox';
                 break;
         }
-        return $element_type;
+        return $elementType;
     }
-    // }}}
 
-    protected function getDefaultElementValidators($col_anno) // {{{
+    protected function getDefaultElementValidators($columnAnnotation) //
     {
-        switch ($col_anno->type) {
+        switch ($columnAnnotation->type) {
             case 'string':
                 $validators = array(
-                    'Zend_Validate_StringLength' => array('min' => 0, 'max' => (int)$col_anno->length)
+                    'Zend_Validate_StringLength' => array('min' => 0, 'max' => (int)$columnAnnotation->length)
                 );
                 break;
             default:
@@ -325,31 +299,28 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
         }
         return $validators;
     }
-    // }}}
 
-    protected function addSaveButton($name) // {{{
+    protected function addSaveButton($name) //
     {
         $element = new Zend_Form_Element_Submit($name);
         $element->setLabel('Save');
         $this->addElement($element);
     }
-    // }}}
 
-    protected function getAutoSubform($name) // {{{
+    protected function getAutoSubform($name) //
     {
-        if (!isset($this->auto_subforms[$name])) {
+        if (!isset($this->autoSubForms[$name])) {
             $this->addSubform(new Zend_Form_SubForm($this), $name);
-            $this->auto_subforms[$name] = $this->getSubform($name);
+            $this->autoSubForms[$name] = $this->getSubform($name);
         }
 
-        return $this->auto_subforms[$name];
+        return $this->autoSubForms[$name];
     }
-    // }}}
 
-    protected function getEntityColumnDefs($entity) // {{{
+    protected function getEntityColumnDefs($entity) //
     {
-        // Get informationa about this table
-        $metadata     = $this->doctrine_em->getClassMetadata($entity);
+        // Get information about this table
+        $metadata   = $this->_doctrine->getClassMetadata($entity);
 
         // Get information for autgenerating form
         $properties = $metadata->getReflectionProperties();
@@ -358,11 +329,9 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
         $columns = array();
         foreach ($properties as $name => $p) {
             $columns[$name]['property'] = $p;
-            $columns[$name]['annotations'] = $this->doctrine_ar->getPropertyAnnotations($p);
-            //$columns[$name] = $this->doctrine_ar->getPropertyAnnotations($p);
+            $columns[$name]['annotations'] = $this->_reader->getPropertyAnnotations($p);
         }
 
         return $columns;
     }
-    // }}}
 }

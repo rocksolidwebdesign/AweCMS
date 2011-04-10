@@ -11,7 +11,7 @@
  * http://www.opensource.org/licenses/bsd-license.php
  *
  * @category   AweCMS
- * @package    AweCMS_Admin_Autocrud
+ * @package    AweCMS_Admin_AutoCrud
  * @copyright  Copyright (c) 2010 Rock Solid Web Design (http://rocksolidwebdesign.com)
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  */
@@ -19,44 +19,44 @@
 class Awe_Form_AutoMagic extends Zend_Form_SubForm
 {
     // data to populate the form with
-    protected $repopulation_data;
-    protected $parent_autocrud;
-    protected $parent_entity;
-    protected $autocrud_form;
-    protected $entity_columns;
-    protected $auto_subforms;
-    protected $is_scaffolding;
+    protected $repopData;
+    protected $parentAutoCrud;
+    protected $parentEntity;
+    protected $autoCrudForm;
+    protected $entityColumns;
+    protected $autoSubForms;
+    protected $isScaffolding;
     protected $scaffolding = array();
-    protected $scaffolding_form;
-    protected $scaffolding_form_docblock;
-    protected $scaffolding_form_init_method_body;
-    protected $recurse_subentities;
-    protected $doctrine_em;
-    protected $doctrine_ar;
-    protected $annotation_keys = array();
+    protected $scaffoldingForm;
+    protected $scaffoldingFormDocBlock;
+    protected $scaffoldingFormInitMethodBody;
+    protected $recurseSubEntities;
+    protected $_doctrine;
+    protected $_reader;
+    protected $annotationKeys = array();
 
-    public function getAutocrudForm() // {{{
+    public function getAutoCrudForm()
     {
-        //return $this->autocrud_form;
+        //return $this->autoCrudForm;
         return $this;
     }
-    // }}}
-    public function getScaffolding() // {{{
+
+    public function getScaffolding()
     {
         // Get informationa about this table
         return $this->scaffolding;
     }
-    // }}}
-    public function __construct($name = null, $columns = null, $data = null, $recurse = true, $parent = null, $scaffold = false) // {{{
+
+    public function __construct($name = null, $columns = null, $data = null, $recurse = true, $parent = null, $scaffold = false)
     {
         parent::__construct($name);
 
         global $gANNOTATION_KEYS;
-        $this->annotation_keys =  $gANNOTATION_KEYS;
+        $this->annotationKeys =  $gANNOTATION_KEYS;
 
-        if ($scaffold) { // {{{
-            $this->is_scaffolding  =  $scaffold;
-            $this->scaffolding_form_docblock = new Zend_CodeGenerator_Php_Docblock(array(
+        if ($scaffold) {
+            $this->isScaffolding  =  $scaffold;
+            $this->scaffoldingFormDocBlock = new Zend_CodeGenerator_Php_Docblock(array(
                 'shortDescription' => 'Scaffolding Form',
                 'longDescription'  => 'This is a scaffolding class generated with Awe Scaffolding Generator.',
                 'tags' => array(
@@ -64,26 +64,26 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
                     array( 'name'  => 'license', 'description' => 'New BSD',),
                 ),
             ));
-            $this->scaffolding_form = new Zend_CodeGenerator_Php_Class();
-            $this->scaffolding_form
+            $this->scaffoldingForm = new Zend_CodeGenerator_Php_Class();
+            $this->scaffoldingForm
                  ->setName('Foo')
-                 ->setDocblock($this->scaffolding_form_docblock);
-            $this->scaffolding_form_init_method_body = '';
+                 ->setDocblock($this->scaffoldingFormDocBlock);
+            $this->scaffoldingFormInitMethodBody = '';
         }
-        // }}}
-        // setup params {{{
-        $this->recurse_subentities  =  $recurse;
-        $this->repopulation_data    =  $data;
-        $this->parent_entity        =  $parent;
-        $this->entity_columns       =  $columns;
-        $this->auto_subforms        =  array();
-        // }}}
-        // setup doctrine {{{
-        $this->doctrine_em = \Zend_Registry::get('doctrine_entity_manager');
-        $this->doctrine_ar = \Zend_Registry::get('doctrine_annotation_reader');
-        // }}}
-        // Main Loop {{{
-        if ($scaffold) { // {{{
+
+        // setup params
+        $this->recurseSubEntities  =  $recurse;
+        $this->repopData           =  $data;
+        $this->parentEntity        =  $parent;
+        $this->entityColumns       =  $columns;
+        $this->autoSubForms        =  array();
+
+        // setup doctrine
+        $this->_doctrine = \Zend_Registry::get('doctrineEm');
+        $this->_reader   = \Zend_Registry::get('doctrineAr');
+
+        // Main Loop
+        if ($scaffold) {
             if ($recurse) {
                 $this->addSaveButton('upper_submit');
             }
@@ -96,148 +96,146 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
                 $this->addSaveButton('lower_submit');
             }
 
-            $this->scaffolding_form->setMethods(array(
+            $this->scaffoldingForm->setMethods(array(
                 // Method passed as concrete instance
                 new Zend_CodeGenerator_Php_Method(array(
                     'name'       => 'init',
                     'parameters' => array(
                         array('name' => 'bar'),
                     ),
-                    'body'       => $this->scaffolding_form_init_method_body,
+                    'body'       => $this->scaffoldingFormInitMethodBody,
                     'docblock'   => new Zend_CodeGenerator_Php_Docblock(array(
                         'shortDescription' => 'Initialize and setup the form',
                     )),
                 )),
             ));
 
-            $output = $this->scaffolding_form->generate();
+            $output = $this->scaffoldingForm->generate();
             $this->scaffolding = $output;
-            // }}}
-        } else { // {{{
+
+        } else {
             if ($recurse) {
                 $this->addSaveButton('upper_submit');
             }
 
             foreach ($columns as $name => $def) {
-                $element_type = $this->parseElementType($def);
-                $this->parseElement($def, $element_type);
+                $elementType = $this->parseElementType($def);
+                $this->parseElement($def, $elementType);
             }
 
             if ($recurse) {
                 $this->addSaveButton('lower_submit');
             }
         }
-        // }}}
-        // }}}
     }
-    // }}}
-    protected function parseScaffold($def) // {{{
+
+    protected function parseScaffold($def)
     {
         // annotation keys
-        extract($this->annotation_keys);
+        extract($this->annotationKeys);
 
         $element = false;
-        $element_type = false;
+        $elementType = false;
 
-        if (isset($def['annotations'][$a_awe])) {
+        if (isset($def['annotations'][$annoKeyAwe])) {
 
             // regular input (this entity has exactly one)
             if (
-              isset($def['annotations'][$a_col]) &&
-              isset($def['annotations'][$a_awe]->type)
+              isset($def['annotations'][$annoKeyCol]) &&
+              isset($def['annotations'][$annoKeyAwe]->type)
             ) {
-                $element_type = 'entity';
+                $elementType = 'entity';
             }
 
             // if it's the primary key for one of these sub entities
-            else if ( isset($def['annotations'][$a_id]) && !$this->recurse_subentities) {
-                $element_type = 'primary_key';
+            else if ( isset($def['annotations'][$annoKeyId]) && !$this->recurseSubEntities) {
+                $elementType = 'primary_key';
             }
 
             // dropdown of foreign values (this entity has one of many)
             else if (
-              isset($def['annotations'][$a_m21]) &&
-              isset($def['annotations'][$a_awe]->name)
+              isset($def['annotations'][$annoKeyM21]) &&
+              isset($def['annotations'][$annoKeyAwe]->name)
             ) {
-                $element_type = 'foreign_key';
+                $elementType = 'foreign_key';
             }
 
             // editable list of foreign values (this entity has many)
             else if (
-              isset($def['annotations'][$a_12m]) &&
-              isset($def['annotations'][$a_awe]->edit_inline)
+              isset($def['annotations'][$annoKey12m]) &&
+              isset($def['annotations'][$annoKeyAwe]->editInline)
             ) {
-                $element_type = 'foreign_list';
+                $elementType = 'foreign_list';
             }
 
             // selectable list of foreign values
             else if (
-              isset($def['annotations'][$a_m2m]) &&
-              isset($def['annotations'][$a_awe]->label)
+              isset($def['annotations'][$annoKeyM2m]) &&
+              isset($def['annotations'][$annoKeyAwe]->label)
             ) {
-                $element_type = 'foreign_select';
+                $elementType = 'foreign_select';
             }
 
-            $this->renderScaffold($def, $element_type);
+            $this->renderScaffold($def, $elementType);
         }
     }
-    // }}}
-    protected function parseElementType($def) // {{{
+
+    protected function parseElementType($def)
     {
         // annotation keys
-        extract($this->annotation_keys);
+        extract($this->annotationKeys);
 
         $element = false;
-        $element_type = false;
+        $elementType = false;
 
-        if (isset($def['annotations'][$a_awe])) {
+        if (isset($def['annotations'][$annoKeyAwe])) {
 
             // regular input (this entity has exactly one)
             if (
-              isset($def['annotations'][$a_col]) &&
-              isset($def['annotations'][$a_awe]->type)
+              isset($def['annotations'][$annoKeyCol]) &&
+              isset($def['annotations'][$annoKeyAwe]->type)
             ) {
-                $element_type = 'entity';
+                $elementType = 'entity';
             }
 
             // if it's the primary key for one of these sub entities
-            else if (isset($def['annotations'][$a_id]) && !$this->recurse_subentities) {
-                $element_type = 'primary_key';
+            else if (isset($def['annotations'][$annoKeyId]) && !$this->recurseSubEntities) {
+                $elementType = 'primary_key';
             }
 
             // dropdown of foreign values (this entity has one of many)
             else if (
-              isset($def['annotations'][$a_m21]) &&
-              isset($def['annotations'][$a_awe]->name)
+              isset($def['annotations'][$annoKeyM21]) &&
+              isset($def['annotations'][$annoKeyAwe]->name)
             ) {
-                $element_type = 'foreign_key';
+                $elementType = 'foreign_key';
             }
 
             // editable list of foreign values (this entity has many)
             else if (
-              isset($def['annotations'][$a_12m]) &&
-              isset($def['annotations'][$a_awe]->edit_inline)
+              isset($def['annotations'][$annoKey12m]) &&
+              isset($def['annotations'][$annoKeyAwe]->editInline)
             ) {
-                $element_type = 'foreign_list';
+                $elementType = 'foreign_list';
             }
 
             // selectable list of foreign values
             else if (
-              isset($def['annotations'][$a_m2m]) &&
-              isset($def['annotations'][$a_awe]->label)
+              isset($def['annotations'][$annoKeyM2m]) &&
+              isset($def['annotations'][$annoKeyAwe]->label)
             ) {
-                $element_type = 'foreign_select';
+                $elementType = 'foreign_select';
             }
 
         }
 
-        return $element_type;
+        return $elementType;
     }
-    // }}}
-    public function renderScaffold($def, $element_type) // {{{
+
+    public function renderScaffold($def, $elementType)
     {
         $element = false;
-        switch ($element_type) {
+        switch ($elementType) {
             case 'primary_key':
                 $element = !$element ? $this->scaffoldHiddenPK() : $element;
 
@@ -249,18 +247,18 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
 
             case 'foreign_key':
                 //if (!$element) {
-                //    if ($this->recurse_subentities) {
+                //    if ($this->recurseSubEntities) {
                 //        $element = $this->scaffoldForeignDropdown($def);
                 //    } else {
                 //        $element = $this->scaffoldHiddenFK($def);
                 //    }
                 //}
-                //$subform_name = 'entity';
-                //$this->getAutoSubform($subform_name)->addElement($element);
+                //$subformName = 'entity';
+                //$this->getAutoSubform($subformName)->addElement($element);
                 break;
 
             case 'foreign_list':
-                //if ($this->recurse_subentities) {
+                //if ($this->recurseSubEntities) {
                 //    $this->scaffoldForeignList($def);
                 //}
                 break;
@@ -269,70 +267,70 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
                 break;
         }
     }
-    // }}}
-    public function scaffoldHiddenPK() // {{{
+
+    public function scaffoldHiddenPK()
     {
-        $init_method_body  = '';
-        //$init_method_body .= "\$element = new $type($column, $params);"
+        $initMethodBody  = '';
+        //$initMethodBody .= "\$element = new $type($column, $params);"
 
-        $init_method_body .= "\$element = new Zend_Form_Element_Hidden('id');\n";
-        $init_method_body .= "\$element->setDecorators(array('ViewHelper'));\n";
-        $init_method_body .= "\$this->addElement(\$element);\n\n";
+        $initMethodBody .= "\$element = new Zend_Form_Element_Hidden('id');\n";
+        $initMethodBody .= "\$element->setDecorators(array('ViewHelper'));\n";
+        $initMethodBody .= "\$this->addElement(\$element);\n\n";
 
-        $this->scaffolding_form_init_method_body .= $init_method_body;
+        $this->scaffoldingFormInitMethodBody .= $initMethodBody;
     }
-    // }}}
-    protected function scaffoldFormElement($def) // {{{
+
+    protected function scaffoldFormElement($def)
     {
-        extract($this->annotation_keys);
-        $validator_list = array();
+        extract($this->annotationKeys);
+        $validatorList = array();
 
         // get information about this form field and how to deal with it
-        if (!($params = $def['annotations'][$a_awe]->params)) {
+        if (!($params = $def['annotations'][$annoKeyAwe]->params)) {
             $params = array();
         }
 
-        $type       = $def['annotations'][$a_awe]->type;
-        $label      = $def['annotations'][$a_awe]->label;
-        $column     = $def['annotations'][$a_col]->name;
-        $col_type   = $def['annotations'][$a_col]->type;
-        $validators = (array)$def['annotations'][$a_awe]->validators;
+        $type       = $def['annotations'][$annoKeyAwe]->type;
+        $label      = $def['annotations'][$annoKeyAwe]->label;
+        $column     = $def['annotations'][$annoKeyCol]->name;
+        $colType    = $def['annotations'][$annoKeyCol]->type;
+        $validators = (array)$def['annotations'][$annoKeyAwe]->validators;
 
-        $init_method_body  = '';
-        //$init_method_body .= "\$element = new $type($column, $params);"
-        $init_method_body .= "\$element = new $type('$column');\n";
-        $init_method_body .= "\$element->setLabel('$label');\n";
+        $initMethodBody  = '';
+        //$initMethodBody .= "\$element = new $type($column, $params);"
+        $initMethodBody .= "\$element = new $type('$column');\n";
+        $initMethodBody .= "\$element->setLabel('$label');\n";
 
         foreach ($validators as $v => $args) {
-            $init_method_body .= "\$element->addValidator(new $v());\n";
-            //$validator_list[] = new $v((array)$args);
+            $initMethodBody .= "\$element->addValidator(new $v());\n";
+            //$validatorList[] = new $v((array)$args);
         }
-        $init_method_body .= "\$this->addElement(\$element);\n\n";
+        $initMethodBody .= "\$this->addElement(\$element);\n\n";
 
-        $this->scaffolding_form_init_method_body .= $init_method_body;
+        $this->scaffoldingFormInitMethodBody .= $initMethodBody;
     }
-    // }}}
-    protected function addSaveButton($name) // {{{
+
+    protected function addSaveButton($name)
     {
         $element = new Zend_Form_Element_Submit($name);
         $element->setLabel('Save');
         $this->addElement($element);
     }
-    // }}}
-    protected function getAutoSubform($name) // {{{
+
+    protected function getAutoSubform($name)
     {
-        if (!isset($this->auto_subforms[$name])) {
-            $this->getAutocrudForm()->addSubform(new Zend_Form_SubForm($this), $name);
-            $this->auto_subforms[$name] = $this->getAutocrudForm()->getSubform($name);
+        if (!isset($this->autoSubForms[$name])) {
+            $this->getAutoCrudForm()->addSubform(new Zend_Form_SubForm($this), $name);
+            $this->autoSubForms[$name] = $this->getAutoCrudForm()->getSubform($name);
         }
 
-        return $this->auto_subforms[$name];
+        return $this->autoSubForms[$name];
     }
-    // }}}
-    protected function getEntityColumnDefs($entity) // {{{
+
+    protected function getEntityColumnDefs($entity)
     {
         // Get informationa about this table
-        $metadata     = $this->doctrine_em->getClassMetadata($entity);
+        $metadata     = $this->_doctrine->getClassMetadata($entity);
 
         // Get information for autgenerating form
         $properties = $metadata->getReflectionProperties();
@@ -341,11 +339,11 @@ class Awe_Form_AutoMagic extends Zend_Form_SubForm
         $columns = array();
         foreach ($properties as $name => $p) {
             $columns[$name]['property'] = $p;
-            $columns[$name]['annotations'] = $this->doctrine_ar->getPropertyAnnotations($p);
-            //$columns[$name] = $this->doctrine_ar->getPropertyAnnotations($p);
+            $columns[$name]['annotations'] = $this->_reader->getPropertyAnnotations($p);
+            //$columns[$name] = $this->_reader->getPropertyAnnotations($p);
         }
 
         return $columns;
     }
-    // }}}
+
 }

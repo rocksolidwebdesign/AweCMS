@@ -21,22 +21,22 @@ class Awe_Controller_Plugin_Theme extends Zend_Controller_Plugin_Abstract
     public function dispatchLoopStartup(
         Zend_Controller_Request_Abstract $request)
     {
-        $config_options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
+        $zfConfigArray = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
 
         $layout = Zend_Layout::getMvcInstance();
-        $module_name = $request->getModuleName();
+        $moduleName = $request->getModuleName();
 
-        if ($module_name == 'admin')
+        if ($moduleName == 'admin')
         {
-            $theme_name = $config_options['awe']['theme']['admin'];
+            $themeName = $zfConfigArray['awe']['theme']['admin'];
             $path = APPLICATION_PATH
-                . '/templates/admin/' . $theme_name . '/layouts/';
+                . '/templates/admin/' . $themeName . '/layouts/';
         }
         else
         {
-            $theme_name = $config_options['awe']['theme']['frontend'];
+            $themeName = $zfConfigArray['awe']['theme']['frontend'];
             $path = APPLICATION_PATH
-                . '/templates/frontend/' . $theme_name . '/layouts/';
+                . '/templates/frontend/' . $themeName . '/layouts/';
         }
 
         if (file_exists($path))
@@ -44,12 +44,12 @@ class Awe_Controller_Plugin_Theme extends Zend_Controller_Plugin_Abstract
             $layout->setLayoutPath($path);
         }
 
-        $layout_template = isset($config_options['awe']['default_layout_template'][$module_name])
-            ? $config_options['awe']['default_layout_template'][$module_name]
+        $layoutTemplate = isset($zfConfigArray['awe']['defaultLayoutTemplate'][$moduleName])
+            ? $zfConfigArray['awe']['defaultLayoutTemplate'][$moduleName]
             : '';
 
-        if ($layout_template) {
-            $layout->setLayout($layout_template);
+        if ($layoutTemplate) {
+            $layout->setLayout($layoutTemplate);
         }
 
     }

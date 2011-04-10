@@ -21,7 +21,7 @@ require_once 'Zend/Application.php';
 
 $application = new Zend_Application(
     APPLICATION_ENV,
-    $zfConfArr
+    $zfConfigArray
 );
 $application->bootstrap()
             ->run();

@@ -55,7 +55,7 @@ class WidgetSet extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     label="Parent Set", 
      *     name="parent", 
-     *     display_column="title"
+     *     displayColumn="title"
      * )
      */
     protected $parent;

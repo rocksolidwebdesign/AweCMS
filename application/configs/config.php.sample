@@ -17,119 +17,114 @@
  */
 
 // USER SETTINGS
-$zfConfArr['phpSettings']['time_zone']      = 'America/New_York';
+$zfConfigArray['phpSettings']['time_zone']      = 'America/New_York';
 
-$zfConfArr['awe']['theme']['admin']         = 'default';
-$zfConfArr['awe']['theme']['frontend']      = 'default';
+$zfConfigArray['awe']['theme']['admin']         = 'default';
+$zfConfigArray['awe']['theme']['frontend']      = 'default';
 
-$zfConfArr['awe']['doctrine']['cache_type'] = '\Doctrine\Common\Cache\ApcCache';
+$zfConfigArray['awe']['doctrine']['cacheType'] = '\Doctrine\Common\Cache\ApcCache';
 
-// SYSTEM SETTINGS {{{
-// bootstrap and autoloader {{{
-$zfConfArr['autoloaderNamespaces'][] = "Awe";
-$zfConfArr['includePaths']['library'] = APPLICATION_PATH . "/library";
-$zfConfArr['bootstrap']['path']       = APPLICATION_PATH . "/modules/core/default/Bootstrap.php";
-// }}}
+// SYSTEM SETTINGS
+// bootstrap and autoloader
+$zfConfigArray['autoloaderNamespaces'][] = "Awe";
+$zfConfigArray['includePaths']['library'] = APPLICATION_PATH . "/library";
+$zfConfigArray['bootstrap']['path']       = APPLICATION_PATH . "/modules/core/default/Bootstrap.php";
 
-// zend resources and plugins {{{
-$zfConfArr['resources']['layout'][]     =  '';
-$zfConfArr['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . '/modules/core';
-$zfConfArr['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . '/modules/other';
-$zfConfArr['resources']['frontController']['defaultModule']          =  'default';
-$zfConfArr['resources']['frontController']['defaultControllerName']  =  'index';
-$zfConfArr['resources']['frontController']['defaultAction']          =  'index';
-$zfConfArr['resources']['modules'][]    =  '';
-$zfConfArr['resources']['view'][]       =  '';
-$zfConfArr['resources']['doctrine'][]   =  '';
-$zfConfArr['resources']['router'][]     =  '';
+// zend resources and plugins
+$zfConfigArray['resources']['layout'][]     =  '';
+$zfConfigArray['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . '/modules/core';
+$zfConfigArray['resources']['frontController']['moduleDirectory'][]      =  APPLICATION_PATH . '/modules/other';
+$zfConfigArray['resources']['frontController']['defaultModule']          =  'default';
+$zfConfigArray['resources']['frontController']['defaultControllerName']  =  'index';
+$zfConfigArray['resources']['frontController']['defaultAction']          =  'index';
+$zfConfigArray['resources']['modules'][]    =  '';
+$zfConfigArray['resources']['view'][]       =  '';
+$zfConfigArray['resources']['doctrine'][]   =  '';
+$zfConfigArray['resources']['router'][]     =  '';
 
-$zfConfArr['pluginPaths']['Awe_Resource'] = APPLICATION_PATH . "/resources";
-// }}}
+$zfConfigArray['pluginPaths']['Awe_Resource'] = APPLICATION_PATH . "/resources";
 
-// database connection {{{
-$db_login_file = APPLICATION_PATH . '/configs/database/'.APPLICATION_ENV.'.ini';
-if (!file_exists($db_login_file)) {
-    $db_login_file = APPLICATION_PATH . '/configs/database.ini';
-    if (!file_exists($db_login_file)) {
-        die("Could not find database login file: $db_login_file");
+// database connection
+$dbLoginFile = APPLICATION_PATH . '/configs/database/'.APPLICATION_ENV.'.ini';
+if (!file_exists($dbLoginFile)) {
+    $dbLoginFile = APPLICATION_PATH . '/configs/database.ini';
+    if (!file_exists($dbLoginFile)) {
+        die("Could not find database login file: $dbLoginFile");
     }
 }
-$db_ini = parse_ini_file($db_login_file);
+$dbIni = parse_ini_file($dbLoginFile);
 
 // uncomment this for production to avoid using parsing another ini file
-//$db_ini['db_name'] = '';
-//$db_ini['db_user'] = '';
-//$db_ini['db_pass'] = '';
-//$db_ini['db_host'] = '';
+//$dbIni['dbName'] = '';
+//$dbIni['dbUser'] = '';
+//$dbIni['dbPass'] = '';
+//$dbIni['dbHost'] = '';
 
-$zfConfArr['resources']['db']['adapter']                          =  "pdo_mysql";
-$zfConfArr['resources']['db']['params']['dbname']                 =  $db_ini['db_name'];
-$zfConfArr['resources']['db']['params']['username']               =  $db_ini['db_user'];
-$zfConfArr['resources']['db']['params']['password']               =  $db_ini['db_pass'];
-$zfConfArr['resources']['db']['params']['host']                   =  $db_ini['db_host'];
-$zfConfArr['resources']['db']['params']['isDefaultTableAdapter']  =  true;
+$zfConfigArray['resources']['db']['adapter']                          =  "pdo_mysql";
+$zfConfigArray['resources']['db']['params']['dbname']                 =  $dbIni['dbName'];
+$zfConfigArray['resources']['db']['params']['username']               =  $dbIni['dbUser'];
+$zfConfigArray['resources']['db']['params']['password']               =  $dbIni['dbPass'];
+$zfConfigArray['resources']['db']['params']['host']                   =  $dbIni['dbHost'];
+$zfConfigArray['resources']['db']['params']['isDefaultTableAdapter']  =  true;
 
 // MAMP Socket
 if (file_exists('/Applications/MAMP/tmp/mysql/mysql.sock')) {
-    $zfConfArr['doctrine']['connection']['unix_socket'] = '/Applications/MAMP/tmp/mysql/mysql.sock';
-    $zfConfArr['db']['params']['unix_socket'] = '/Applications/MAMP/tmp/mysql/mysql.sock';
+    $zfConfigArray['doctrine']['connection']['unix_socket'] = '/Applications/MAMP/tmp/mysql/mysql.sock';
+    $zfConfigArray['db']['params']['unix_socket'] = '/Applications/MAMP/tmp/mysql/mysql.sock';
 }
 else {
-    $zfConfArr['doctrine']['connection']['host']  = $db_ini['db_host'];
+    $zfConfigArray['doctrine']['connection']['host']  = $dbIni['dbHost'];
 }
 
-$zfConfArr['doctrine']['connection']['driver']    = 'pdo_mysql';
-$zfConfArr['doctrine']['connection']['port']      = '3306';
-$zfConfArr['doctrine']['connection']['dbname']    = $db_ini['db_name'];
-$zfConfArr['doctrine']['connection']['user']      = $db_ini['db_user'];
-$zfConfArr['doctrine']['connection']['password']  = $db_ini['db_pass'];
-// }}}
+$zfConfigArray['doctrine']['connection']['driver']    = 'pdo_mysql';
+$zfConfigArray['doctrine']['connection']['port']      = '3306';
+$zfConfigArray['doctrine']['connection']['dbname']    = $dbIni['dbName'];
+$zfConfigArray['doctrine']['connection']['user']      = $dbIni['dbUser'];
+$zfConfigArray['doctrine']['connection']['password']  = $dbIni['dbPass'];
 
-// doctrine specific configuration {{{
-$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Premium']  =  APPLICATION_PATH . "/modules/core/premium/doctrine";
-$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Access']   =  APPLICATION_PATH . "/modules/core/access/doctrine";
-$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Blog']     =  APPLICATION_PATH . "/modules/core/blog/doctrine";
-$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core\Cms']      =  APPLICATION_PATH . "/modules/core/cms/doctrine";
-$zfConfArr['doctrine']['settings']['entities_path']['Entities\Core']          =  APPLICATION_PATH . "/doctrine";
-$zfConfArr['doctrine']['settings']['entities_path']['Entities\Other']         =  APPLICATION_PATH . "/doctrine";
-$zfConfArr['doctrine']['settings']['proxies_path']  = APPLICATION_PATH . "/doctrine";
-$zfConfArr['doctrine']['settings']['log_path']      = APPLICATION_PATH . "/doctrine/log";
+// doctrine specific configuration
+//$zfConfigArray['doctrine']['settings']['entitiesPath']['Entities\Core\Premium']  =  APPLICATION_PATH . "/modules/core/premium/doctrine";
+//$zfConfigArray['doctrine']['settings']['entitiesPath']['Entities\Core\Access']   =  APPLICATION_PATH . "/modules/core/access/doctrine";
+//$zfConfigArray['doctrine']['settings']['entitiesPath']['Entities\Core\Blog']     =  APPLICATION_PATH . "/modules/core/blog/doctrine";
+//$zfConfigArray['doctrine']['settings']['entitiesPath']['Entities\Core\Cms']      =  APPLICATION_PATH . "/modules/core/cms/doctrine";
+$zfConfigArray['doctrine']['settings']['entitiesPath']['Entities\Core']          =  APPLICATION_PATH . "/doctrine";
+$zfConfigArray['doctrine']['settings']['entitiesPath']['Entities\Other']         =  APPLICATION_PATH . "/doctrine";
+$zfConfigArray['doctrine']['settings']['proxiesPath']  = APPLICATION_PATH . "/doctrine";
+$zfConfigArray['doctrine']['settings']['logPath']      = APPLICATION_PATH . "/doctrine/log";
 
-$GLOBALS['gANNOTATION_KEYS']['a_id']          = 'Doctrine\ORM\Mapping\Id';
-$GLOBALS['gANNOTATION_KEYS']['a_col']         = 'Doctrine\ORM\Mapping\Column';
-$GLOBALS['gANNOTATION_KEYS']['a_12m']         = 'Doctrine\ORM\Mapping\OneToMany';
-$GLOBALS['gANNOTATION_KEYS']['a_m2m']         = 'Doctrine\ORM\Mapping\ManyToMany';
-$GLOBALS['gANNOTATION_KEYS']['a_m21']         = 'Doctrine\ORM\Mapping\ManyToOne';
-$GLOBALS['gANNOTATION_KEYS']['a_join_column'] = 'Doctrine\ORM\Mapping\JoinColumn';
-$GLOBALS['gANNOTATION_KEYS']['a_join_table']  = 'Doctrine\ORM\Mapping\JoinTable';
-$GLOBALS['gANNOTATION_KEYS']['a_awe']         = 'Awe\Annotations\AutoFormElement';
-// }}}
+$GLOBALS['gANNOTATION_KEYS']['annoKeyId']         = 'Doctrine\ORM\Mapping\Id';
+$GLOBALS['gANNOTATION_KEYS']['annoKeyCol']        = 'Doctrine\ORM\Mapping\Column';
+$GLOBALS['gANNOTATION_KEYS']['annoKey12m']        = 'Doctrine\ORM\Mapping\OneToMany';
+$GLOBALS['gANNOTATION_KEYS']['annoKeyM2m']        = 'Doctrine\ORM\Mapping\ManyToMany';
+$GLOBALS['gANNOTATION_KEYS']['annoKeyM21']        = 'Doctrine\ORM\Mapping\ManyToOne';
+$GLOBALS['gANNOTATION_KEYS']['annoKeyJoinColumn'] = 'Doctrine\ORM\Mapping\JoinColumn';
+$GLOBALS['gANNOTATION_KEYS']['annoKeyJoinTable']  = 'Doctrine\ORM\Mapping\JoinTable';
+$GLOBALS['gANNOTATION_KEYS']['annoKeyAwe']        = 'Awe\Annotations\AutoFormElement';
 
-// environment specific settings {{{
+// environment specific settings
 switch (APPLICATION_ENV)
 {
     case 'development':
     case 'testing':
         // standard system settings
-        $zfConfArr['phpSettings']['display_startup_errors'] = 1;
-        $zfConfArr['phpSettings']['display_errors'] = 1;
-        $zfConfArr['resources']['frontController']['params']['displayExceptions'] = 1;
+        $zfConfigArray['phpSettings']['display_startup_errors'] = 1;
+        $zfConfigArray['phpSettings']['display_errors'] = 1;
+        $zfConfigArray['resources']['frontController']['params']['displayExceptions'] = 1;
 
         // database settings
-        $zfConfArr['doctrine']['settings']['cache_type'] = '\Doctrine\Common\Cache\ArrayCache';
+        $zfConfigArray['doctrine']['settings']['cacheType'] = '\Doctrine\Common\Cache\ArrayCache';
         break;
 
     case 'staging':
     case 'production':
     default:
         // standard system settings
-        $zfConfArr['phpSettings']['display_startup_errors'] = 0;
-        $zfConfArr['phpSettings']['display_errors'] = 0;
-        $zfConfArr['resources']['frontController']['params']['displayExceptions'] = 0;
+        $zfConfigArray['phpSettings']['display_startup_errors'] = 0;
+        $zfConfigArray['phpSettings']['display_errors'] = 0;
+        $zfConfigArray['resources']['frontController']['params']['displayExceptions'] = 0;
 
         // database settings
-        $zfConfArr['doctrine']['settings']['cache_type'] = $zfConfArr['awe']['doctrine']['cache_type'];
+        $zfConfigArray['doctrine']['settings']['cacheType'] = $zfConfigArray['awe']['doctrine']['cacheType'];
         break;
 }
-// }}}
-// }}}
+

@@ -18,8 +18,8 @@
 
 class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
 {
-    protected $_public_actions = array();
-    protected $_authorized_user_types = array(
+    protected $_publicActions = array();
+    protected $_authorizedRoles = array(
         'root',
         'admin'
     );
@@ -31,9 +31,9 @@ class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
         {
             $sess = new Zend_Session_Namespace('admin_login_target');
             $req = $this->getRequest();
-            $sess->action = $req->getActionName();
+            $sess->action     = $req->getActionName();
             $sess->controller = $req->getControllerName();
-            $sess->module = $req->getModuleName();
+            $sess->module     = $req->getModuleName();
 
             // Force login
             return $this->_helper->redirector('login', 'auth', 'admin');
@@ -44,7 +44,7 @@ class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
 
     public function isPublic()
     {
-        return in_array($this->getRequest()->getActionName(), $this->_public_actions);
+        return in_array($this->getRequest()->getActionName(), $this->_publicActions);
     }
 
     public function isLoggedIn()
@@ -64,7 +64,7 @@ class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
     public function isAuthorized()
     {
         $sess = new Zend_Session_Namespace('awe_admin_interface');
-        if (in_array($sess->user_type, $this->_authorized_user_types)) {
+        if (in_array($sess->user_type, $this->_authorizedRoles)) {
             return true;
         }
     }

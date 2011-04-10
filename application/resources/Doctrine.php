@@ -38,14 +38,14 @@ class Awe_Resource_Doctrine extends Zend_Application_Resource_ResourceAbstract
         if (null === $this->_doctrine) {
 
             // Get Zend Application Config
-            $zfConfArr = $this->getBootstrap()->getOptions();
+            $zfConfigArray = $this->getBootstrap()->getOptions();
 
             include_once(APPLICATION_PATH.'/doctrine/common.php');
 
             // Save Doctrine In ZF Registry
             // ****************************************************************
-            \Zend_Registry::set('doctrine_entity_manager', $em);
-            \Zend_Registry::set('doctrine_annotation_reader', $anno_reader);
+            \Zend_Registry::set('doctrineEm', $em);
+            \Zend_Registry::set('doctrineAr', $annoReader);
 
             $this->_doctrine = $em;
         }

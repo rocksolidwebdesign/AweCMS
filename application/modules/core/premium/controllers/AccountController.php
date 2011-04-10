@@ -22,23 +22,22 @@ class Premium_AccountController extends Awe_Controller_Frontend
 
     public function viewAction()
     {
-        $entry = $this->getAccount();
-        $this->view->account = $account;
+        $this->view->account = $this->getAccount();
     }
 
     protected function getAccount()
     {
-        if ($this->_entry == null) {
-            $user_id = $this->getRequest()->getParam('id');
+        if ($this->_account == null) {
+            $userId = $this->getRequest()->getParam('id');
 
-            if (!$user_id) {
-                $user_id = 1;
+            if (!$userId) {
+                $userId = 1;
             }
 
             $em = $this->getInvokeArg('bootstrap')
                        ->getResource('doctrine');
 
-            $this->_account  = $em->find('\Entities\Core\Access\User', $user_id);
+            $this->_account  = $em->find('\Entities\Core\Access\User', $userId);
         }
 
         return $this->_account;

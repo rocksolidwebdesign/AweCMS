@@ -45,7 +45,7 @@ class WidgetSetMember extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     name="widget_set", 
      *     label="Widget Set", 
-     *     display_column="title"
+     *     displayColumn="title"
      * )
      */
     protected $widget_set;
@@ -56,7 +56,7 @@ class WidgetSetMember extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     name="widget", 
      *     label="Widget", 
-     *     display_column="title"
+     *     displayColumn="title"
      * )
      */
     protected $widget;

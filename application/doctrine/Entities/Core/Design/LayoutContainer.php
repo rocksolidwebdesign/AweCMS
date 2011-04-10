@@ -45,7 +45,7 @@ class LayoutContainer extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     name="layout", 
      *     label="Layout", 
-     *     display_column="title"
+     *     displayColumn="title"
      * )
      */
     protected $layout;
@@ -56,7 +56,7 @@ class LayoutContainer extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     name="widget_set", 
      *     label="Widget Set", 
-     *     display_column="title"
+     *     displayColumn="title"
      * )
      */
     protected $widget_set;

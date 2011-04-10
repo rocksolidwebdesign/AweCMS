@@ -20,7 +20,7 @@ class Awe_Controller_Admin extends Awe_Controller_Core_Protected
 {
     public function init()
     {
-        $this->controller_type = 'admin';
+        $this->controllerType = 'admin';
         parent::init();
     }
 }

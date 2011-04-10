@@ -19,8 +19,8 @@
 class Admin_Core_Blog_EntryController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Blog\Entry';
-    protected $entity_label = 'Blog Entry';
-    protected $entity_label_plural = 'Blog Entries';
-    protected $controller_name = 'core_blog_entry';
+    protected $entityLabel = 'Blog Entry';
+    protected $entityLabelPlural = 'Blog Entries';
+    protected $controllerName = 'core_blog_entry';
 }
 ?>

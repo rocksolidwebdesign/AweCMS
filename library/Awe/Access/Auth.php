@@ -18,33 +18,33 @@
 
 class Awe_Access_Auth
 {
-    public function __construct($session_area)
+    public function __construct($sessionArea)
     {
-        $this->_sess_name = $session_area;
+        $this->_sessName = $sessionArea;
     }
 
     public function authenticate($username, $password)
     {
         $table = Zend_Db_Table::getDefaultAdapter();
-        $zauth = Zend_Auth::getInstance();
-        $auth_adapter = new Zend_Auth_Adapter_DbTable($table);
-        $auth_adapter
+        $zAuth = Zend_Auth::getInstance();
+        $authAdapter = new Zend_authAdapter_DbTable($table);
+        $authAdapter
             ->setTableName('access_user')
             ->setIdentityColumn('username')
             ->setCredentialColumn('password');
 
-        $auth_adapter
+        $authAdapter
             ->setIdentity($username)
             ->setCredential($password);
             //->setCredential(sha1($password));
 
-        $result = $zauth->authenticate($auth_adapter);
+        $result = $zAuth->authenticate($authAdapter);
         if ($result->isValid()) {
-            $sess = new Zend_Session_Namespace($this->_sess_name);
-            $authed_user = $auth_adapter->getResultRowObject();
+            $sess = new Zend_Session_Namespace($this->_sessName);
+            $authedUser = $authAdapter->getResultRowObject();
 
             $em = \Zend_Registry::get('doctrine_entity_manager');
-            $user = $em->find('\Entities\Core\Access\User', $authed_user->id);
+            $user = $em->find('\Entities\Core\Access\User', $authedUser->id);
 
             $sess->username     =  $user->username;
             $sess->user_type    =  $user->user_type;

@@ -21,14 +21,14 @@ defined('APPLICATION_PATH')
 
 if (!defined('APPLICATION_ENV')) {
     if (getenv('APPLICATION_ENV'))  {
-        $app_env = getenv('APPLICATION_ENV');
-    } else if (is_readable($env_file = APPLICATION_PATH.'/configs/environment.ini')) {
-        $env_ini = parse_ini_file($env_file);
-        $app_env = $env_ini['APPLICATION_ENV'];
+        $envAppType = getenv('APPLICATION_ENV');
+    } else if (is_readable($envSettingFile = APPLICATION_PATH.'/configs/environment.ini')) {
+        $envIni = parse_ini_file($envSettingFile);
+        $envAppType = $envIni['APPLICATION_ENV'];
     } else {
-        $app_env = 'production';
+        $envAppType = 'production';
     }
-    define('APPLICATION_ENV', $app_env);
+    define('APPLICATION_ENV', $envAppType);
 }
 
 // add library to include_path

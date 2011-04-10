@@ -57,8 +57,8 @@ class User extends \Entities\Core\AbstractEntity
      * @JoinTable(name="access_user_group",
      *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="group_id", referencedColumnName="id")}
-     *      )
-     * @awe:AutoFormElement(label="Groups", add_method="addGroup", display_column="title")
+     * )
+     * @awe:AutoFormElement(label="Groups", displayColumn="title")
      */
     public $groups;
 
@@ -66,7 +66,7 @@ class User extends \Entities\Core\AbstractEntity
      * @OneToMany(targetEntity="\Entities\Core\Premium\Subscription", mappedBy="user")
      * @awe:AutoFormElement(
      *     label="Subscriptions",
-     *     edit_inline=1
+     *     editInline=1
      * )
      */
     protected $subscriptions;

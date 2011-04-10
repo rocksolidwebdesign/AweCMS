@@ -63,7 +63,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @Column(name="data_source_dql", type="text")
      * @awe:AutoFormElement(
      *     label="Data Source DQL",
-     *     no_list="True",
+     *     noList="True",
      *     type="Zend_Dojo_Form_Element_Textarea"
      * )
      */
@@ -74,7 +74,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     label="DQL Limit",
      *     type="Zend_Dojo_Form_Element_TextBox",
-     *     no_list="True",
+     *     noList="True",
      *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
      * )
      */
@@ -85,7 +85,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     type="Zend_Dojo_Form_Element_TextBox",
      *     label="DQL Entity",
-     *     no_list="True",
+     *     noList="True",
      *     validators={"Zend_Validate_StringLength"={ "min"=0, "max"=255 } }
      * )
      */
@@ -96,7 +96,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     label="DQL Order By",
      *     type="Zend_Dojo_Form_Element_TextBox",
-     *     no_list="True",
+     *     noList="True",
      *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
      * )
      */
@@ -106,7 +106,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @Column(name="data_source_code", type="text")
      * @awe:AutoFormElement(
      *     label="Data Source: Code",
-     *     no_list="True",
+     *     noList="True",
      *     type="Zend_Dojo_Form_Element_Textarea"
      * )
      */
@@ -116,7 +116,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @Column(name="data_source_method", type="string", length=255)
      * @awe:AutoFormElement(
      *     label="Data Source: Method",
-     *     no_list="True",
+     *     noList="True",
      *     type="Zend_Dojo_Form_Element_TextBox"
      * )
      */
@@ -126,7 +126,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @Column(name="data_source_property", type="string", length=255)
      * @awe:AutoFormElement(
      *     label="Data Source: Property",
-     *     no_list="True",
+     *     noList="True",
      *     type="Zend_Dojo_Form_Element_TextBox"
      * )
      */
@@ -137,7 +137,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @awe:AutoFormElement(
      *     label="Data Source: Include File",
      *     type="Zend_Dojo_Form_Element_TextBox",
-     *     no_list="True",
+     *     noList="True",
      *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=2000}}
      * )
      */
@@ -147,7 +147,7 @@ class Widget extends \Entities\Core\AbstractEntity
      * @Column(name="template_var_name", type="string", length="255")
      * @awe:AutoFormElement(
      *     label="Data Source: Var Name",
-     *     no_list="True",
+     *     noList="True",
      *     type="Zend_Dojo_Form_Element_TextBox",
      *     validators={"Zend_Validate_StringLength"={"min"=0, "max"=255}}
      * )

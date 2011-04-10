@@ -11,27 +11,55 @@
  * http://www.opensource.org/licenses/bsd-license.php
  */
 
-namespace Entities\Core\Blog;
+namespace Entities\Core\Cms;
 
 /**
  * @Entity
- * @Table(name="blog_entry")
+ * @Table(name="cms_page")
  * @HasLifecycleCallbacks
  */
-class Entry extends \Entities\Core\AbstractEntity
+class Page extends \Entities\Core\AbstractEntity
 {
+    // Properties
     /**
      * @Id @Column(name="id", type="integer")
      * @GeneratedValue(strategy="AUTO")
-     * @awe:AutoFormElement(label="Id")
+     * @awe:AutoFormElement()
      */
     protected $id;
 
     /**
-     * @Column(name="permalink", type="string", length=255)
+     * @ManyToOne(targetEntity="\Entities\Core\Cms\Page", inversedBy="children")
+     * @JoinColumn(name="parent_id", referencedColumnName="id")
+     * @awe:AutoFormElement(
+     *     label="Parent Page", 
+     *     displayColumn="title"
+     * )
+     */
+    protected $parent;
+
+    /**
+     * @Column(name="auth_required", type="integer")
+     * @awe:AutoFormElement(
+     *     label="Login Required",
+     *     type="Zend_Dojo_Form_Element_CheckBox"
+     * )
+     */
+    protected $auth_required;
+
+    /**
+     * @ManyToOne(targetEntity="\Entities\Core\Design\Layout")
+     * @JoinColumn(name="layout_id", referencedColumnName="id")
+     * @awe:AutoFormElement(displayColumn="title")
+     * )
+     */
+    protected $layout;
+
+    /**
+     * @Column(name="url", type="string", length=255)
      * @awe:AutoFormElement()
      */
-    protected $permalink;
+    protected $url;
 
     /**
      * @Column(name="title", type="string", length=255)
@@ -40,43 +68,20 @@ class Entry extends \Entities\Core\AbstractEntity
     protected $title;
 
     /**
-     * @ManyToOne(targetEntity="\Entities\Core\Design\Layout")
-     * @JoinColumn(name="layout_id", referencedColumnName="id")
-     * @awe:AutoFormElement(
-     *     name="layout", 
-     *     label="Layout", 
-     *     display_column="title"
-     * )
-     */
-    protected $layout;
-
-    /**
-     * @Column(name="pub_date", type="datetime")
-     * @awe:AutoFormElement()
-     */
-    protected $pub_date;
-
-    /**
      * @Column(name="content", type="text")
      * @awe:AutoFormElement(
-     *     label="Entry Body",
+     *     label="Page Content",
      *     type="Awe_Dojo_Form_Element_Editor",
      *     params={"plugins"={"viewSource","undo", "redo", "cut", "copy", "paste", "bold", "italic", "underline", "strikethrough", "insertOrderedList", "insertUnorderedList", "indent", "outdent", "justifyLeft", "justifyRight", "justifyCenter", "justifyFull", "createLink", "insertImage", "fontName",  "formatBlock", "fontSize", "foreColor", "hiliteColor", "fullScreen", "enterKeyHandling", "print", "tabIndent", "toggleDir", "newPage"}},
-     *     no_list="True"
+     *     noList="True"
      * )
      */
     protected $content;
 
-    /**
-     * @OneToMany(targetEntity="\Entities\Core\Blog\Comment", mappedBy="entry")
-     * @awe:AutoFormElement(
-     *     label="Comments",
-     *     name="comments",
-     *     edit_inline=1,
-     *     compact_view=0
-     * )
+    /** 
+     * @OneToMany(targetEntity="\Entities\Core\Cms\Page", mappedBy="parent")
      */
-    protected $comments;
+    protected $children;
 
     /*
      * getUrl()
@@ -85,22 +90,15 @@ class Entry extends \Entities\Core\AbstractEntity
      */
     public function getUrl()
     {
-        $root_url      = "/blog";
-        $archive_url   = $this->getArchiveUrl();
-        $permalink_url = $this->getPermalinkUrl();
-        $url = "$root_url/$archive_url/$permalink_url";
+        $url = $this->url;
+
+        // if the parent URL is not the home page
+        if ($this->parent) {
+            $parentUrl = $this->parent->getUrl();
+            return "$parentUrl/$url";
+        }
 
         return $url;
-    }
-
-    public function getArchiveUrl()
-    {
-        return $this->pub_date->format('m/d/Y');
-    }
-
-    public function getPermalinkUrl()
-    {
-        return ($this->permalink ? $this->permalink : $this->id);
     }
 
     /*
@@ -109,36 +107,24 @@ class Entry extends \Entities\Core\AbstractEntity
      * param: $result array - Recursive url input chain
      * return: array - Parents and grandparents leading to the root
      */
-    public function getBreadcrumbs($url = 'UNINITIALIZED', $result = array())
+    public function getBreadcrumbs($result = array())
     {
-        $url = $url == 'UNINITIALIZED' ? $this->getUrl() : $url;
+        $url = $this->getUrl();
         $url = $url ? $url : '/';
-
-        preg_match('#^(.*)/([^/]{1,})$#',$url,$matches);
-
-        $crumbs  = isset($matches[1]) ? $matches[1] : '';
-        $current = isset($matches[2]) ? $matches[2] : '';
-
-        $title = ($this->getPermalinkUrl() == $current ? $this->title : 
-            ($current == 'blog' ? 'Blog' : 
-                ($current == '' ? 'Home' : $current)
-            )
-        );
 
         // generate the breadcrumb for this page
         $crumb = array(
             'url' => $url,
-            'title' => $title,
+            'title' => $this->title
         );
 
         // prepend it to the list of crumbs
         array_unshift($result, $crumb);
 
         // if this page has a parent
-        if ($url != '/') {
-            $url = $crumbs;
+        if ($this->parent) {
             // add the parent's breadcrumb to the result
-            return $this->getBreadcrumbs($url, $result);
+            return $this->parent->getBreadcrumbs($result);
         }
 
         return $result;
@@ -158,7 +144,7 @@ class Entry extends \Entities\Core\AbstractEntity
 
     public function __construct()
     {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->created_at = $this->updated_at = new \DateTime("now");
     }

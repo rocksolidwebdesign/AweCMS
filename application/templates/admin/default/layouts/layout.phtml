@@ -18,14 +18,14 @@
 ?>
 
 <?php
-    $dijit_theme = 'soria';
+    $dijitTheme = 'soria';
 
     $title = $this->layout()->title;
     $this->headTitle(($title ? "$title - " : 'Admin - ') .  "AWE");
 
-    $skin_folder = '/skin/admin/default';
-    $this->headLink()->prependStylesheet("$skin_folder/css/layout.css");
-    $this->headLink()->prependStylesheet("$skin_folder/css/styles.css");
+    $skinFolder = '/skin/admin/default';
+    $this->headLink()->prependStylesheet("$skinFolder/css/layout.css");
+    $this->headLink()->prependStylesheet("$skinFolder/css/styles.css");
 
     $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
     echo $this->doctype('XHTML1_TRANSITIONAL');
@@ -39,14 +39,14 @@
             echo $this->headLink(),"\n";
 
             # Dojo Toolkit
-            $dojo_body_class = '';
+            $dojoBodyClass = '';
             if ($this->dojo()->isEnabled()) {
-                $dojo_body_class = " class=\"$dijit_theme\"";
+                $dojoBodyClass = " class=\"$dijitTheme\"";
                 $this->dojo()
                      ->setLocalPath("/js/release/dojo/dojo.js")
                      ->addLayer("/js/release/dojo/awedojo.js")
                      ->setDjConfigOption('dojoBlankHtmlUrl', '/js/dojo/release/dojo/dojo/resources/blank.html')
-                     ->addStyleSheetModule('dijit.themes.'.$dijit_theme)
+                     ->addStyleSheetModule('dijit.themes.'.$dijitTheme)
                      ->setDjConfigOption('parseOnLoad', true);
 
                 echo $this->dojo(),"\n";
@@ -68,8 +68,8 @@
         ?>
         <link rel="shortcut icon" href="/admin_favicon.ico" />
     </head>
-    <body<?= $dojo_body_class ?>>
-        <?= $this->partial("_header.phtml"); ?>
+    <body<?php echo $dojoBodyClass ?>>
+        <?php echo $this->partial("_header.phtml"); ?>
         <table id="admin_columns">
             <tr>
                 <td id="left_col">
@@ -83,8 +83,6 @@
                 </td>
             </tr>
         </table>
-        <?= $this->partial("_footer.phtml"); ?>
+        <?php echo $this->partial("_footer.phtml"); ?>
     </body>
 </html>
-
-

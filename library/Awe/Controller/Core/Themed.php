@@ -18,7 +18,7 @@
 
 class Awe_Controller_Core_Themed extends Zend_Controller_Action
 {
-    protected $controller_type;
+    protected $controllerType;
 
     public function init()
     {
@@ -26,12 +26,12 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
 
         $config_options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
 
-        $module_name      = $this->getRequest()->getModuleName();
-        $controller_name  = $this->getRequest()->getControllerName();
-        $controller_type  = $this->controller_type;
-        $theme_name       = $config_options['awe']['theme'][$this->controller_type];
-        $namespace        = substr($controller_name, 0, strpos('_', $controller_name));
-        $templates_folder = APPLICATION_PATH . '/templates';
+        $moduleName       = $this->getRequest()->getModuleName();
+        $controllerName   = $this->getRequest()->getControllerName();
+        $controllerType   = $this->controllerType;
+        $themeName        = $config_options['awe']['theme'][$this->controllerType];
+        $namespace        = substr($controllerName, 0, strpos('_', $controllerName));
+        $templatesFolder = APPLICATION_PATH . '/templates';
 
         $paths = array();
 
@@ -39,29 +39,29 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
         // then check admin default
         // then frontend theme
         // then frontend default
-        $paths[] = "/frontend/default/views/scripts/$module_name";
-        if ($theme_name != 'default') {
-            $paths[] = "/frontend/$theme_name/views/scripts/$module_name";
+        $paths[] = "/frontend/default/views/scripts/$moduleName";
+        if ($themeName != 'default') {
+            $paths[] = "/frontend/$themeName/views/scripts/$moduleName";
         }
 
-        $skin_path = "/skin/frontend/$theme_name";
+        $skinPath = "/skin/frontend/$themeName";
 
-        if ($module_name == 'admin') {
+        if ($moduleName == 'admin') {
             $paths[] = "/admin/default/views/scripts";
-            if ($theme_name != 'default') {
-                $paths[] = "/admin/$theme_name/views/scripts";
+            if ($themeName != 'default') {
+                $paths[] = "/admin/$themeName/views/scripts";
             }
 
-            $skin_path = "/skin/admin/$theme_name";
+            $skinPath = "/skin/admin/$themeName";
         }
 
-        $this->pview = new Zend_View();
-        $this->pview->addScriptPath($templates_folder . "/frontend/$theme_name/layouts/widgets");
+        $this->pView = new Zend_View();
+        $this->pView->addScriptPath($templatesFolder . "/frontend/$themeName/layouts/widgets");
 
-        \Zend_Registry::set('awe_theme_skin_path', $skin_path);
+        \Zend_Registry::set('awe_theme_skinPath', $skinPath);
         foreach ($paths as $path) {
-            $full_path = $templates_folder . $path;
-            $this->view->addScriptPath($full_path);
+            $fullPath = $templatesFolder . $path;
+            $this->view->addScriptPath($fullPath);
         }
     }
 
@@ -73,13 +73,13 @@ class Awe_Controller_Core_Themed extends Zend_Controller_Action
 
     public function renderDynamicTemplate($script, $vars)
     {
-        $this->pview->clearVars();
+        $this->pView->clearVars();
 
         foreach ($vars as $key => $value) {
-            $this->pview->$key = $value;
+            $this->pView->$key = $value;
         }
 
-        $output = $this->pview->render($script);
+        $output = $this->pView->render($script);
         return $output;
     }
 }

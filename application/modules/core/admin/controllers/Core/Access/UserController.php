@@ -19,8 +19,8 @@
 class Admin_Core_Access_UserController extends Awe_Controller_AutoAdmin
 {
     protected $entity = '\Entities\Core\Access\User';
-    protected $entity_label = 'User';
-    protected $entity_label_plural = 'Users';
-    protected $controller_name = 'core_access_user';
+    protected $entityLabel = 'User';
+    protected $entityLabelPlural = 'Users';
+    protected $controllerName = 'core_access_user';
 }
 ?>
