@@ -55,7 +55,7 @@
     $pagerSizes[] = 500;
     // }}}
 ?>
-<h1><?php echo $this->entity_label_plural; ?></h1>
+<h1><?php echo $this->entityLabelPlural; ?></h1>
 <a class="awe-grid-new-link" href="<?php echo $selfLink; ?>/edit/">Add New</a>
 <div class="awe-grid-pager awe-grid-pager-top">
     <div class="awe-grid-pager-stats">
@@ -103,7 +103,7 @@
                 <?php if (is_null($anno[$annoKeyAwe]->noList)): ?>
                 <?php
                     $colName     =  (isset($anno[$annoKeyCol]) && $anno[$annoKeyCol]->name ? $anno[$annoKeyCol]->name : $property_name);
-                    $label       =  $anno[$annoKeyAwe]->list_label ? $anno[$annoKeyAwe]->list_label : $anno[$annoKeyAwe]->label ? $anno[$annoKeyAwe]->label : ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', $colName)));
+                    $label       =  $anno[$annoKeyAwe]->listLabel ? $anno[$annoKeyAwe]->listLabel : $anno[$annoKeyAwe]->label ? $anno[$annoKeyAwe]->label : ucwords(str_replace('_', ' ', preg_replace('[^a-zA-Z0-9_]','', $colName)));
                     $sortOn      =  "sidx=$colName";
                     $sortOrder   =  $sidx != $colName ? "sord=ASC" : ($sord == 'ASC' ? 'sord=DESC' : 'sord=ASC');
                     $sortLabel   =  $sidx != $colName ? "^" : ($sord == 'ASC' ? 'v' : '^');

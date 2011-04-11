@@ -29,14 +29,11 @@ class Access_UserController extends Awe_Controller_Frontend
 
         $this->view->loginAttempt = '';
         $request = $this->getRequest();
-        if ($request->isPost())
-        {
-            if ($form->isValid($request->getPost()))
-            {
+        if ($request->isPost()) {
+            if ($form->isValid($request->getPost())) {
                 $post  = $form->getValues();
                 $guard = new Awe_Access_Auth('premium_user_account');
-                if ($guard->authenticate($post['username'], $post['password']))
-                {
+                if ($guard->authenticate($post['username'], $post['password'])) {
                     $sess = new Zend_Session_Namespace('cms_login_target');
                     return $this->_helper->redirector($sess->action, $sess->controller, $sess->module);
                 }
@@ -48,11 +45,12 @@ class Access_UserController extends Awe_Controller_Frontend
         $this->view->form = $form;
 
         $em = \Zend_Registry::get('doctrine_entity_manager');
-        $page  = $em->find('\Entities\Core\Cms\Page', 1);
+        $page = $em->find('\Entities\Core\Cms\Page', 1);
 
         $this->renderDynamicPlaceholder(
             'left_menu', 'site/_cms_menu.phtml', 
-            array('children' => $page->children));
+            array('children' => $page->children)
+        );
 
         $breadcrumbs = array(
             array(
@@ -75,7 +73,8 @@ class Access_UserController extends Awe_Controller_Frontend
 
         $this->renderDynamicPlaceholder(
             'breadcrumbs', 'site/_breadcrumbs.phtml', 
-            array('breadcrumbs' => $breadcrumbs));
+            array('breadcrumbs' => $breadcrumbs)
+        );
     }
 
     public function logoutAction()

@@ -64,7 +64,7 @@ class Awe_Controller_Core_Protected extends Awe_Controller_Core_Themed
     public function isAuthorized()
     {
         $sess = new Zend_Session_Namespace('awe_admin_interface');
-        if (in_array($sess->user_type, $this->_authorizedRoles)) {
+        if (in_array($sess->userType, $this->_authorizedRoles)) {
             return true;
         }
     }

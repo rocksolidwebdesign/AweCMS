@@ -27,7 +27,7 @@ class Awe_Access_Auth
     {
         $table = Zend_Db_Table::getDefaultAdapter();
         $zAuth = Zend_Auth::getInstance();
-        $authAdapter = new Zend_authAdapter_DbTable($table);
+        $authAdapter = new Zend_Auth_Adapter_DbTable($table);
         $authAdapter
             ->setTableName('access_user')
             ->setIdentityColumn('username')
@@ -43,12 +43,12 @@ class Awe_Access_Auth
             $sess = new Zend_Session_Namespace($this->_sessName);
             $authedUser = $authAdapter->getResultRowObject();
 
-            $em = \Zend_Registry::get('doctrine_entity_manager');
+            $em = \Zend_Registry::get('doctrineEm');
             $user = $em->find('\Entities\Core\Access\User', $authedUser->id);
 
             $sess->username     =  $user->username;
-            $sess->user_type    =  $user->user_type;
-            $sess->member_id    =  $user->id;
+            $sess->userType     =  $user->user_type;
+            $sess->memberId     =  $user->id;
             $sess->email        =  $user->email;
             $sess->groups       =  $user->groups;
 

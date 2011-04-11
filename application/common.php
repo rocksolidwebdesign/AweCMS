@@ -33,6 +33,7 @@ if (!defined('APPLICATION_ENV')) {
 
 // add library to include_path
 set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(APPLICATION_PATH . '/../library_fork'),
     realpath(APPLICATION_PATH . '/../library'),
     get_include_path(),
 )));

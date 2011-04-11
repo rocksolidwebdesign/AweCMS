@@ -42,6 +42,7 @@ class Admin_AuthController extends Awe_Controller_Admin
                     return $this->_helper->redirector($sess->action, $sess->controller, $sess->module);
                 }
 
+                die('plorp');
                 $this->view->loginAttempt = 'invalid';
             }
         }
